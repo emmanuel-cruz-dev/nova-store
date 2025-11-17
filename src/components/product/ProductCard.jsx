@@ -40,7 +40,7 @@ function ProductCard(props) {
         title="Ver más información"
       >
         <Card.Img
-          className="p-4 card__img"
+          className="p-2 card__img"
           variant="top"
           src={image}
           alt={name}
