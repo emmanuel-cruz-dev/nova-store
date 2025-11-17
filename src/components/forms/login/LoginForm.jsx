@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth";
+import { validateLoginForm } from "../../../utils/utils";
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,23 +16,6 @@ function LoginForm() {
 
   const from = location.state?.from?.pathname || "/";
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!loginData.email.trim()) {
-      newErrors.email = "El email es requerido";
-    } else if (!/\S+@\S+\.\S+/.test(loginData.email)) {
-      newErrors.email = "El email no es válido";
-    }
-
-    if (!loginData.password) {
-      newErrors.password = "La contraseña es requerida";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -43,36 +27,42 @@ function LoginForm() {
     e.preventDefault();
     if (authLoading) return;
 
-    if (!validateForm()) return;
+    const formErrors = validateLoginForm(loginData);
 
-    try {
-      const loggedUser = await login(loginData.email, loginData.password);
+    if (Object.keys(formErrors).length === 0) {
+      try {
+        const loggedUser = await login(loginData.email, loginData.password);
 
-      setErrors({});
+        setErrors({});
 
-      setTimeout(() => {
-        if (loggedUser.role === "admin") {
-          navigate("/profile", { replace: true });
-        } else if (from && from !== "/login") {
-          navigate(from, { replace: true });
+        setTimeout(() => {
+          if (loggedUser.role === "admin") {
+            navigate("/profile", { replace: true });
+          } else if (from && from !== "/login") {
+            navigate(from, { replace: true });
+          } else {
+            navigate("/", { replace: true });
+          }
+        }, 100);
+      } catch (error) {
+        if (
+          error.message.includes("El correo electrónico no está registrado")
+        ) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "El correo electrónico no está registrado",
+          }));
+        } else if (error.message.includes("La contraseña es incorrecta")) {
+          setErrors((prev) => ({
+            ...prev,
+            password: "La contraseña es incorrecta",
+          }));
         } else {
-          navigate("/", { replace: true });
+          console.error("Error al iniciar sesión:", error);
         }
-      }, 100);
-    } catch (error) {
-      if (error.message.includes("El correo electrónico no está registrado")) {
-        setErrors((prev) => ({
-          ...prev,
-          email: "El correo electrónico no está registrado",
-        }));
-      } else if (error.message.includes("La contraseña es incorrecta")) {
-        setErrors((prev) => ({
-          ...prev,
-          password: "La contraseña es incorrecta",
-        }));
-      } else {
-        console.error("Error al iniciar sesión:", error);
       }
+    } else {
+      setErrors(formErrors);
     }
   };
 
