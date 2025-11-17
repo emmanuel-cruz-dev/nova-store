@@ -28,7 +28,7 @@ function Products() {
           md={3}
           lg={2}
           className="mb-md-0 py-4"
-          style={{ background: "#eee", minHeight: "80vh" }}
+          style={{ background: "#eee" }}
         >
           <div className="sticky-top" style={{ top: "68px", zIndex: 1 }}>
             <h5 className="mb-3" style={{ fontSize: "1.5rem" }}>
