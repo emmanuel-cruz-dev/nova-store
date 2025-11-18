@@ -5,6 +5,14 @@
 👨‍💻 **Autor:** Emmanuel Cruz  
 🎓 **Comisión:** 25235
 
+---
+
+## 🚀 Demo en vivo
+
+👉 [**Visita la página aquí**](https://nova-store-shop.vercel.app/)
+
+---
+
 ## 🧰 Tecnologías utilizadas
 
 * **React**: Framework de JavaScript para construir interfaces de usuario.
