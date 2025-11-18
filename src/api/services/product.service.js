@@ -71,9 +71,25 @@ const getProductsByCategory = async (category) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  try {
+    const response = await axios.delete(`/products/${id}`);
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting product", error);
+    throw error;
+  }
+};
+
 export const productService = {
   getProducts,
   getProductById,
   getActiveProducts,
   getProductsByCategory,
+  deleteProduct,
 };
