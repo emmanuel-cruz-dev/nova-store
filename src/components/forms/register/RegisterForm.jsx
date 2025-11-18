@@ -1,10 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, User, Mail, Lock, Image } from "lucide-react";
-import { AuthContext } from "../../../hooks/useAuth";
+import { Form, Button, InputGroup } from "react-bootstrap";
+import { useAuth } from "../../../hooks/useAuth";
+import { validateRegisterForm } from "../../../utils/utils";
 
 function RegisterForm() {
-  const { register } = useContext(AuthContext);
+  const { register, authLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,77 +19,21 @@ function RegisterForm() {
   });
   const [errors, setErrors] = useState({});
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "El nombre es requerido";
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "El apellido es requerido";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "El email es requerido";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "El email no es válido";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "La contraseña es requerida";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "La contraseña debe tener al menos 6 caracteres";
-    }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Debe confirmar la contraseña";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Las contraseñas no coinciden";
-    }
-
-    if (formData.avatar && !isValidUrl(formData.avatar)) {
-      newErrors.avatar = "La URL del avatar no es válida";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const isValidUrl = (string) => {
-    return string.match(
-      /^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/
-    );
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Limpiar error del campo cuando el usuario empieza a escribir
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (authLoading) return;
 
-    if (validateForm()) {
-      // Preparar datos para el backend (sin confirmPassword)
-      const { confirmPassword, ...dataToSend } = formData;
-
-      // Si avatar está vacío, no se envia
-      if (!dataToSend.avatar) {
-        delete dataToSend.avatar;
-      }
-
-      console.log("Datos a enviar:", dataToSend);
+    const formErrors = validateRegisterForm(formData);
+    if (Object.keys(formErrors).length === 0) {
+      const { confirmPassword: _, ...dataToSend } = formData;
+      if (!dataToSend.avatar) delete dataToSend.avatar;
 
       try {
         const newUser = await register(dataToSend);
@@ -102,261 +48,180 @@ function RegisterForm() {
           console.error("Error al registrar usuario:", error);
         }
       }
+    } else {
+      setErrors(formErrors);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Nombre y Apellido */}
+    <Form onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-md-6 mb-3">
-          <label className="form-label">
-            Nombre <span className="text-danger">*</span>
-          </label>
-          <div className="position-relative">
-            <User
-              size={18}
-              className="text-muted"
-              style={{
-                position: "absolute",
-                left: "12px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            />
-            <input
-              type="text"
-              className={`form-control ${errors.firstName ? "is-invalid" : ""}`}
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="Juan"
-              style={{ paddingLeft: "40px" }}
-            />
-            {errors.firstName && (
-              <div className="invalid-feedback">{errors.firstName}</div>
-            )}
-          </div>
+          <Form.Group controlId="firstName">
+            <Form.Label>
+              Nombre <span className="text-danger">*</span>
+            </Form.Label>
+            <InputGroup hasValidation>
+              <InputGroup.Text>
+                <User size={18} />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                name="firstName"
+                placeholder="Juan"
+                value={formData.firstName}
+                onChange={handleChange}
+                isInvalid={!!errors.firstName}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.firstName}
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
         </div>
 
         <div className="col-md-6 mb-3">
-          <label className="form-label">
-            Apellido <span className="text-danger">*</span>
-          </label>
-          <div className="position-relative">
-            <User
-              size={18}
-              className="text-muted"
-              style={{
-                position: "absolute",
-                left: "12px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-            />
-            <input
-              type="text"
-              className={`form-control ${errors.lastName ? "is-invalid" : ""}`}
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Pérez"
-              style={{ paddingLeft: "40px" }}
-            />
-            {errors.lastName && (
-              <div className="invalid-feedback">{errors.lastName}</div>
-            )}
-          </div>
+          <Form.Group controlId="lastName">
+            <Form.Label>
+              Apellido <span className="text-danger">*</span>
+            </Form.Label>
+            <InputGroup hasValidation>
+              <InputGroup.Text>
+                <User size={18} />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                name="lastName"
+                placeholder="Pérez"
+                value={formData.lastName}
+                onChange={handleChange}
+                isInvalid={!!errors.lastName}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.lastName}
+              </Form.Control.Feedback>
+            </InputGroup>
+          </Form.Group>
         </div>
       </div>
 
-      {/* Email */}
-      <div className="mb-3">
-        <label className="form-label">
+      <Form.Group className="mb-3" controlId="email">
+        <Form.Label>
           Correo electrónico <span className="text-danger">*</span>
-        </label>
-        <div className="position-relative">
-          <Mail
-            size={18}
-            className="text-muted"
-            style={{
-              position: "absolute",
-              left: "12px",
-              top: "50%",
-              transform: "translateY(-50%)",
-            }}
-          />
-          <input
+        </Form.Label>
+        <InputGroup hasValidation>
+          <InputGroup.Text>
+            <Mail size={18} />
+          </InputGroup.Text>
+          <Form.Control
             type="email"
-            className={`form-control ${errors.email ? "is-invalid" : ""}`}
             name="email"
+            placeholder="nombre@mail.com"
             value={formData.email}
             onChange={handleChange}
-            placeholder="nombre@mail.com"
-            style={{ paddingLeft: "40px" }}
+            isInvalid={!!errors.email}
           />
-          {errors.email && (
-            <div className="invalid-feedback">{errors.email}</div>
-          )}
-        </div>
-      </div>
+          <Form.Control.Feedback type="invalid">
+            {errors.email}
+          </Form.Control.Feedback>
+        </InputGroup>
+      </Form.Group>
 
-      {/* Contraseña */}
-      <div className="mb-3">
-        <label className="form-label">
+      <Form.Group className="mb-3" controlId="password">
+        <Form.Label>
           Contraseña <span className="text-danger">*</span>
-        </label>
-        <div className="position-relative">
-          <Lock
-            size={18}
-            className="text-muted"
-            style={{
-              position: "absolute",
-              left: "12px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 1,
-            }}
-          />
-          <input
+        </Form.Label>
+        <InputGroup hasValidation>
+          <InputGroup.Text>
+            <Lock size={18} />
+          </InputGroup.Text>
+          <Form.Control
             type={showPassword ? "text" : "password"}
-            className={`form-control ${errors.password ? "is-invalid" : ""}`}
             name="password"
+            placeholder="Mínimo 6 caracteres"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Mínimo 6 caracteres"
-            style={{ paddingLeft: "40px", paddingRight: "40px" }}
+            isInvalid={!!errors.password}
           />
-          <button
-            type="button"
+          <Button
+            variant="light"
             onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-              padding: "5px",
-              zIndex: 2,
-            }}
+            tabIndex={-1}
           >
-            {showPassword ? (
-              <Eye size={20} className="text-secondary" />
-            ) : (
-              <EyeOff size={20} className="text-secondary" />
-            )}
-          </button>
-          {errors.password && (
-            <div className="invalid-feedback">{errors.password}</div>
-          )}
-        </div>
-      </div>
+            {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+          </Button>
+          <Form.Control.Feedback type="invalid">
+            {errors.password}
+          </Form.Control.Feedback>
+        </InputGroup>
+      </Form.Group>
 
-      {/* Confirmar Contraseña */}
-      <div className="mb-3">
-        <label className="form-label">
+      <Form.Group className="mb-3" controlId="confirmPassword">
+        <Form.Label>
           Confirmar contraseña <span className="text-danger">*</span>
-        </label>
-        <div className="position-relative">
-          <Lock
-            size={18}
-            className="text-muted"
-            style={{
-              position: "absolute",
-              left: "12px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 1,
-            }}
-          />
-          <input
+        </Form.Label>
+        <InputGroup hasValidation>
+          <InputGroup.Text>
+            <Lock size={18} />
+          </InputGroup.Text>
+          <Form.Control
             type={showConfirmPassword ? "text" : "password"}
-            className={`form-control ${
-              errors.confirmPassword ? "is-invalid" : ""
-            }`}
             name="confirmPassword"
+            placeholder="Repite tu contraseña"
             value={formData.confirmPassword}
             onChange={handleChange}
-            placeholder="Repite tu contraseña"
-            style={{ paddingLeft: "40px", paddingRight: "40px" }}
+            isInvalid={!!errors.confirmPassword}
           />
-          <button
-            type="button"
+          <Button
+            variant="light"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              border: "none",
-              background: "none",
-              cursor: "pointer",
-              padding: "5px",
-              zIndex: 2,
-            }}
+            tabIndex={-1}
           >
-            {showConfirmPassword ? (
-              <Eye size={20} className="text-secondary" />
-            ) : (
-              <EyeOff size={20} className="text-secondary" />
-            )}
-          </button>
-          {errors.confirmPassword && (
-            <div className="invalid-feedback">{errors.confirmPassword}</div>
-          )}
-        </div>
-      </div>
+            {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+          </Button>
+          <Form.Control.Feedback type="invalid">
+            {errors.confirmPassword}
+          </Form.Control.Feedback>
+        </InputGroup>
+      </Form.Group>
 
-      {/* Avatar (opcional) */}
-      <div className="mb-4">
-        <label className="form-label">
+      <Form.Group className="mb-4" controlId="avatar">
+        <Form.Label>
           Avatar <span className="text-muted">(opcional)</span>
-        </label>
-        <div className="position-relative">
-          <Image
-            size={18}
-            className="text-muted"
-            style={{
-              position: "absolute",
-              left: "12px",
-              top: "50%",
-              transform: "translateY(-120%)",
-            }}
-          />
-          <input
+        </Form.Label>
+        <InputGroup hasValidation>
+          <InputGroup.Text>
+            <Image size={18} />
+          </InputGroup.Text>
+          <Form.Control
             type="url"
-            className={`form-control ${errors.avatar ? "is-invalid" : ""}`}
             name="avatar"
+            placeholder="https://ejemplo.com/mi-foto.jpg"
             value={formData.avatar}
             onChange={handleChange}
-            placeholder="https://ejemplo.com/mi-foto.jpg"
-            style={{ paddingLeft: "40px" }}
+            isInvalid={!!errors.avatar}
           />
-          {errors.avatar && (
-            <div className="invalid-feedback">{errors.avatar}</div>
-          )}
-          <small className="text-muted d-block mt-1">
-            URL de tu imagen de perfil
-          </small>
-        </div>
-      </div>
+          <Form.Control.Feedback type="invalid">
+            {errors.avatar}
+          </Form.Control.Feedback>
+        </InputGroup>
+        <Form.Text className="text-muted">URL de tu imagen de perfil</Form.Text>
+      </Form.Group>
 
-      {/* Botones */}
-      <div className="d-grid gap-2">
-        <button
+      <footer className="d-grid gap-2">
+        <Button
           type="submit"
-          className="btn btn-primary py-2 fw-medium"
-          style={{ borderRadius: "25px" }}
+          variant="primary"
+          className="py-2 fw-medium rounded-pill"
+          disabled={authLoading}
         >
-          Crear cuenta
-        </button>
+          {authLoading ? "Creando cuenta..." : "Crear cuenta"}
+        </Button>
         <p className="text-muted text-center mt-3 mb-0">
           ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
         </p>
-      </div>
-    </form>
+      </footer>
+    </Form>
   );
 }
 
