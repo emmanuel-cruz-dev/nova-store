@@ -5,6 +5,7 @@ export const useProducts = (page, limit, status = "true") => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,9 +23,13 @@ export const useProducts = (page, limit, status = "true") => {
     };
 
     fetchProducts();
-  }, [page, limit, status]);
+  }, [page, limit, status, refetchTrigger]);
 
-  return { products, loading, error };
+  const refetch = () => {
+    setRefetchTrigger((prev) => prev + 1);
+  };
+
+  return { products, loading, error, refetch };
 };
 
 export const useProductById = (id) => {
@@ -109,4 +114,27 @@ export const useProductsByCategory = (category) => {
   }, [category]);
 
   return { products, loading, error };
+};
+
+export const useDeleteProduct = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const deleteProduct = async (id) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await productService.deleteProduct(id);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      setError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { deleteProduct, loading, error };
 };
