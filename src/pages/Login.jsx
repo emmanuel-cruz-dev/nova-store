@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import LoginForm from "../components/forms/login/LoginForm";
-import CreateAccountItem from "../components/common/CreateAccountItem";
+import { LoginForm, CreateAccountItem } from "../components";
 
 function Login() {
   return (
