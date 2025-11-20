@@ -7,7 +7,7 @@ import {
   PublicRoute,
   PrivateRoute,
 } from "./index";
-import Loader from "../components/common/Loader";
+import { Loader } from "../components";
 
 function AppRouter() {
   return (
