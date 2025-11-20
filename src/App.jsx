@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import NavigationBar from "./layouts/NavigationBar";
-import Footer from "./layouts/Footer";
-import AppRouter from "./routes/AppRouter";
+import { CartProvider } from "./context";
+import { NavigationBar, Footer } from "./layouts";
+// import AppRouter from "./routes/AppRouter";
+import { AppRouter } from "./routes";
 import ScrollToTop from "./helpers/ScrollToTop";
 import ProgressBar from "./components/ui/ProgressBar";
 import ScrollToTopButton from "./components/common/ScrollToTopButton";
-import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
