@@ -1,8 +1,12 @@
 import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import { publicRoutes, privateRoutes, fallbackRoute } from "./config";
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
+import {
+  publicRoutes,
+  privateRoutes,
+  fallbackRoute,
+  PublicRoute,
+  PrivateRoute,
+} from "./index";
 import Loader from "../components/common/Loader";
 
 function AppRouter() {
