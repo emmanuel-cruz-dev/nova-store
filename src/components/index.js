@@ -31,3 +31,15 @@ export { default as ProductsGallery } from "./product/ProductsGallery";
 export { default as ProductSlideList } from "./product/ProductSlideList";
 export { default as ProductsTable } from "./product/ProductsTable";
 export { default as UpdateProductModal } from "./product/UpdateProductModal";
+
+export { default as Newsletter } from "./ui/home/Newsletter";
+
+export { default as ProfileMainContent } from "./ui/user/ProfileMainContent";
+export { default as ProfileSidebar } from "./ui/user/ProfileSidebar";
+export { default as UsersTable } from "./ui/user/UsersTable";
+
+export { default as BannerCarousel } from "./ui/BannerCarousel";
+export { default as BannerSlider } from "./ui/BannerSlider";
+export { default as HighlightedFeatures } from "./ui/HighlightedFeatures";
+export { default as ProgressBar } from "./ui/ProgressBar";
+export { default as StarRating } from "./ui/StarRating";
