@@ -2,8 +2,7 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { CheckCircle, X } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import CheckoutSteps from "../cart/CheckoutSteps";
-import CheckoutSummary from "../cart/CheckoutSummary";
+import { CheckoutSteps, CheckoutSummary } from "../../components";
 
 function CheckoutModal({ show, onHide, orderTotal, itemsCount }) {
   const { user } = useAuth();
