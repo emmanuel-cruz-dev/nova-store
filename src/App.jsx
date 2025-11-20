@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { CartProvider } from "./context";
 import { NavigationBar, Footer } from "./layouts";
-// import AppRouter from "./routes/AppRouter";
 import { AppRouter } from "./routes";
 import ScrollToTop from "./helpers/ScrollToTop";
 import ProgressBar from "./components/ui/ProgressBar";
