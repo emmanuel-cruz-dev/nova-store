@@ -3,9 +3,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Trash2 } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
-import CartItem from "../components/cart/CartItem";
-import EmptyCartCard from "../components/cart/EmptyCartCard";
-import OrderSummary from "../components/cart/OrderSummary";
+import { CartItem, EmptyCartCard, OrderSummary } from "../components";
 
 function Cart() {
   const { cart, getCartItemsCount, handleClearCart } = useCart();
