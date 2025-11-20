@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Card } from "react-bootstrap";
-import RegisterForm from "../components/forms/register/RegisterForm";
+import { RegisterForm } from "../components";
 
 function Register() {
   return (
