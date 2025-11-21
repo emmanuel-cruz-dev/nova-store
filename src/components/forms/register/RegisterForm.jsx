@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, User, Mail, Lock, Image } from "lucide-react";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../hooks";
 import { validateRegisterForm } from "../../../utils/utils";
 
 function RegisterForm() {
