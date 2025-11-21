@@ -4,8 +4,7 @@ import { CartProvider } from "./context";
 import { NavigationBar, Footer } from "./layouts";
 import { AppRouter } from "./routes";
 import ScrollToTop from "./helpers/ScrollToTop";
-import ProgressBar from "./components/ui/ProgressBar";
-import ScrollToTopButton from "./components/common/ScrollToTopButton";
+import { ProgressBar, ScrollToTopButton } from "./components";
 
 function App() {
   return (
