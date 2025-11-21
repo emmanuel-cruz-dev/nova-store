@@ -2,9 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Col } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import { useCart } from "../../hooks/useCart";
-import { useCheckoutOrder } from "../../hooks/useCheckoutOrder";
-import CheckoutModal from "../modals/CheckoutModal";
+import { useCart, useCheckoutOrder } from "../../hooks";
+import { CheckoutModal } from "../index.js";
 import { formatPrice } from "../../utils/utils";
 
 function OrderSummary() {
