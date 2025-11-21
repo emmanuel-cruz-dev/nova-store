@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import ProductCardSkeleton from "./ProductCardSkeleton";
-import { useAuth } from "../../hooks/useAuth";
-import { useProductCard } from "../../hooks/useProductCard";
+import { useAuth, useProductCard } from "../../hooks";
 import { formatPrice, priceInstallments } from "../../utils/utils";
 
 function ProductCard(props) {
