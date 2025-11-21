@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useAuth } from "../hooks";
 import {
   ProfileMainContent,
   ProfileSidebar,
   ProductsTable,
   UsersTable,
 } from "../components";
-import { useAuth } from "../hooks/useAuth";
 import { adminMenuItems, userMenuItems } from "../data/menuItems";
 
 function Profile() {
