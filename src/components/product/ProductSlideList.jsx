@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import ProductCard from "./ProductCard";
-import ErrorMessage from "../common/ErrorMessage";
+import { ProductCard, ErrorMessage } from "../index";
 import { handleRetry } from "../../utils/utils";
 
 import "swiper/css";
