@@ -1,8 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Trash2 } from "lucide-react";
-import { useCart } from "../hooks/useCart";
-import { useAuth } from "../hooks/useAuth";
+import { useCart, useAuth } from "../hooks";
 import { CartItem, EmptyCartCard, OrderSummary } from "../components";
 
 function Cart() {
