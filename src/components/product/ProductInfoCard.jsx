@@ -10,9 +10,8 @@ import {
   Form,
 } from "react-bootstrap";
 import { ShoppingCart, Heart, Plus, Minus } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
-import { useProductCard } from "../../hooks/useProductCard";
 import { ToastContainer, toast, Bounce } from "react-toastify";
+import { useAuth, useProductCard } from "../../hooks";
 import StarRating from "../ui/StarRating";
 import {
   formatPrice,
