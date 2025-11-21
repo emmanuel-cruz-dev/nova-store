@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Container, Card, Row, Col } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import HighlightedFeatures from "../ui/HighlightedFeatures";
-import ProductInfoCard from "./ProductInfoCard";
-import ProductDetailsCardSkeleton from "./ProductDetailsCardSkeleton";
+import {
+  ProductDetailsCardSkeleton,
+  HighlightedFeatures,
+  ProductInfoCard,
+} from "../index";
 import { highlightedFeatures } from "../../data/highlightedFeatures";
 
 const ProductDetailsCard = ({ product, isLoading = false }) => {
