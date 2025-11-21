@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
-import { AuthContext } from "../../../hooks/useAuth";
-import { useUpdateUser } from "../../../hooks/auth/useUpdateUser";
+import { AuthContext, useUpdateUser } from "../../../hooks";
 
 function PasswordChangeForm({ profileData, onPasswordChanged }) {
   const { user, updateUserProfile } = useContext(AuthContext);
