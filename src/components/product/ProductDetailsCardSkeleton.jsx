@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Container, Card, Row, Col, Placeholder } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks";
 import HighlightedFeatures from "../ui/HighlightedFeatures";
 import { highlightedFeatures } from "../../data/highlightedFeatures";
 
