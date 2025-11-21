@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronUp } from "lucide-react";
-import { useScroll } from "../../hooks/useScroll";
+import { useScroll } from "../../hooks";
 
 function ScrollToTopButton() {
   const { isVisible, scrollToTop } = useScroll();
