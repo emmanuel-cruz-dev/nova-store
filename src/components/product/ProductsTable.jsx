@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Table } from "react-bootstrap";
 import { Pencil, Trash2 } from "lucide-react";
-import { useDeleteProduct, useProducts } from "../../hooks/useProducts";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import { useDeleteProduct, useProducts } from "../../hooks";
 import { formatPrice } from "../../utils/utils";
 import UpdateProductModal from "./UpdateProductModal";
-import { ToastContainer, toast, Bounce } from "react-toastify";
 
 function ProductsTable() {
   const { products, loading, error, refetch } = useProducts(2, 10, "all");
