@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Bounce, ToastContainer } from "react-toastify";
-import { useNewsletterSubscription } from "../../../hooks/useNewsletterSubscription";
+import { useNewsletterSubscription } from "../../../hooks";
 
 function Newsletter() {
   const { email, setEmail, handleSubmit } = useNewsletterSubscription();
