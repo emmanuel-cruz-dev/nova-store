@@ -1,8 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
-import { AuthContext } from "../../../hooks/useAuth";
-import { useUpdateUser } from "../../../hooks/auth/useUpdateUser";
-import PasswordChangeForm from "../../forms/user/PasswordChangeForm";
+import { AuthContext, useUpdateUser } from "../../../hooks";
+import { PasswordChangeForm } from "../../../components";
 
 function ProfileMainContent() {
   const { user, updateUserProfile } = useContext(AuthContext);
