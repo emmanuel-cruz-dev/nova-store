@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import ProductCard from "./ProductCard";
-import ErrorMessage from "../common/ErrorMessage";
+import { ProductCard, ErrorMessage } from "../index";
 import { handleRetry } from "../../utils/utils";
 
 function ProductsGallery({ title, products, loading, error }) {
