@@ -1,9 +1,8 @@
 import React from "react";
 import { Table, Modal } from "react-bootstrap";
-import { useUserByRole } from "../../../hooks/useUsers";
+import { useUserByRole } from "../../../hooks";
 import {
   AtSign,
-  Calendar,
   CalendarDays,
   CircleDot,
   CircleUser,
