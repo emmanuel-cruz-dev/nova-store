@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Camera } from "lucide-react";
 import { Card, Button, ListGroup, Image } from "react-bootstrap";
-import { AuthContext } from "../../../hooks/useAuth";
-import { useUpdateUser } from "../../../hooks/auth/useUpdateUser";
-import AvatarUpdateModal from "../../modals/AvatarUpdateModal";
+import { AuthContext, useUpdateUser } from "../../../hooks";
+import { AvatarUpdateModal } from "../../../components";
 
 function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
   const { user, logout, updateUserProfile } = useContext(AuthContext);
