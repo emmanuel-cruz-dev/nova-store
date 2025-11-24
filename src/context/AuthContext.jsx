@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AuthContext } from "../hooks/useAuth";
+import { AuthContext } from "../hooks";
 import axios from "../api/axiosConfig";
 
 export const AuthProvider = ({ children }) => {
