@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form, Row, Col, Spinner, Alert } from "react-bootstrap";
-import { useProductById } from "../../hooks/useProducts";
+import { useProductById } from "../../hooks";
 
 function UpdateProductModal({ show, onHide, productId, onUpdate }) {
   const { product, loading, error } = useProductById(productId);
