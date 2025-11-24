@@ -1,8 +1,8 @@
 import React from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { House, ArrowLeft } from "lucide-react";
-import { useNavigation } from "../hooks/useNavigation";
+import { useNavigation } from "../hooks";
 
 function NotFound() {
   const { handleGoBack } = useNavigation();
