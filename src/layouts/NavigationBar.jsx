@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { ShoppingCart, ChevronDown, User, LogOut } from "lucide-react";
-import { AuthContext } from "../hooks/useAuth";
-import { useCart } from "../hooks/useCart";
-import { useNavigationBar } from "../hooks/useNavigationBar";
+import { AuthContext, useCart, useNavigationBar } from "../hooks";
 
 function NavigationBar() {
   const { getCartItemsCount } = useCart();
