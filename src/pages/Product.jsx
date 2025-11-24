@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useProductById, useProductsByCategory } from "../hooks/useProducts";
+import { useProductById, useProductsByCategory } from "../hooks";
 import { ProductSlideList, ProductDetailsCard } from "../components";
 
 function Product() {

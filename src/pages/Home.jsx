@@ -1,5 +1,6 @@
 import React from "react";
 import { heroBannerImgs } from "../data/heroBannerImgs";
+import { useProducts } from "../hooks";
 import {
   BannerCarousel,
   ProductSlideList,
@@ -7,7 +8,6 @@ import {
   FeaturesSection,
   Newsletter,
 } from "../components";
-import { useProducts } from "../hooks/useProducts";
 
 function Home() {
   const { products, loading, error } = useProducts(1, 6);

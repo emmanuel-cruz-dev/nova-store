@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
+import {
+  useQueryHandler,
+  useProductsByCategory,
+  usePagination,
+} from "../hooks";
 import { ProductsGallery, PaginationItem } from "../components";
-import { useProductsByCategory } from "../hooks/useProducts";
 import { categories } from "../data/categories";
-import { useQueryHandler } from "../hooks/useQueryHandler";
-import { usePagination } from "../hooks/usePagination";
 
 function Products() {
   const { selectedCategory, handleCategoryClick } = useQueryHandler();
