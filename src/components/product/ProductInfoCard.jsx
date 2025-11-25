@@ -107,39 +107,36 @@ const ProductInfoCard = ({ product }) => {
 
         {isAuthenticated ? (
           <>
-            {product.stock > 0 && (
-              <div className="mb-3">
+            {product.stock > 0 ? (
+              <Row className="g-2 mb-3">
                 <label className="form-label fw-semibold">Cantidad:</label>
-                <InputGroup style={{ maxWidth: "150px" }}>
-                  <Button
-                    variant="outline-secondary"
-                    onClick={handleDecrement}
-                    disabled={quantity <= 1}
-                  >
-                    <Minus size={16} />
-                  </Button>
-                  <Form.Control
-                    type="number"
-                    value={quantity}
-                    onChange={handleQuantityChange}
-                    className="text-center"
-                    min="1"
-                    max={product.stock}
-                  />
-                  <Button
-                    variant="outline-secondary"
-                    onClick={handleIncrement}
-                    disabled={quantity >= product.stock}
-                  >
-                    <Plus size={16} />
-                  </Button>
-                </InputGroup>
-              </div>
-            )}
-
-            <Row className="g-3 mb-3">
-              <Col xs={12} md={8}>
-                {product.stock > 0 ? (
+                <Col xs={12} md={5} className="d-flex items-center">
+                  <InputGroup style={{ maxWidth: "180px" }}>
+                    <Button
+                      variant="outline-secondary"
+                      onClick={handleDecrement}
+                      disabled={quantity <= 1}
+                    >
+                      <Minus size={16} />
+                    </Button>
+                    <Form.Control
+                      type="number"
+                      value={quantity}
+                      onChange={handleQuantityChange}
+                      className="text-center"
+                      min="1"
+                      max={product.stock}
+                    />
+                    <Button
+                      variant="outline-secondary"
+                      onClick={handleIncrement}
+                      disabled={quantity >= product.stock}
+                    >
+                      <Plus size={16} />
+                    </Button>
+                  </InputGroup>
+                </Col>
+                <Col xs={12} md={7}>
                   <Button
                     variant="primary"
                     className="w-100 py-2"
@@ -147,25 +144,22 @@ const ProductInfoCard = ({ product }) => {
                     disabled={isAddingToCart}
                   >
                     <ShoppingCart size={20} className="me-2" />
-                    {isAddingToCart ? "Agregando..." : "Agregar al carrito"}
+                    {isAddingToCart
+                      ? "Agregando..."
+                      : `Agregar al carrito (${quantity})`}
                   </Button>
-                ) : (
-                  <Button
-                    variant="outline-secondary"
-                    className="w-100 py-2"
-                    disabled
-                  >
-                    <ShoppingCart size={20} className="me-2" />
-                    Sin stock
-                  </Button>
-                )}
-              </Col>
-              <Col xs={12} md={4}>
-                <Button variant="outline-secondary" className="w-100 py-2">
-                  <Heart size={20} />
-                </Button>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            ) : (
+              <Button
+                variant="outline-secondary"
+                className="w-100 py-2"
+                disabled
+              >
+                <ShoppingCart size={20} className="me-2" />
+                Sin stock
+              </Button>
+            )}
           </>
         ) : (
           <Link to="/login">
