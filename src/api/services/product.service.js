@@ -123,6 +123,21 @@ const updateProduct = async (productId, formData) => {
   }
 };
 
+const createProduct = async (formData) => {
+  try {
+    const response = await axios.post(`/products`, formData);
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating product", error);
+    throw error;
+  }
+};
+
 export const productService = {
   getProducts,
   getProductById,
@@ -130,4 +145,5 @@ export const productService = {
   getProductsByCategory,
   deleteProduct,
   updateProduct,
+  createProduct,
 };
