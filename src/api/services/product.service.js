@@ -1,5 +1,20 @@
 import axios from "../axiosConfig";
 
+const getAllProducts = async () => {
+  try {
+    const response = await axios.get(`/products`);
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products", error);
+    throw error;
+  }
+};
+
 const getProducts = async (page, limit, status = "true") => {
   try {
     const baseUrl = `/products?page=${page}&limit=${limit}`;
@@ -10,7 +25,12 @@ const getProducts = async (page, limit, status = "true") => {
       throw new Error("Empty response from server");
     }
 
-    return response.data;
+    const total = await getAllProducts();
+
+    return {
+      data: response.data,
+      total: total.length,
+    };
   } catch (error) {
     console.error("Error fetching products", error);
 
