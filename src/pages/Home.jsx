@@ -7,6 +7,7 @@ import {
   TestimonialSlider,
   FeaturesSection,
   Newsletter,
+  Categories,
 } from "../components";
 
 function Home() {
@@ -15,6 +16,7 @@ function Home() {
   return (
     <>
       <BannerCarousel images={heroBannerImgs} />
+      <Categories categories={["mujeres", "tecnologia", "gaming"]} />
       <ProductSlideList
         title="Productos Destacados"
         products={products}
@@ -23,6 +25,7 @@ function Home() {
       />
       <TestimonialSlider />
       <FeaturesSection />
+      <Categories categories={["gaming", "hombres", "tecnologia"]} />
       <Newsletter />
     </>
   );
