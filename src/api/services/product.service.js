@@ -108,10 +108,26 @@ const deleteProduct = async (id) => {
   }
 };
 
+const updateProduct = async (productId, formData) => {
+  try {
+    const response = await axios.put(`/products/${productId}`, formData);
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product", error);
+    throw error;
+  }
+};
+
 export const productService = {
   getProducts,
   getProductById,
   getActiveProducts,
   getProductsByCategory,
   deleteProduct,
+  updateProduct,
 };
