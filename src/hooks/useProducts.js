@@ -164,3 +164,26 @@ export const useDeleteProduct = () => {
 
   return { deleteProduct, loading, error };
 };
+
+export const useUpdateProduct = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const updateProduct = async (productId, formData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await productService.updateProduct(productId, formData);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      setError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { updateProduct, loading, error };
+};
