@@ -43,3 +43,4 @@ export { default as BannerSlider } from "./ui/BannerSlider";
 export { default as HighlightedFeatures } from "./ui/HighlightedFeatures";
 export { default as ProgressBar } from "./ui/ProgressBar";
 export { default as StarRating } from "./ui/StarRating";
+export { default as Categories } from "./ui/Categories";
