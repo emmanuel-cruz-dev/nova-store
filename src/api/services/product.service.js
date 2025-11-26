@@ -77,7 +77,9 @@ const getActiveProducts = async () => {
 const getProductsByCategory = async (category) => {
   try {
     const url =
-      category === "all" ? "/products" : `/products?category=${category}`;
+      category === "all"
+        ? "/products?isActive=true"
+        : `/products?category=${category}&isActive=true`;
     const response = await axios.get(url);
 
     if (!response.data) {
