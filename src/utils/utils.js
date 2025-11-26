@@ -85,3 +85,11 @@ export const validateRegisterForm = (formData) => {
 
   return errors;
 };
+
+export const getColSize = (displayCategories) => {
+  const count = displayCategories.length;
+  if (count === 1) return 12;
+  if (count === 2) return 6;
+  if (count === 3) return 4;
+  return 3;
+};
