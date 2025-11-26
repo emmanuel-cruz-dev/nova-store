@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { productService } from "../api/services/product.service";
 
-export const useProducts = (page, limit, status = "true") => {
+export const useProducts = (initialPage, initialLimit, status = "true") => {
+  const [page, setPage] = useState(initialPage);
+  const [limit, setLimit] = useState(initialLimit);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -13,8 +16,14 @@ export const useProducts = (page, limit, status = "true") => {
       setError(null);
 
       try {
-        const data = await productService.getProducts(page, limit, status);
+        const { data, total } = await productService.getProducts(
+          page,
+          limit,
+          status
+        );
+
         setProducts(data);
+        setTotalProducts(total);
       } catch (error) {
         setError(error);
       } finally {
@@ -29,7 +38,24 @@ export const useProducts = (page, limit, status = "true") => {
     setRefetchTrigger((prev) => prev + 1);
   };
 
-  return { products, loading, error, refetch };
+  const goToPage = (newPage) => {
+    window.scrollTo(0, 0);
+    setPage(newPage);
+  };
+
+  const changeLimit = (newLimit) => setLimit(newLimit);
+
+  return {
+    products,
+    loading,
+    error,
+    refetch,
+    page,
+    limit,
+    totalProducts,
+    goToPage,
+    changeLimit,
+  };
 };
 
 export const useProductById = (id) => {
