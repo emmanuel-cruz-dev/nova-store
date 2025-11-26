@@ -52,24 +52,30 @@ function ProductCard(props) {
         />
       </Link>
       <Card.Body>
-        <Card.Title className="line-clamp-1 mb-0">{name}</Card.Title>
-        <Card.Text className="text-secondary my-0">{brand}</Card.Text>
-        <Card.Text
-          className="mb-1"
-          style={{ color: "blue", fontSize: "1.2rem", fontWeight: "500" }}
+        <Link
+          to={`/product/${id}`}
+          className="text-decoration-none"
+          title="Ver más información"
         >
-          ${formatPrice(price)}
-        </Card.Text>
-        <Card.Text className="text-primary my-0">
-          6 cuotas de ${priceInstallments(price)}
-        </Card.Text>
-        <Card.Text className="line-clamp-2 text-secondary">
-          {description}
-        </Card.Text>
+          <Card.Title className="line-clamp-1 mb-0">{name}</Card.Title>
+          <Card.Text className="text-secondary my-0">{brand}</Card.Text>
+          <Card.Text
+            className="mb-1"
+            style={{ color: "blue", fontSize: "1.2rem", fontWeight: "500" }}
+          >
+            ${formatPrice(price)}
+          </Card.Text>
+          <Card.Text className="text-primary my-0">
+            6 cuotas de ${priceInstallments(price)}
+          </Card.Text>
+          <Card.Text className="line-clamp-2 text-secondary">
+            {description}
+          </Card.Text>
+        </Link>
         {isAuthenticated ? (
           <Button
             variant="primary"
-            className="mt-2 d-inline-flex justify-content-center gap-2 px-4 w-100"
+            className="mt-3 d-inline-flex justify-content-center gap-2 px-4 w-100"
             onClick={() => handleAddToCartClick(1)}
           >
             Añadir al carrito
