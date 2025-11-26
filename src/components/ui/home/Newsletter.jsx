@@ -49,6 +49,8 @@ function Newsletter() {
                 }}
               >
                 <Form.Control
+                  id="email"
+                  name="email"
                   type="email"
                   placeholder="Ingresá tu Email"
                   value={email}
@@ -60,6 +62,7 @@ function Newsletter() {
                     border: "none",
                     fontSize: "1rem",
                   }}
+                  autoComplete="off"
                 />
                 <Button
                   type="submit"
