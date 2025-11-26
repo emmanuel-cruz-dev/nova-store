@@ -45,6 +45,14 @@
   padding: 0;
 }
 
+.card__img-link .card__img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card__img-link:hover .card__img {
+  transform: scale(1.05);
+}
+
 .custom-bullet {
   position: relative;
   padding-left: 1.25rem;
