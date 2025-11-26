@@ -64,6 +64,13 @@ export const useProductById = (id) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!id) {
+      setProduct(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     const fetchProduct = async () => {
       setLoading(true);
       setError(null);
@@ -186,4 +193,27 @@ export const useUpdateProduct = () => {
   };
 
   return { updateProduct, loading, error };
+};
+
+export const useCreateProduct = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const createProduct = async (formData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await productService.createProduct(formData);
+      setLoading(false);
+      return data;
+    } catch (error) {
+      setError(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createProduct, loading, error };
 };
