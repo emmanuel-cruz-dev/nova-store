@@ -1,4 +1,4 @@
-import { User, Heart, ShoppingBag, LogOut, Boxes, Users } from "lucide-react";
+import { User, LogOut, Boxes, Users } from "lucide-react";
 
 export const adminMenuItems = [
   { id: "profile", icon: User, label: "Mi Perfil" },
@@ -9,7 +9,5 @@ export const adminMenuItems = [
 
 export const userMenuItems = [
   { id: "profile", icon: User, label: "Mi Perfil" },
-  { id: "favorites", icon: Heart, label: "Mis Favoritos" },
-  { id: "orders", icon: ShoppingBag, label: "Mis Pedidos" },
   { id: "logout", icon: LogOut, label: "Cerrar Sesión" },
 ];
