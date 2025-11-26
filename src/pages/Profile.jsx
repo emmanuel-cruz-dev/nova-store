@@ -30,10 +30,6 @@ function Profile() {
         return <ProductsTable />;
       case "users":
         return <UsersTable />;
-      case "favorites":
-        return <div>Favoritos</div>;
-      case "orders":
-        return <div>Pedidos</div>;
       default:
         return <ProfileMainContent />;
     }
