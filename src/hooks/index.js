@@ -20,3 +20,4 @@ export { useScroll } from "./useScroll";
 export { useUsers, useUserById, useUserByRole } from "./useUsers";
 export { useProductsTable } from "./useProductsTable";
 export { useProductForm } from "./useProductForm";
+export { useProductQuantity } from "./useProductQuantity";
