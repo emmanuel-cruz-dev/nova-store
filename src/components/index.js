@@ -33,6 +33,8 @@ export { default as ProductSlideList } from "./product/ProductSlideList";
 export { default as ProductsTable } from "./product/ProductsTable";
 export { default as ProductModalForm } from "./product/ProductModalForm";
 export { default as DeleteProductConfirmModal } from "./product/DeleteProductConfirmModal";
+export { default as ProductInfoDisplay } from "./product/ProductInfoDisplay";
+export { default as ProductQuantitySelector } from "./product/ProductQuantitySelector";
 
 export { default as Newsletter } from "./ui/home/Newsletter";
 
