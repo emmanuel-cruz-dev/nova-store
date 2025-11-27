@@ -13,6 +13,7 @@ export { default as PaginationItem } from "./common/PaginationItem";
 export { default as ScrollToTopButton } from "./common/ScrollToTopButton";
 export { default as TestimonialCard } from "./common/TestimonialCard";
 export { default as TestimonialSlider } from "./common/TestimonialSlider";
+export { default as TableRowSkeleton } from "./common/TableRowSkeleton";
 
 export { default as LoginForm } from "./forms/login/LoginForm";
 export { default as RegisterForm } from "./forms/register/RegisterForm";
@@ -31,6 +32,7 @@ export { default as ProductsGallery } from "./product/ProductsGallery";
 export { default as ProductSlideList } from "./product/ProductSlideList";
 export { default as ProductsTable } from "./product/ProductsTable";
 export { default as UpdateProductModal } from "./product/UpdateProductModal";
+export { default as DeleteProductConfirmModal } from "./product/DeleteProductConfirmModal";
 
 export { default as Newsletter } from "./ui/home/Newsletter";
 
