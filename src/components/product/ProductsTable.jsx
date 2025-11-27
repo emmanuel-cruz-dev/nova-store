@@ -1,155 +1,150 @@
-import React, { useState } from "react";
+import React from "react";
 import { Table } from "react-bootstrap";
-import { Pencil, Trash2 } from "lucide-react";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import { useDeleteProduct, useProducts } from "../../hooks";
+import { Pencil, Trash2, Info } from "lucide-react";
+import { ToastContainer, Bounce } from "react-toastify";
+import { useProductsTable } from "../../hooks";
+import {
+  ProductModalForm,
+  DeleteProductConfirmModal,
+  PaginationItem,
+  TableRowSkeleton,
+} from "../../components";
 import { formatPrice } from "../../utils/utils";
-import UpdateProductModal from "./UpdateProductModal";
 
 function ProductsTable() {
-  const { products, loading, error, refetch } = useProducts(2, 10, "all");
-  const { deleteProduct, loading: loadingDelete } = useDeleteProduct();
-  const [showModal, setShowModal] = useState(false);
-  const [selectedProductId, setProductId] = useState(null);
-
-  const notify = (message, type) => {
-    if (type === "success") {
-      toast.success(message);
-    } else if (type === "error") {
-      toast.error(message);
-    } else {
-      toast(message);
-    }
-  };
-
-  const handleModalShow = () => {
-    setShowModal(true);
-  };
-
-  const handleEditProduct = (productId) => {
-    setShowModal(true);
-    setProductId(productId);
-  };
-
-  const handleDeleteProduct = async (productId) => {
-    if (loadingDelete) return;
-
-    try {
-      await deleteProduct(productId);
-      notify("Producto eliminado exitosamente", "success");
-      refetch();
-    } catch (error) {
-      notify("Error al eliminar producto", "error");
-      console.error("Error al eliminar producto:", error);
-    }
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const {
+    products,
+    loading,
+    error,
+    page,
+    totalPages,
+    showModal,
+    selectedProductId,
+    showDeleteModal,
+    productToDelete,
+    loadingDelete,
+    goToPage,
+    notify,
+    handleModalShow,
+    handleModalClose,
+    handleProductSaved,
+    handleEditProduct,
+    handleDeleteProduct,
+    handleCloseDeleteModal,
+    handleConfirmDelete,
+  } = useProductsTable(1, 10);
 
   return (
-    <>
-      <section>
-        <h2 className="mb-4">Productos</h2>
-
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="d-flex align-items-center mb-2 ">
-            <label className="form-label" htmlFor="search">
-              Buscar producto
-            </label>
-            <input className="form-control ml-2" type="text" id="search" />
-          </div>
-          <button
-            onClick={() => handleModalShow({})}
-            className="btn btn-primary"
-          >
-            Crear producto
-          </button>
-        </div>
-        <Table striped bordered hover>
-          <thead>
+    <section>
+      <header className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Productos</h2>
+        <button onClick={handleModalShow} className="btn btn-primary">
+          Crear producto
+        </button>
+      </header>
+      <Table
+        striped
+        bordered
+        hover
+        className="mb-1"
+        responsive
+        style={{ minWidth: "680px" }}
+      >
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <TableRowSkeleton key={`placeholder-${index}`} />
+            ))
+          ) : error ? (
             <tr>
-              <th>
-                <input type="checkbox" name="checkAll" id="checkAll" />
-              </th>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <td colSpan={6}>Error al cargar productos</td>
             </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              Array.from({ length: 6 }).map((_, index) => (
-                <tr key={`placeholder-${index}`}>
-                  <td>Loading...</td>
-                  <td>Loading...</td>
-                  <td>Loading...</td>
-                  <td>Loading...</td>
-                  <td>Loading...</td>
-                </tr>
-              ))
-            ) : error ? (
-              <tr>
-                <td colSpan={6}>Error al cargar productos</td>
+          ) : (
+            products.map((product) => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>${formatPrice(product.price)}</td>
+                <td>{product.stock}</td>
+                <td>{product.isActive ? "Activo" : "Inactivo"}</td>
+                <td
+                  className="d-flex gap-2"
+                  style={{
+                    width: "200px",
+                    height: "100%",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <button
+                    onClick={() => handleEditProduct(product.id)}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    <Pencil size={18} className="me-2" />
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleDeleteProduct(product)}
+                  >
+                    <Trash2 size={18} className="me-2" />
+                    Eliminar
+                  </button>
+                </td>
               </tr>
-            ) : (
-              products.map((product) => (
-                <tr key={product.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      name="checkAll"
-                      id={`checkAll-${product.id}`}
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>${formatPrice(product.price)}</td>
-                  <td>{product.stock}</td>
-                  <td>{product.isActive ? "Activo" : "Inactivo"}</td>
-                  <td className="d-flex gap-2">
-                    <button
-                      // onClick={() => handleModalShow(product)}
-                      onClick={() => handleEditProduct(product.id)}
-                      className="btn btn-primary"
-                    >
-                      <Pencil size={18} className="me-2" />
-                      Editar
-                    </button>
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => handleDeleteProduct(product.id)}
-                    >
-                      <Trash2 size={18} className="me-2" />
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </Table>
-
-        <footer className="d-flex justify-content-center">
-          <p>Los productos inactivos no se muestran a los clientes</p>
-          {showModal && (
-            <UpdateProductModal
-              show={showModal}
-              onHide={() => setShowModal(false)}
-              productId={selectedProductId}
-            />
+            ))
           )}
-        </footer>
-      </section>
+        </tbody>
+      </Table>
+
+      <small className="text-muted d-flex align-items-center gap-1">
+        <Info size={15} />
+        Los productos inactivos no se muestran a los clientes
+      </small>
+
+      {showModal && (
+        <ProductModalForm
+          show={showModal}
+          onHide={handleModalClose}
+          productId={selectedProductId}
+          onUpdate={notify}
+          onSuccess={handleProductSaved}
+        />
+      )}
+
+      {productToDelete && (
+        <DeleteProductConfirmModal
+          show={showDeleteModal}
+          handleClose={handleCloseDeleteModal}
+          handleConfirm={handleConfirmDelete}
+          productName={productToDelete.name}
+          loading={loadingDelete}
+        />
+      )}
+
+      {totalPages > 1 && (
+        <PaginationItem
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={goToPage}
+          isLoading={loading}
+        />
+      )}
       <ToastContainer
         position="bottom-left"
         pauseOnHover={true}
         theme="dark"
         transition={Bounce}
       />
-    </>
+    </section>
   );
 }
 
