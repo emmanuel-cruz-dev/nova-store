@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Card, Row, Col } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
@@ -13,7 +14,7 @@ const ProductDetailsCard = ({ product, isLoading = false }) => {
 
   if (!product) {
     return (
-      <Container className="pt-5">
+      <Container className="pt-5 pb-3">
         <header className="mb-4">
           <Link
             to="/products"
