@@ -18,3 +18,4 @@ export {
 export { useQueryHandler } from "./useQueryHandler";
 export { useScroll } from "./useScroll";
 export { useUsers, useUserById, useUserByRole } from "./useUsers";
+export { useProductsTable } from "./useProductsTable";
