@@ -15,16 +15,18 @@ function Product() {
   } = useProductsByCategory(productCategory);
 
   return (
-    <section>
+    <section className="mb-4">
       <ProductDetailsCard product={product} isLoading={loading} />
-      <article>
-        <ProductSlideList
-          title="Productos Relacionados"
-          products={products}
-          loading={isProductsLoading}
-          error={error}
-        />
-      </article>
+      {productCategory && (
+        <article>
+          <ProductSlideList
+            title="Productos Relacionados"
+            products={products}
+            loading={isProductsLoading}
+            error={error}
+          />
+        </article>
+      )}
     </section>
   );
 }
