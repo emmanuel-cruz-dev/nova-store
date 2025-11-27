@@ -31,7 +31,7 @@ export { default as ProductInfoCard } from "./product/ProductInfoCard";
 export { default as ProductsGallery } from "./product/ProductsGallery";
 export { default as ProductSlideList } from "./product/ProductSlideList";
 export { default as ProductsTable } from "./product/ProductsTable";
-export { default as UpdateProductModal } from "./product/UpdateProductModal";
+export { default as ProductModalForm } from "./product/ProductModalForm";
 export { default as DeleteProductConfirmModal } from "./product/DeleteProductConfirmModal";
 
 export { default as Newsletter } from "./ui/home/Newsletter";
