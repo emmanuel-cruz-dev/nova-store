@@ -22,6 +22,7 @@ export { default as PasswordChangeForm } from "./forms/user/PasswordChangeForm";
 
 export { default as AvatarUpdateModal } from "./modals/AvatarUpdateModal";
 export { default as CheckoutModal } from "./modals/CheckoutModal";
+export { default as DeleteConfirmationModal } from "./modals/DeleteConfirmationModal";
 
 export { default as ProductCard } from "./product/ProductCard";
 export { default as ProductCardSkeleton } from "./product/ProductCardSkeleton";
@@ -32,7 +33,6 @@ export { default as ProductsGallery } from "./product/ProductsGallery";
 export { default as ProductSlideList } from "./product/ProductSlideList";
 export { default as ProductsTable } from "./product/ProductsTable";
 export { default as ProductModalForm } from "./product/ProductModalForm";
-export { default as DeleteProductConfirmModal } from "./product/DeleteProductConfirmModal";
 export { default as ProductInfoDisplay } from "./product/ProductInfoDisplay";
 export { default as ProductQuantitySelector } from "./product/ProductQuantitySelector";
 
@@ -41,6 +41,8 @@ export { default as Newsletter } from "./ui/home/Newsletter";
 export { default as ProfileMainContent } from "./ui/user/ProfileMainContent";
 export { default as ProfileSidebar } from "./ui/user/ProfileSidebar";
 export { default as UsersTable } from "./ui/user/UsersTable";
+export { default as UserDetailsModal } from "./ui/user/UserDetailsModal";
+export { default as UsersTableRowSkeleton } from "./ui/user/UsersTableRowSkeleton";
 
 export { default as BannerCarousel } from "./ui/BannerCarousel";
 export { default as BannerSlider } from "./ui/BannerSlider";
