@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { Trash2 } from "lucide-react";
 import { useCart, useAuth } from "../hooks";
 import { CartItem, EmptyCartCard, OrderSummary } from "../components";
 
@@ -40,11 +39,10 @@ function Cart() {
 
               <Card.Footer className="bg-white border-top py-4">
                 <Button
-                  variant="outline-danger d-inline-flex align-items-center gap-2 px-3"
+                  className="d-flex align-items-center justify-content-center gap-2 w-100"
                   size="sm"
                   onClick={handleClearCart}
                 >
-                  <Trash2 size={16} />
                   Vaciar carrito
                 </Button>
               </Card.Footer>
