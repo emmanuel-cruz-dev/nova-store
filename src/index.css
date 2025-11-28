@@ -245,3 +245,19 @@
     transform: scale(1.05);
   }
 }
+
+.user-modal .modal-content {
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+}
+
+.avatar-enhanced {
+  border: 3px solid #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.list-item-clean {
+  border: 0 !important;
+  border-radius: 0.5rem !important;
+  background: #f9f9f9;
+  transition: background 0.2s ease;
+}
