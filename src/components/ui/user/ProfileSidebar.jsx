@@ -50,7 +50,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
 
   const handleMenuClick = (menuId) => {
     if (menuId === "logout") {
-      if (window.confirm("¿Seguro que quieres cerrar sesión?")) logout();
+      logout();
     } else {
       setActiveSection(menuId);
     }
