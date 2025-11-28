@@ -5,7 +5,7 @@ import { ToastContainer, Bounce } from "react-toastify";
 import { useProductsTable } from "../../hooks";
 import {
   ProductModalForm,
-  DeleteProductConfirmModal,
+  DeleteConfirmationModal,
   PaginationItem,
   TableRowSkeleton,
 } from "../../components";
@@ -121,11 +121,11 @@ function ProductsTable() {
       )}
 
       {productToDelete && (
-        <DeleteProductConfirmModal
+        <DeleteConfirmationModal
           show={showDeleteModal}
-          handleClose={handleCloseDeleteModal}
-          handleConfirm={handleConfirmDelete}
-          productName={productToDelete.name}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleConfirmDelete}
+          name={productToDelete.name}
           loading={loadingDelete}
         />
       )}
