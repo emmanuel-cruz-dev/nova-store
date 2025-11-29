@@ -1,57 +1,26 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Camera } from "lucide-react";
 import { Card, Button, ListGroup, Image } from "react-bootstrap";
-import { AuthContext, useUpdateUser } from "../../../hooks";
+import { useProfileSidebar } from "../../../hooks";
 import { AvatarUpdateModal } from "../../../components";
 
 function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
-  const { user, logout, updateUserProfile } = useContext(AuthContext);
-  const { updateUser, loading } = useUpdateUser();
+  const {
+    user,
+    profileData,
+    newAvatarUrl,
+    setNewAvatarUrl,
+    showAvatarModal,
+    loading,
+    handleAvatarChange,
+    openAvatarModal,
+    closeAvatarModal,
+    handleMenuClick,
+  } = useProfileSidebar();
 
-  const [profileData, setProfileData] = useState({
-    id: user?.id || "",
-    email: user?.email || "",
-    password: user?.password || "",
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    avatar: user?.avatar || "",
-  });
-
-  const [newAvatarUrl, setNewAvatarUrl] = useState(user?.avatar || "");
-  const [showAvatarModal, setShowAvatarModal] = useState(false);
-
-  const handleAvatarChange = async () => {
-    if (!newAvatarUrl) {
-      alert("Por favor selecciona una URL de imagen válida");
-      return;
-    }
-
-    if (newAvatarUrl === profileData.avatar) {
-      setShowAvatarModal(false);
-      return;
-    }
-
-    try {
-      setProfileData((prev) => ({ ...prev, avatar: newAvatarUrl }));
-
-      const updatedUser = await updateUser({
-        ...profileData,
-        avatar: newAvatarUrl,
-      });
-
-      updateUserProfile(updatedUser);
-      setShowAvatarModal(false);
-    } catch (error) {
-      console.error("Error al actualizar el avatar:", error);
-      alert("Error al actualizar el avatar");
-      setNewAvatarUrl(profileData.avatar);
-    }
-  };
-
-  const handleMenuClick = (menuId) => {
-    if (menuId === "logout") {
-      logout();
-    } else {
+  const onMenuClick = (menuId) => {
+    handleMenuClick(menuId);
+    if (menuId !== "logout") {
       setActiveSection(menuId);
     }
   };
@@ -71,10 +40,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
                 objectFit: "cover",
                 cursor: "pointer",
               }}
-              onClick={() => {
-                setNewAvatarUrl(profileData.avatar);
-                setShowAvatarModal(true);
-              }}
+              onClick={openAvatarModal}
               alt={`${profileData.firstName} ${profileData.lastName} avatar`}
               loading="lazy"
             />
@@ -82,10 +48,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
               variant="light"
               className="position-absolute bottom-0 end-0 rounded-circle shadow border border-2 d-flex align-items-center justify-content-center p-1"
               style={{ width: "36px", height: "36px" }}
-              onClick={() => {
-                setNewAvatarUrl(profileData.avatar);
-                setShowAvatarModal(true);
-              }}
+              onClick={openAvatarModal}
             >
               <Camera size={20} className="text-primary" />
             </Button>
@@ -103,7 +66,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
                 <ListGroup.Item
                   key={item.id}
                   action
-                  onClick={() => handleMenuClick(item.id)}
+                  onClick={() => onMenuClick(item.id)}
                   className={`d-flex align-items-center border-0 py-3 ${
                     activeSection === item.id
                       ? "bg-primary bg-opacity-10 border-start border-primary border-4"
@@ -125,7 +88,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
       {showAvatarModal && (
         <AvatarUpdateModal
           show={showAvatarModal}
-          onClose={() => setShowAvatarModal(false)}
+          onClose={closeAvatarModal}
           newAvatarUrl={newAvatarUrl}
           setNewAvatarUrl={setNewAvatarUrl}
           onSave={handleAvatarChange}
