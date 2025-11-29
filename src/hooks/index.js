@@ -21,3 +21,5 @@ export { useUsers, useUserById, useUserByRole } from "./useUsers";
 export { useProductsTable } from "./useProductsTable";
 export { useProductForm } from "./useProductForm";
 export { useProductQuantity } from "./useProductQuantity";
+export { useProfileSidebar } from "./useProfileSidebar";
+export { useUsersTable } from "./useUsersTable";
