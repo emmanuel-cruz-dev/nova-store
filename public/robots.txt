@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nova-store-shop.vercel.app/sitemap.xml
