@@ -45,7 +45,8 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 
 ## 🧰 Tecnologías utilizadas  
 - React (Vite)  
-- React Router  
+- React Router
+- React Toastify (Notificaciones)  
 - Context API + Custom Hooks  
 - Axios  
 - Bootstrap + estilos propios  
