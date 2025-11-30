@@ -1,57 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, User, Mail, Lock, Image } from "lucide-react";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import { useAuth } from "../../../hooks";
-import { validateRegisterForm } from "../../../utils/utils";
+import { useRegisterForm } from "../../../hooks";
 
 function RegisterForm() {
-  const { register, authLoading } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    avatar: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (authLoading) return;
-
-    const formErrors = validateRegisterForm(formData);
-    if (Object.keys(formErrors).length === 0) {
-      const { confirmPassword: _, ...dataToSend } = formData;
-      if (!dataToSend.avatar) delete dataToSend.avatar;
-
-      try {
-        const newUser = await register(dataToSend);
-        console.log("Nuevo usuario:", newUser);
-      } catch (error) {
-        if (error.message.includes("ya está registrado")) {
-          setErrors((prev) => ({
-            ...prev,
-            email: "Este correo ya está registrado",
-          }));
-        } else {
-          console.error("Error al registrar usuario:", error);
-        }
-      }
-    } else {
-      setErrors(formErrors);
-    }
-  };
+  const {
+    showPassword,
+    setShowPassword,
+    showConfirmPassword,
+    setShowConfirmPassword,
+    formData,
+    errors,
+    authLoading,
+    handleChange,
+    handleSubmit,
+  } = useRegisterForm();
 
   return (
     <Form onSubmit={handleSubmit}>
