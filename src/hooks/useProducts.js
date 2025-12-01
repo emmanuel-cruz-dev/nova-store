@@ -1,42 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { mutate } from "swr";
+import useSWRMutation from "swr/mutation";
 import { productService } from "../api/services/product.service";
 
-export const useProducts = (initialPage, initialLimit, status = "true") => {
+export const useProducts = (
+  initialPage = 1,
+  initialLimit = 10,
+  status = "true"
+) => {
   const [page, setPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const { data, total } = await productService.getProducts(
-          page,
-          limit,
-          status
-        );
-
-        setProducts(data);
-        setTotalProducts(total);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [page, limit, status, refetchTrigger]);
-
-  const refetch = () => {
-    setRefetchTrigger((prev) => prev + 1);
-  };
+  const { data, error, isLoading, mutate } = useSWR(
+    ["products", page, limit, status],
+    () => productService.getProducts(page, limit, status),
+    {
+      revalidateOnFocus: false,
+      keepPreviousData: true,
+    }
+  );
 
   const goToPage = (newPage) => {
     window.scrollTo(0, 0);
@@ -46,174 +29,123 @@ export const useProducts = (initialPage, initialLimit, status = "true") => {
   const changeLimit = (newLimit) => setLimit(newLimit);
 
   return {
-    products,
-    loading,
+    products: data?.data || [],
+    totalProducts: data?.total || 0,
+    loading: isLoading,
     error,
-    refetch,
+    refetch: mutate,
     page,
     limit,
-    totalProducts,
     goToPage,
     changeLimit,
   };
 };
 
 export const useProductById = (id) => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!id) {
-      setProduct(null);
-      setLoading(false);
-      setError(null);
-      return;
+  const { data, error, isLoading } = useSWR(
+    id ? ["product", id] : null,
+    () => productService.getProductById(id),
+    {
+      revalidateOnFocus: false,
     }
+  );
 
-    const fetchProduct = async () => {
-      setLoading(true);
-      setError(null);
-      setProduct(null);
-
-      try {
-        const data = await productService.getProductById(id);
-        setProduct(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  return { product, loading, error };
+  return {
+    product: data || null,
+    loading: isLoading,
+    error,
+  };
 };
 
 export const useActiveProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { data, error, isLoading } = useSWR(
+    "activeProducts",
+    productService.getActiveProducts,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
-  useEffect(() => {
-    const fetchActiveProducts = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data = await productService.getActiveProducts();
-        setProducts(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchActiveProducts();
-  }, []);
-
-  return { products, loading, error };
+  return {
+    products: data || [],
+    loading: isLoading,
+    error,
+  };
 };
 
 export const useProductsByCategory = (category) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!category) {
-      setProducts([]);
-      return;
+  const { data, error, isLoading } = useSWR(
+    category ? ["productsByCategory", category] : null,
+    () => productService.getProductsByCategory(category),
+    {
+      revalidateOnFocus: false,
     }
+  );
 
-    const fetchProductsByCategory = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const data = await productService.getProductsByCategory(category);
-        setProducts(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductsByCategory();
-  }, [category]);
-
-  return { products, loading, error };
+  return {
+    products: data || [],
+    loading: isLoading,
+    error,
+  };
 };
 
 export const useDeleteProduct = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const deleteProduct = async (id) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await productService.deleteProduct(id);
-      setLoading(false);
-      return data;
-    } catch (error) {
-      setError(error);
-      throw error;
-    } finally {
-      setLoading(false);
+  const { trigger, isMutating, error } = useSWRMutation(
+    "deleteProduct",
+    async (_, { arg: id }) => {
+      return await productService.deleteProduct(id);
+    },
+    {
+      onSuccess: () => {
+        mutate((key) => Array.isArray(key) && key[0] === "products");
+      },
     }
-  };
+  );
 
-  return { deleteProduct, loading, error };
+  return {
+    deleteProduct: trigger,
+    loading: isMutating,
+    error,
+  };
 };
 
 export const useUpdateProduct = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const updateProduct = async (productId, formData) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await productService.updateProduct(productId, formData);
-      setLoading(false);
-      return data;
-    } catch (error) {
-      setError(error);
-      throw error;
-    } finally {
-      setLoading(false);
+  const { trigger, isMutating, error } = useSWRMutation(
+    "updateProduct",
+    async (_, { arg: { productId, formData } }) => {
+      return await productService.updateProduct(productId, formData);
+    },
+    {
+      onSuccess: (data, { arg: { productId } }) => {
+        mutate(["product", productId]);
+        mutate((key) => Array.isArray(key) && key[0] === "products");
+      },
     }
-  };
+  );
 
-  return { updateProduct, loading, error };
+  return {
+    updateProduct: (productId, formData) => trigger({ productId, formData }),
+    loading: isMutating,
+    error,
+  };
 };
 
 export const useCreateProduct = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const createProduct = async (formData) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await productService.createProduct(formData);
-      setLoading(false);
-      return data;
-    } catch (error) {
-      setError(error);
-      throw error;
-    } finally {
-      setLoading(false);
+  const { trigger, isMutating, error } = useSWRMutation(
+    "createProduct",
+    async (_, { arg: formData }) => {
+      return await productService.createProduct(formData);
+    },
+    {
+      onSuccess: () => {
+        mutate((key) => Array.isArray(key) && key[0] === "products");
+      },
     }
-  };
+  );
 
-  return { createProduct, loading, error };
+  return {
+    createProduct: trigger,
+    loading: isMutating,
+    error,
+  };
 };
