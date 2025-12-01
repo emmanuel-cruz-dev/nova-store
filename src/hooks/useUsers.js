@@ -1,113 +1,108 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR, { mutate } from "swr";
+import useSWRMutation from "swr/mutation";
 import { userService } from "../api/services/user.service";
 
 export const useUsers = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const {
+    data,
+    error,
+    isLoading,
+    mutate: refetch,
+  } = useSWR("users", userService.getUsers, {
+    revalidateOnFocus: false,
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    try {
-      userService.getUsers().then((data) => {
-        setUsers(data);
-      });
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  return { users, loading, error };
+  return {
+    users: data || [],
+    loading: isLoading,
+    error,
+    refetch,
+  };
 };
 
 export const useUserById = (id) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    try {
-      userService.getUserById(id).then((data) => {
-        setUser(data);
-      });
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
+  const { data, error, isLoading } = useSWR(
+    id ? ["user", id] : null,
+    () => userService.getUserById(id),
+    {
+      revalidateOnFocus: false,
     }
-  }, [id]);
+  );
 
-  return { user, loading, error };
+  return {
+    user: data || null,
+    loading: isLoading,
+    error,
+  };
 };
 
 export const useUserByRole = (role, initialPage = 1, initialLimit = 10) => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalUsers, setTotalUsers] = useState(0);
 
-  const fetchUsers = async (page = currentPage) => {
-    setLoading(true);
-    try {
-      const { data, total } = await userService.getUserByRole(
-        role,
-        page,
-        initialLimit
-      );
-
-      setUsers(data.users || data);
-      setCurrentPage(data.page || page);
-      setTotalPages(data.totalPages || Math.ceil(total / initialLimit));
-      setTotalUsers(total);
-
-      setError(null);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
+  const {
+    data,
+    error,
+    isLoading,
+    mutate: refetch,
+  } = useSWR(
+    role ? ["usersByRole", role, currentPage, initialLimit] : null,
+    () => userService.getUserByRole(role, currentPage, initialLimit),
+    {
+      revalidateOnFocus: false,
+      keepPreviousData: true,
     }
-  };
+  );
 
-  useEffect(() => {
-    fetchUsers(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, currentPage]);
-
-  const deleteUser = async (userId) => {
-    try {
+  const { trigger: triggerDelete, isMutating: isDeleting } = useSWRMutation(
+    ["deleteUser", role],
+    async (_, { arg: userId }) => {
       await userService.deleteUser(userId);
 
-      const remainingUsers = users.length - 1;
+      const currentData = data || {};
+      const currentUsers = currentData.data?.users || currentData.data || [];
+      const remainingUsers = currentUsers.length - 1;
+
       if (remainingUsers === 0 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
       } else {
-        await fetchUsers(currentPage);
+        await refetch();
       }
 
+      mutate("users");
+
       return { success: true };
-    } catch (error) {
-      setError(error);
-      return { success: false, error };
+    },
+    {
+      onError: (error) => {
+        console.error("Error deleting user:", error);
+        return { success: false, error };
+      },
     }
-  };
+  );
 
   const goToPage = (page) => {
+    const totalPages =
+      data?.data?.totalPages ||
+      (data?.total ? Math.ceil(data.total / initialLimit) : 1);
+
     if (page >= 1 && page <= totalPages && page !== currentPage) {
       setCurrentPage(page);
     }
   };
 
+  const users = data?.data?.users || data?.data || [];
+  const totalPages =
+    data?.data?.totalPages ||
+    (data?.total ? Math.ceil(data.total / initialLimit) : 1);
+  const totalUsers = data?.total || 0;
+
   return {
     users,
-    loading,
+    loading: isLoading || isDeleting,
     error,
-    deleteUser,
-    refetch: fetchUsers,
+    deleteUser: triggerDelete,
+    refetch,
     currentPage,
     totalPages,
     totalUsers,
