@@ -48,7 +48,8 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 - React Router
 - React Toastify (Notificaciones)  
 - Context API + Custom Hooks  
-- Axios  
+- Axios
+- SWR (Data Fetching & Cache)   
 - Bootstrap + estilos propios  
 - Swiper  
 - NProgress  
