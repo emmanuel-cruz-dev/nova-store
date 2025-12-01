@@ -1,21 +1,29 @@
-import { useState } from "react";
+import { mutate } from "swr";
+import useSWRMutation from "swr/mutation";
 import { userAuthService } from "../../api/services/auth/user.service";
 
 export const useUpdateUser = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { trigger, isMutating, error } = useSWRMutation(
+    "updateUser",
+    async (_, { arg: userData }) => {
+      return await userAuthService.updateUser(userData);
+    },
+    {
+      onSuccess: (updatedUser) => {
+        if (updatedUser?.id || updatedUser?._id) {
+          const userId = updatedUser.id || updatedUser._id;
+          mutate(["user", userId]);
+        }
 
-  const updateUser = async (userData) => {
-    setLoading(true);
-    try {
-      const updatedUser = await userAuthService.updateUser(userData);
-      setLoading(false);
-      return updatedUser;
-    } catch (error) {
-      setLoading(false);
-      setError(error);
+        mutate("users");
+        mutate((key) => Array.isArray(key) && key[0] === "usersByRole");
+      },
     }
-  };
+  );
 
-  return { updateUser, loading, error };
+  return {
+    updateUser: trigger,
+    loading: isMutating,
+    error,
+  };
 };
