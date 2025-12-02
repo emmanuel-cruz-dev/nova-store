@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks";
 import { Loader } from "../components";
 
-function PrivateRoute({ children }) {
+function PrivateRoute({ children }: { children: ReactNode }) {
   const { user, loading, authLoading } = useAuth();
   const location = useLocation();
 
