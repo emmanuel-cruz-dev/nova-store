@@ -10,3 +10,5 @@ export interface Product {
   rating: number;
   isActive: boolean;
 }
+
+export type CreateProductDTO = Omit<Product, "id">;
