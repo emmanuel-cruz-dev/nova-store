@@ -1,6 +1,7 @@
 import axios from "../../axiosConfig";
+import { User } from "../../../types";
 
-const updateUser = async (userData) => {
+const updateUser = async (userData: User) => {
   try {
     const response = await axios.put(`/users/${userData.id}`, userData);
 
