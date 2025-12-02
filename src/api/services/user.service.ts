@@ -15,7 +15,7 @@ const getUsers = async () => {
   }
 };
 
-const getUserById = async (id) => {
+const getUserById = async (id: string) => {
   try {
     const response = await axios.get(`/users/${id}`);
 
@@ -45,7 +45,7 @@ const getCustomerUsers = async () => {
   }
 };
 
-const getUserByRole = async (role, page = 1, limit = 10) => {
+const getUserByRole = async (role: string, page = 1, limit = 10) => {
   try {
     const response = await axios.get(
       `/users?role=${role}&page=${page}&limit=${limit}`
@@ -67,7 +67,7 @@ const getUserByRole = async (role, page = 1, limit = 10) => {
   }
 };
 
-const deleteUser = async (id) => {
+const deleteUser = async (id: string) => {
   try {
     const response = await axios.delete(`/users/${id}`);
 
