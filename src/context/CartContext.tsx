@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { ReactNode, useState } from "react";
 import { CartContext } from "../hooks";
+import { Product } from "../types";
 
-export function CartProvider({ children }) {
+export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState([]);
 
-  const handleAddToCart = (product, quantity = 1) => {
+  const handleAddToCart = (product: Product, quantity = 1) => {
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
 
     if (existingProductIndex !== -1) {
@@ -19,12 +20,12 @@ export function CartProvider({ children }) {
     }
   };
 
-  const handleRemoveFromCart = (product) => {
+  const handleRemoveFromCart = (product: Product) => {
     const newCart = cart.filter((p) => p.id !== product.id);
     setCart(newCart);
   };
 
-  const handleDecreaseQuantity = (product) => {
+  const handleDecreaseQuantity = (product: Product) => {
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
 
     if (existingProductIndex !== -1) {

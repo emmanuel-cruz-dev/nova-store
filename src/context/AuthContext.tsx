@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { AuthContext } from "../hooks";
 import axios from "../api/axiosConfig";
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("user") === null ? false : true;
   });
