@@ -1,9 +1,9 @@
 import { ReactNode, useState } from "react";
 import { CartContext } from "../hooks";
-import { Product } from "../types";
+import { CartItem, Product } from "../types";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   const handleAddToCart = (product: Product, quantity = 1) => {
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
