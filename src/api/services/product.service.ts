@@ -1,4 +1,6 @@
+import { AxiosError } from "axios";
 import axios from "../axiosConfig";
+import { CreateProductDTO } from "../../types";
 
 const getAllProducts = async () => {
   try {
@@ -15,7 +17,7 @@ const getAllProducts = async () => {
   }
 };
 
-const getProducts = async (page, limit, status = "true") => {
+const getProducts = async (page: number, limit: number, status = "true") => {
   try {
     const baseUrl = `/products?page=${page}&limit=${limit}`;
     const url = status === "all" ? baseUrl : `${baseUrl}&isActive=${status}`;
@@ -31,20 +33,20 @@ const getProducts = async (page, limit, status = "true") => {
       data: response.data,
       total: total.length,
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching products", error);
 
-    if (error.response) {
-      throw new Error(`Server error: ${error.response.status}`);
-    } else if (error.request) {
-      throw new Error("Network error: Could not reach server");
+    if (error instanceof Error) {
+      throw error;
+    } else if (error instanceof AxiosError) {
+      throw new Error(`Server error: ${error.response?.status}`);
     } else {
       throw error;
     }
   }
 };
 
-const getProductById = async (id) => {
+const getProductById = async (id: number) => {
   try {
     const response = await axios.get(`/products/${id}`);
 
@@ -74,7 +76,7 @@ const getActiveProducts = async () => {
   }
 };
 
-const getProductsByCategory = async (category) => {
+const getProductsByCategory = async (category: string) => {
   try {
     const url =
       category === "all"
@@ -93,7 +95,7 @@ const getProductsByCategory = async (category) => {
   }
 };
 
-const deleteProduct = async (id) => {
+const deleteProduct = async (id: number) => {
   try {
     const response = await axios.delete(`/products/${id}`);
 
@@ -108,7 +110,7 @@ const deleteProduct = async (id) => {
   }
 };
 
-const updateProduct = async (productId, formData) => {
+const updateProduct = async (productId: number, formData: CreateProductDTO) => {
   try {
     const response = await axios.put(`/products/${productId}`, formData);
 
@@ -123,7 +125,7 @@ const updateProduct = async (productId, formData) => {
   }
 };
 
-const createProduct = async (formData) => {
+const createProduct = async (formData: CreateProductDTO) => {
   try {
     const response = await axios.post(`/products`, formData);
 
