@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
+import { ErrorMessageProps } from "../../types";
 
-const ErrorMessage = ({ error, entity, onRetry }) => {
+const ErrorMessage = ({ error, entity, onRetry }: ErrorMessageProps) => {
   let message;
 
   if (error.message) {
