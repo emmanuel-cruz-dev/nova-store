@@ -18,3 +18,22 @@ export interface CartItemProps {
   product: CartItem;
   index: number;
 }
+
+export interface SummaryRowProps {
+  label: string;
+  value: string | number;
+  className?: string;
+  valueClassName?: string;
+}
+
+export interface CheckoutSummaryProps {
+  orderTotal: number;
+  itemsCount: number;
+}
+
+export interface CheckoutModalProps {
+  show: boolean;
+  onHide: () => void;
+  orderTotal: number;
+  itemsCount: number;
+}
