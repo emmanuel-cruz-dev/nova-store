@@ -1,6 +1,12 @@
 import { Pagination } from "react-bootstrap";
+import { PaginationItemProps } from "../../types";
 
-function PaginationItem({ currentPage, totalPages, onPageChange, isLoading }) {
+function PaginationItem({
+  currentPage,
+  totalPages,
+  onPageChange,
+  isLoading,
+}: PaginationItemProps) {
   if (totalPages <= 1) return null;
 
   const items = [];
