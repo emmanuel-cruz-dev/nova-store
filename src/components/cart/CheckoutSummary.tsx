@@ -1,7 +1,8 @@
 import SummaryRow from "./SummaryRow";
 import { formatPrice } from "../../utils/utils";
+import { CheckoutSummaryProps } from "../../types";
 
-function CheckoutSummary({ orderTotal, itemsCount }) {
+function CheckoutSummary({ orderTotal, itemsCount }: CheckoutSummaryProps) {
   const orderNumber = Math.floor(Math.random() * 1000000);
   const itemsText = `${itemsCount} ${
     itemsCount === 1 ? "artículo" : "artículos"
