@@ -1,4 +1,11 @@
-function SummaryRow({ label, value, className = "", valueClassName = "" }) {
+import { SummaryRowProps } from "../../types";
+
+function SummaryRow({
+  label,
+  value,
+  className = "",
+  valueClassName = "",
+}: SummaryRowProps) {
   const rowClasses = `d-flex justify-content-between ${className} list-unstyled mb-0`;
   const valueClasses = `fw-bold ${valueClassName}`;
 
