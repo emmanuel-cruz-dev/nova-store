@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useCart } from "./useCart";
+import { OrderData } from "../types";
 
 export const useCheckoutOrder = () => {
   const { getCartTotal, handleClearCart, getCartItemsCount } = useCart();
   const [showModal, setShowModal] = useState(false);
-  const [orderData, setOrderData] = useState(null);
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
 
   const calculateTotal = () => {
     const subtotal = getCartTotal();
