@@ -10,3 +10,22 @@ export interface ErrorMessageProps {
   entity?: string;
   onRetry?: () => void;
 }
+
+export interface TestimonialCardProps {
+  image: string;
+  name: string;
+  role: string;
+  text: string;
+}
+
+export interface DeleteConfirmationModalProps {
+  show: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  name: string;
+  loading: boolean;
+}
+
+export interface BannerItemProps {
+  images: string[];
+}
