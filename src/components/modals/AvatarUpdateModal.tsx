@@ -1,4 +1,5 @@
 import { Modal, Button, Form, Spinner, Image } from "react-bootstrap";
+import { AvatarUpdateModalProps } from "../../types";
 
 function AvatarUpdateModal({
   show,
@@ -8,7 +9,7 @@ function AvatarUpdateModal({
   onSave,
   loading,
   currentAvatar,
-}) {
+}: AvatarUpdateModalProps) {
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
@@ -41,7 +42,9 @@ function AvatarUpdateModal({
               }}
               alt="Vista previa del avatar"
               onError={(e) => {
-                e.target.src = "https://placehold.it/100x100?text=Error";
+                if (e.target instanceof HTMLImageElement) {
+                  e.target.src = "https://placehold.it/100x100?text=Error";
+                }
               }}
             />
           </div>
