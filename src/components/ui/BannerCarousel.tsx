@@ -1,13 +1,14 @@
 import { useState } from "react";
-import Carousel from "react-bootstrap/Carousel";
 import { useNavigate } from "react-router-dom";
+import Carousel from "react-bootstrap/Carousel";
+import { BannerItemProps } from "../../types";
 import "./BannerCarousel.css";
 
-function BannerCarousel({ images }) {
+function BannerCarousel({ images }: BannerItemProps) {
   const [index, setIndex] = useState(0);
   const navigate = useNavigate();
 
-  const handleSelect = (selectedIndex) => {
+  const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);
   };
 
