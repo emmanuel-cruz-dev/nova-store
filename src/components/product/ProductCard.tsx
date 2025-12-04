@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import { useAuth, useProductCard } from "../../hooks";
+import { ProductCardProps } from "../../types";
 import { formatPrice, priceInstallments } from "../../utils/utils";
 
-function ProductCard(props) {
+function ProductCard(props: ProductCardProps) {
   const { isAuthenticated } = useAuth();
   const {
     id = 0,
