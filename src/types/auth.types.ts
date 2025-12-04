@@ -10,3 +10,12 @@ export interface AuthContextType {
   authLoading: boolean;
   updateUserProfile: (userData: User) => Promise<User>;
 }
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export type Errors = {
+  [key: string]: string;
+};
