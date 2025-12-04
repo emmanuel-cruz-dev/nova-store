@@ -1,7 +1,14 @@
 import { Modal, Button } from "react-bootstrap";
 import { Trash2 } from "lucide-react";
+import { DeleteConfirmationModalProps } from "../../types";
 
-function DeleteConfirmationModal({ show, onClose, onConfirm, name, loading }) {
+function DeleteConfirmationModal({
+  show,
+  onClose,
+  onConfirm,
+  name,
+  loading,
+}: DeleteConfirmationModalProps) {
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
