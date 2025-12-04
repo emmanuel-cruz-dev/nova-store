@@ -1,6 +1,7 @@
 import { Card } from "react-bootstrap";
+import { TestimonialCardProps } from "../../types";
 
-function TestimonialCard({ image, name, role, text }) {
+function TestimonialCard({ image, name, role, text }: TestimonialCardProps) {
   return (
     <Card
       className="h-100 border-0 shadow-sm"
