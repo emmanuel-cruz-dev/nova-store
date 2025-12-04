@@ -10,3 +10,13 @@ export interface User {
 }
 
 type UserRole = "customer" | "admin";
+
+export interface AvatarUpdateModalProps {
+  show: boolean;
+  onClose: () => void;
+  newAvatarUrl: string;
+  setNewAvatarUrl: (url: string) => void;
+  onSave: () => void;
+  loading: boolean;
+  currentAvatar: string;
+}
