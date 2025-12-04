@@ -11,6 +11,15 @@ export interface Product {
   isActive: boolean;
 }
 
+export type ProductToAdd = Pick<
+  Product,
+  "id" | "name" | "brand" | "price" | "category" | "description" | "image"
+>;
+
+export interface ProductCardProps extends Partial<Product> {
+  isLoading?: boolean;
+}
+
 export type CreateProductDTO = Omit<Product, "id">;
 
 export interface CategoriesProps {
@@ -22,4 +31,8 @@ export interface CategoryDataProps {
   id: string;
   name: string;
   image: string;
+}
+
+export interface ProductItemProps {
+  product: Product;
 }
