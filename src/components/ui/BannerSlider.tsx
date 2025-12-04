@@ -1,11 +1,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { BannerItemProps } from "../../types";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-function BannerSlider({ bannerImages }) {
+function BannerSlider({ images }: BannerItemProps) {
   return (
     <section className="p-0 m-0" id="hero-banner">
       <Swiper
@@ -21,7 +22,7 @@ function BannerSlider({ bannerImages }) {
         navigation={true}
         modules={[Navigation, Pagination, Autoplay]}
       >
-        {bannerImages.map((img, index) => (
+        {images.map((img, index) => (
           <SwiperSlide key={index}>
             <img
               src={img}
