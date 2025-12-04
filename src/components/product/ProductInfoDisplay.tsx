@@ -1,12 +1,13 @@
 import { Badge } from "react-bootstrap";
 import StarRating from "../ui/StarRating";
+import { ProductItemProps } from "../../types";
 import {
   formatPrice,
   priceInstallments,
   renderCategory,
 } from "../../utils/utils";
 
-const ProductInfoDisplay = ({ product }) => {
+const ProductInfoDisplay = ({ product }: ProductItemProps) => {
   return (
     <>
       <Badge bg="secondary" className="my-2 p-2">
