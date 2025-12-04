@@ -38,12 +38,16 @@ function TestimonialSlider() {
             <button
               ref={prevRef}
               className="swiper-button-prev-custom border-0"
+              style={{ touchAction: "manipulation" }}
+              aria-label="Anterior"
             >
               ❮
             </button>
             <button
               ref={nextRef}
               className="swiper-button-next-custom border-0"
+              style={{ touchAction: "manipulation" }}
+              aria-label="Siguiente"
             >
               ❯
             </button>
@@ -59,8 +63,13 @@ function TestimonialSlider() {
             nextEl: nextRef.current,
           }}
           onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
+            if (
+              typeof swiper.params.navigation === "object" &&
+              swiper.params.navigation !== null
+            ) {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+            }
           }}
           pagination={{ clickable: true }}
           autoplay={{
