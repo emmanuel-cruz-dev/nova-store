@@ -12,3 +12,14 @@ export interface Product {
 }
 
 export type CreateProductDTO = Omit<Product, "id">;
+
+export interface CategoriesProps {
+  categories: number[];
+  maxCategories?: number | null;
+}
+
+export interface CategoryDataProps {
+  id: string;
+  name: string;
+  image: string;
+}
