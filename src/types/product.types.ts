@@ -36,3 +36,20 @@ export interface CategoryDataProps {
 export interface ProductItemProps {
   product: Product;
 }
+
+export interface ProductQuantitySelectorProps {
+  quantity: number;
+  stock: number;
+  isAddingToCart: boolean;
+  onIncrement: () => void;
+  onDecrement: () => void;
+  onQuantityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onAddToCart: () => void;
+}
+
+export interface ProductsListProps {
+  title: string;
+  products: Product[];
+  loading: boolean;
+  error: any;
+}
