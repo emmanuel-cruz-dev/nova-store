@@ -37,3 +37,8 @@ export interface CheckoutModalProps {
   orderTotal: number;
   itemsCount: number;
 }
+
+export type OrderData = {
+  total: number;
+  itemsCount: number;
+};
