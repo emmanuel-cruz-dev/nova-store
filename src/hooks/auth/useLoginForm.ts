@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../useAuth";
+import { LoginData, Errors } from "../../types";
 import { validateLoginForm } from "../../utils/utils";
 
 export function useLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState({});
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState<Errors>({});
 
   const { login, authLoading } = useAuth();
   const navigate = useNavigate();
@@ -14,13 +18,13 @@ export function useLoginForm() {
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (authLoading) return;
 
@@ -40,15 +44,19 @@ export function useLoginForm() {
             navigate("/", { replace: true });
           }
         }, 100);
-      } catch (error) {
+      } catch (error: unknown) {
         if (
-          error.message.includes("El correo electrónico no está registrado")
+          error instanceof Error &&
+          error.message.includes("El correo electrónico ya está registrado")
         ) {
           setErrors((prev) => ({
             ...prev,
             email: "El correo electrónico no está registrado",
           }));
-        } else if (error.message.includes("La contraseña es incorrecta")) {
+        } else if (
+          error instanceof Error &&
+          error.message.includes("La contraseña es incorrecta")
+        ) {
           setErrors((prev) => ({
             ...prev,
             password: "La contraseña es incorrecta",
