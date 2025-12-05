@@ -1,4 +1,5 @@
 import { Form, Row, Col, Alert } from "react-bootstrap";
+import { ProductFormProps } from "../../types";
 
 function ProductForm({
   formData,
@@ -8,7 +9,7 @@ function ProductForm({
   handleChange,
   handleIsActiveChange,
   handleSubmit,
-}) {
+}: ProductFormProps) {
   return (
     <>
       {(error || errorUpdate) && (
