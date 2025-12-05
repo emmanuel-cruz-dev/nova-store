@@ -15,7 +15,7 @@ const getUsers = async () => {
   }
 };
 
-const getUserById = async (id: string) => {
+const getUserById = async (id: number) => {
   try {
     const response = await axios.get(`/users/${id}`);
 
