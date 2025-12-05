@@ -23,7 +23,7 @@ export interface ProductCardProps extends Partial<Product> {
 export type CreateProductDTO = Omit<Product, "id">;
 
 export interface CategoriesProps {
-  categories: number[];
+  categories: string[];
   maxCategories?: number | null;
 }
 
