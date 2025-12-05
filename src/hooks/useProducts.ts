@@ -145,9 +145,14 @@ export const useUpdateProduct = () => {
 };
 
 export const useCreateProduct = () => {
-  const { trigger, isMutating, error } = useSWRMutation(
+  const { trigger, isMutating, error } = useSWRMutation<
+    Product,
+    ErrorType,
+    string,
+    CreateProductDTO
+  >(
     "createProduct",
-    async (_, { arg: formData }) => {
+    async (_, { arg: formData }: { arg: CreateProductDTO }) => {
       return await productService.createProduct(formData);
     },
     {
