@@ -74,7 +74,7 @@ function ProductModalForm({
         <Button
           type="submit"
           variant="primary"
-          onClick={handleSubmit}
+          onClick={handleSubmit as HTMLFormElement["onSubmit"]}
           disabled={loading || saving}
         >
           {saving ? (
