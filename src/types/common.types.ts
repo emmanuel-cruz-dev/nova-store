@@ -29,3 +29,7 @@ export interface DeleteConfirmationModalProps {
 export interface BannerItemProps {
   images: string[];
 }
+
+export interface ValidationErrors {
+  [key: string]: string;
+}
