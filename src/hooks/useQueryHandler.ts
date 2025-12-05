@@ -16,7 +16,7 @@ export const useQueryHandler = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryParam]);
 
-  const handleCategoryClick = (categoryId) => {
+  const handleCategoryClick = (categoryId: string) => {
     handleCategorySelect(categoryId)();
     setSearchParams({ category: categoryId });
   };

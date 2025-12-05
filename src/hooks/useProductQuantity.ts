@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export const useProductQuantity = (maxStock, handleAddToCartClick) => {
+export const useProductQuantity = (
+  maxStock: number,
+  handleAddToCartClick: (quantity: number) => void
+) => {
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  const notify = (productsAdded) => {
+  const notify = (productsAdded: number) => {
     const message =
       productsAdded === 1
         ? `Se agregó 1 producto al carrito`
@@ -26,7 +29,7 @@ export const useProductQuantity = (maxStock, handleAddToCartClick) => {
     }
   };
 
-  const handleQuantityChange = (e) => {
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value >= 1 && value <= maxStock) {
       setQuantity(value);

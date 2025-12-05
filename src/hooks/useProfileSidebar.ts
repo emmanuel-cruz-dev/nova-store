@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { AuthContext, useUpdateUser } from ".";
 
 export const useProfileSidebar = () => {
-  const { user, logout, updateUserProfile } = useContext(AuthContext);
+  const { user, logout, updateUserProfile } = useContext(AuthContext)!;
   const { updateUser, loading } = useUpdateUser();
 
   const [profileData, setProfileData] = useState({
@@ -54,7 +54,7 @@ export const useProfileSidebar = () => {
     setShowAvatarModal(false);
   };
 
-  const handleMenuClick = (menuId) => {
+  const handleMenuClick = (menuId: string) => {
     if (menuId === "logout") {
       logout();
     }

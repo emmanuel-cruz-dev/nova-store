@@ -21,7 +21,7 @@ export const useUsers = () => {
   };
 };
 
-export const useUserById = (id) => {
+export const useUserById = (id: number) => {
   const { data, error, isLoading } = useSWR(
     id ? ["user", id] : null,
     () => userService.getUserById(id),
@@ -37,7 +37,11 @@ export const useUserById = (id) => {
   };
 };
 
-export const useUserByRole = (role, initialPage = 1, initialLimit = 10) => {
+export const useUserByRole = (
+  role: string,
+  initialPage = 1,
+  initialLimit = 10
+) => {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   const {
@@ -81,7 +85,7 @@ export const useUserByRole = (role, initialPage = 1, initialLimit = 10) => {
     }
   );
 
-  const goToPage = (page) => {
+  const goToPage = (page: number) => {
     const totalPages =
       data?.data?.totalPages ||
       (data?.total ? Math.ceil(data.total / initialLimit) : 1);

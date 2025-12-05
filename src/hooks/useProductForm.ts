@@ -1,10 +1,20 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useProductById } from "./index";
 import { useCreateProduct, useUpdateProduct } from "./useProducts";
 import { validateProductForm } from "../utils/productValidations";
 import { productInitialFormData } from "../data/productInitialFormData";
+import {
+  CreateProductDTO,
+  ValidationErrors,
+  NotificationType,
+  UseProductFormReturn,
+} from "../types";
 
-export function useProductForm(productId, onUpdate, onSuccess) {
+export function useProductForm(
+  productId: number,
+  onUpdate: (message: string, type: NotificationType) => void,
+  onSuccess: () => void
+): UseProductFormReturn {
   const isEditMode = !!productId;
 
   const {
@@ -25,8 +35,12 @@ export function useProductForm(productId, onUpdate, onSuccess) {
     error: errorCreate,
   } = useCreateProduct();
 
-  const [formData, setFormData] = useState(productInitialFormData);
-  const [validationErrors, setValidationErrors] = useState({});
+  const [formData, setFormData] = useState<CreateProductDTO>(
+    productInitialFormData
+  );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
 
   const saving = loadingUpdate || loadingCreate;
   const loading = loadingUpdate || loadingCreate;
@@ -50,8 +64,13 @@ export function useProductForm(productId, onUpdate, onSuccess) {
     }
   }, [product, isEditMode]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
 
     setFormData((prev) => ({
       ...prev,
@@ -72,21 +91,21 @@ export function useProductForm(productId, onUpdate, onSuccess) {
     }
   };
 
-  const handleIsActiveChange = (value) => {
+  const handleIsActiveChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
       isActive: value === "true",
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const dataToSend = {
+    const dataToSend: CreateProductDTO = {
       ...formData,
-      price: parseFloat(formData.price) || 0,
-      stock: parseFloat(formData.stock) || 0,
-      rating: parseFloat(formData.rating) || 0,
+      price: formData.price || 0,
+      stock: formData.stock || 0,
+      rating: formData.rating || 0,
     };
 
     const errors = validateProductForm(formData);

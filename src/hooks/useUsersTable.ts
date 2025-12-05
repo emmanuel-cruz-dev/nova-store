@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useUserByRole } from ".";
+import { User } from "../types";
 
 export const useUsersTable = (
   role = "customer",
@@ -18,12 +19,12 @@ export const useUsersTable = (
   } = useUserByRole(role, initialPage, pageSize);
 
   const [showDetails, setShowDetails] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleShowDetails = (userId) => {
+  const handleShowDetails = (userId: number) => {
     setShowDetails(true);
     setSelectedUser(users.find((u) => u.id === userId));
   };
@@ -33,7 +34,7 @@ export const useUsersTable = (
     setSelectedUser(null);
   };
 
-  const handleShowDeleteModal = (user) => {
+  const handleShowDeleteModal = (user: User) => {
     setUserToDelete(user);
     setShowDeleteModal(true);
   };
@@ -72,7 +73,7 @@ export const useUsersTable = (
     setIsDeleting(false);
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: number) => {
     window.scrollTo(0, 0);
     goToPage(page);
   };
