@@ -53,3 +53,15 @@ export interface ProductsListProps {
   loading: boolean;
   error: any;
 }
+
+export interface ProductResponse {
+  data: Product[];
+  total: number;
+}
+
+export type ErrorType = any;
+
+export interface ProductDetailsCardProps {
+  product: Product | null;
+  isLoading: boolean;
+}
