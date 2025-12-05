@@ -1,3 +1,6 @@
+import { FormEvent } from "react";
+import { ValidationErrors } from "./common.types";
+
 export interface Product {
   id: number;
   name: string;
@@ -64,4 +67,58 @@ export type ErrorType = any;
 export interface ProductDetailsCardProps {
   product: Product | null;
   isLoading: boolean;
+}
+
+export type OnUpdate = (
+  message: string,
+  type: "success" | "error" | string
+) => void;
+
+export interface ProductModalFormProps {
+  show: boolean;
+  onHide: () => void;
+  productId: number;
+  onUpdate: OnUpdate;
+  onSuccess: () => void;
+}
+
+export type NotificationType = "success" | "error" | "info" | "warning";
+
+export interface UseProductFormParams {
+  productId?: string | number | null;
+  onUpdate: (message: string, type: NotificationType) => void;
+  onSuccess: () => void;
+}
+
+export interface UseProductFormReturn {
+  formData: CreateProductDTO;
+  validationErrors: ValidationErrors;
+  loadingProduct: boolean;
+  saving: boolean;
+  loading: boolean;
+  error: Error | null;
+  errorUpdate: Error | null;
+  isEditMode: boolean;
+  handleChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => void;
+  handleIsActiveChange: (value: string) => void;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  resetForm: () => void;
+}
+
+export interface ProductFormProps {
+  formData: CreateProductDTO;
+  validationErrors: ValidationErrors;
+  error: any;
+  errorUpdate: any;
+  handleChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => void;
+  handleIsActiveChange: (value: string) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
