@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useDeleteProduct, useProducts } from ".";
+import { Product } from "../types";
 
 export function useProductsTable(initialPage = 1, initialLimit = 10) {
   const {
@@ -17,13 +18,13 @@ export function useProductsTable(initialPage = 1, initialLimit = 10) {
   const { deleteProduct, loading: loadingDelete } = useDeleteProduct();
 
   const [showModal, setShowModal] = useState(false);
-  const [selectedProductId, setProductId] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [productToDelete, setProductToDelete] = useState(null);
+  const [selectedProductId, setProductId] = useState<number | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   const totalPages = Math.ceil(totalProducts / limit);
 
-  const notify = (message, type) => {
+  const notify = (message: string, type: "success" | "error" | string) => {
     if (type === "success") {
       toast.success(message);
     } else if (type === "error") {
@@ -49,12 +50,12 @@ export function useProductsTable(initialPage = 1, initialLimit = 10) {
     refetch();
   };
 
-  const handleEditProduct = (productId) => {
+  const handleEditProduct = (productId: number) => {
     setShowModal(true);
     setProductId(productId);
   };
 
-  const handleDeleteProduct = (product) => {
+  const handleDeleteProduct = (product: Product | null) => {
     setShowDeleteModal(true);
     setProductToDelete(product);
   };

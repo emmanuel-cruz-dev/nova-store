@@ -1,5 +1,6 @@
 import { Row, Col, Button, InputGroup, Form } from "react-bootstrap";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
+import { ProductQuantitySelectorProps } from "../../types";
 
 const ProductQuantitySelector = ({
   quantity,
@@ -9,7 +10,7 @@ const ProductQuantitySelector = ({
   onDecrement,
   onQuantityChange,
   onAddToCart,
-}) => {
+}: ProductQuantitySelectorProps) => {
   if (stock <= 0) {
     return (
       <Button variant="outline-secondary" className="w-100 py-2" disabled>
