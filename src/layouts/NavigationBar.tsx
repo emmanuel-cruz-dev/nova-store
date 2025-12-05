@@ -6,7 +6,7 @@ import { AuthContext, useCart, useNavigationBar } from "../hooks";
 
 function NavigationBar() {
   const { getCartItemsCount } = useCart();
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext)!;
   const { showMenu, toggleMenu, handleLogout, handleNavigate, menuRef } =
     useNavigationBar();
 
@@ -66,7 +66,7 @@ function NavigationBar() {
                   >
                     <img
                       src={user.avatar}
-                      alt={`${user.name} ${user.lastName} avatar`}
+                      alt={`${user.firstName} ${user.lastName} avatar`}
                       className="w-100 h-100 object-fit-cover"
                       loading="lazy"
                     />
@@ -102,7 +102,7 @@ function NavigationBar() {
                       <img
                         src={user.avatar}
                         alt="Avatar"
-                        className="rounded-circle overflow-hidden border border-light me-2 flex-shrink-0"
+                        className="rounded-circle overflow-hidden border border-light me-2 flex-shrink-0 object-fit-cover"
                         style={{ width: "22px", height: "22px" }}
                         loading="lazy"
                       />
