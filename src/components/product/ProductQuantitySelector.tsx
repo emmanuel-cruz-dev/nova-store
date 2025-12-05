@@ -22,7 +22,9 @@ const ProductQuantitySelector = ({
 
   return (
     <Row className="g-2 mb-3">
-      <label className="form-label fw-semibold">Cantidad:</label>
+      <label className="form-label fw-semibold" htmlFor="quantity">
+        Cantidad:
+      </label>
       <Col xs={12} md={5} className="d-flex items-center">
         <InputGroup style={{ maxWidth: "180px" }}>
           <Button
@@ -33,12 +35,15 @@ const ProductQuantitySelector = ({
             <Minus size={16} />
           </Button>
           <Form.Control
+            id="quantity"
+            name="quantity"
             type="number"
             value={quantity}
             onChange={onQuantityChange}
             className="text-center"
             min="1"
             max={stock}
+            autoComplete="off"
           />
           <Button
             variant="outline-secondary"
