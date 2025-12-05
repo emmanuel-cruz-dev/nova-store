@@ -7,8 +7,12 @@ import {
   ProductInfoCard,
 } from "../index";
 import { highlightedFeatures } from "../../data/highlightedFeatures";
+import { ProductDetailsCardProps } from "../../types";
 
-const ProductDetailsCard = ({ product, isLoading = false }) => {
+const ProductDetailsCard = ({
+  product,
+  isLoading = false,
+}: ProductDetailsCardProps) => {
   if (isLoading) return <ProductDetailsCardSkeleton />;
 
   if (!product) {
@@ -61,7 +65,7 @@ const ProductDetailsCard = ({ product, isLoading = false }) => {
               >
                 <img
                   src={product.image}
-                  alt={product.title}
+                  alt={product.name}
                   className="rounded"
                   loading="lazy"
                   style={{
