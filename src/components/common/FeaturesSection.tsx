@@ -16,7 +16,9 @@ function FeaturesSection() {
               className="text-center"
             >
               <div className="d-flex flex-column align-items-center py-2">
-                <figure className="mb-3">{feature.icon}</figure>
+                <figure className="mb-3">
+                  <feature.icon />
+                </figure>
                 <h5 className="fw-bold mb-2">{feature.title}</h5>
                 <p className="text-muted mb-0">{feature.subtitle}</p>
               </div>
