@@ -8,8 +8,14 @@ import { handleRetry } from "../../utils/utils";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { ProductsListProps } from "../../types";
 
-function ProductSlideList({ title, products, loading, error }) {
+function ProductSlideList({
+  title,
+  products,
+  loading,
+  error,
+}: ProductsListProps) {
   return (
     <Container
       className="py-5"
