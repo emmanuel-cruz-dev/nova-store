@@ -1,8 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { ProductCard, ErrorMessage } from "../index";
 import { handleRetry } from "../../utils/utils";
+import { ProductsListProps } from "../../types";
 
-function ProductsGallery({ title, products, loading, error }) {
+function ProductsGallery({
+  title,
+  products,
+  loading,
+  error,
+}: ProductsListProps) {
   return (
     <Container>
       <header>
