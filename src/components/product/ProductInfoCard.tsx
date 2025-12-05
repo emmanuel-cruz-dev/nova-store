@@ -3,18 +3,15 @@ import { Card, Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { ProductInfoDisplay, ProductQuantitySelector } from "../index";
 import { useAuth, useProductCard, useProductQuantity } from "../../hooks";
-import { Product } from "../../types";
+import { ProductItemProps } from "../../types";
 
-interface ProductInfoCardProps {
-  product: Product;
-}
-
-const ProductInfoCard = ({ product }: ProductInfoCardProps) => {
+const ProductInfoCard = ({ product }: ProductItemProps) => {
   const { isAuthenticated } = useAuth();
 
   const { handleAddToCartClick } = useProductCard({
     id: product.id || 0,
     name: product.name || "",
+    brand: product.brand || "",
     price: product.price || 0,
     category: product.category || "",
     description: product.description || "",
