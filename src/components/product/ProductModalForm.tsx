@@ -1,8 +1,15 @@
 import { Modal, Button, Spinner } from "react-bootstrap";
 import { useProductForm } from "../../hooks";
 import ProductForm from "./ProductForm";
+import { ProductModalFormProps } from "../../types";
 
-function ProductModalForm({ show, onHide, productId, onUpdate, onSuccess }) {
+function ProductModalForm({
+  show,
+  onHide,
+  productId,
+  onUpdate,
+  onSuccess,
+}: ProductModalFormProps) {
   const {
     formData,
     validationErrors,
@@ -31,7 +38,7 @@ function ProductModalForm({ show, onHide, productId, onUpdate, onSuccess }) {
     <Modal
       show={show}
       onHide={handleClose}
-      size="md"
+      size="lg"
       style={{ fontSize: ".8rem" }}
     >
       <Modal.Header closeButton>
