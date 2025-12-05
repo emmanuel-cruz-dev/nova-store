@@ -3,16 +3,22 @@ import useSWR from "swr";
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { productService } from "../api/services/product.service";
+import {
+  CreateProductDTO,
+  Product,
+  ProductResponse,
+  ErrorType,
+} from "../types";
 
 export const useProducts = (
   initialPage = 1,
   initialLimit = 10,
   status = "true"
 ) => {
-  const [page, setPage] = useState(initialPage);
-  const [limit, setLimit] = useState(initialLimit);
+  const [page, setPage] = useState<number>(initialPage);
+  const [limit, setLimit] = useState<number>(initialLimit);
 
-  const { data, error, isLoading, mutate } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR<ProductResponse, ErrorType>(
     ["products", page, limit, status],
     () => productService.getProducts(page, limit, status),
     {
@@ -21,12 +27,12 @@ export const useProducts = (
     }
   );
 
-  const goToPage = (newPage) => {
+  const goToPage = (newPage: number) => {
     window.scrollTo(0, 0);
     setPage(newPage);
   };
 
-  const changeLimit = (newLimit) => setLimit(newLimit);
+  const changeLimit = (newLimit: number) => setLimit(newLimit);
 
   return {
     products: data?.data || [],
@@ -41,7 +47,7 @@ export const useProducts = (
   };
 };
 
-export const useProductById = (id) => {
+export const useProductById = (id: number) => {
   const { data, error, isLoading } = useSWR(
     id ? ["product", id] : null,
     () => productService.getProductById(id),
@@ -73,7 +79,7 @@ export const useActiveProducts = () => {
   };
 };
 
-export const useProductsByCategory = (category) => {
+export const useProductsByCategory = (category: string) => {
   const { data, error, isLoading } = useSWR(
     category ? ["productsByCategory", category] : null,
     () => productService.getProductsByCategory(category),
@@ -92,7 +98,7 @@ export const useProductsByCategory = (category) => {
 export const useDeleteProduct = () => {
   const { trigger, isMutating, error } = useSWRMutation(
     "deleteProduct",
-    async (_, { arg: id }) => {
+    async (_, { arg: id }: { arg: number }) => {
       return await productService.deleteProduct(id);
     },
     {
@@ -110,21 +116,29 @@ export const useDeleteProduct = () => {
 };
 
 export const useUpdateProduct = () => {
-  const { trigger, isMutating, error } = useSWRMutation(
+  const { trigger, isMutating, error } = useSWRMutation<
+    Product,
+    ErrorType,
+    string,
+    { productId: number; formData: CreateProductDTO }
+  >(
     "updateProduct",
-    async (_, { arg: { productId, formData } }) => {
-      return await productService.updateProduct(productId, formData);
-    },
-    {
-      onSuccess: (data, { arg: { productId } }) => {
-        mutate(["product", productId]);
-        mutate((key) => Array.isArray(key) && key[0] === "products");
-      },
+    async (
+      _,
+      {
+        arg: { productId, formData },
+      }: { arg: { productId: number; formData: CreateProductDTO } }
+    ) => {
+      const result = await productService.updateProduct(productId, formData);
+      mutate(["product", productId]);
+      mutate((key) => Array.isArray(key) && key[0] === "products");
+      return result;
     }
   );
 
   return {
-    updateProduct: (productId, formData) => trigger({ productId, formData }),
+    updateProduct: (productId: number, formData: CreateProductDTO) =>
+      trigger({ productId, formData }),
     loading: isMutating,
     error,
   };
