@@ -9,6 +9,12 @@ export interface User {
   createdAt: string;
 }
 
+export interface UserData
+  extends Pick<User, "email" | "firstName" | "lastName" | "avatar"> {
+  id: number | null;
+  password: string;
+}
+
 type UserRole = "customer" | "admin";
 
 export interface AvatarUpdateModalProps {
