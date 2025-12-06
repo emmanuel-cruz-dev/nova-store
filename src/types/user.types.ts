@@ -1,11 +1,11 @@
 export interface User {
-  id: string;
-  email: string;
-  password: string;
+  id: number;
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
   role: UserRole;
-  avatar: string;
+  avatar?: string;
   createdAt: string;
 }
 
@@ -19,4 +19,29 @@ export interface AvatarUpdateModalProps {
   onSave: () => void;
   loading: boolean;
   currentAvatar: string;
+}
+
+export interface PasswordChangeFormProps {
+  profileData: User;
+  onPasswordChanged: () => void;
+}
+
+export type PasswordData = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
+export type PasswordFieldType = "old" | "new" | "confirm";
+
+export type ShowPasswordState = {
+  [key in PasswordFieldType]: boolean;
+};
+
+export type PasswordDataKeys = `${PasswordFieldType}Password`;
+
+export interface UseUpdateUserReturn {
+  updateUser: (userData: User) => Promise<User | undefined>;
+  loading: boolean;
+  error: Error | undefined;
 }
