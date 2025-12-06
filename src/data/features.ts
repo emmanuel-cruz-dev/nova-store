@@ -1,6 +1,7 @@
 import { DeliveryTruck, Undo, Wallet, Gift, HeadsetHelp } from "../icons";
+import { FeatureProps } from "../types";
 
-export const features = [
+export const features: FeatureProps[] = [
   {
     id: 1,
     icon: DeliveryTruck,
