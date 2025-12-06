@@ -33,3 +33,10 @@ export interface BannerItemProps {
 export interface ValidationErrors {
   [key: string]: string;
 }
+
+export interface FeatureProps {
+  id: number;
+  icon: any;
+  title: string;
+  subtitle: string;
+}
