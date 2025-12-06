@@ -1,38 +1,43 @@
 import { useState, useEffect, ReactNode } from "react";
 import { AuthContext } from "../hooks";
 import axios from "../api/axiosConfig";
+import { RegisterData, User } from "../types";
+import { AxiosError } from "axios";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem("user") === null ? false : true;
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem("user") !== null;
   });
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [authLoading, setAuthLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [authLoading, setAuthLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    localStorage.setItem("isAuthenticated", isAuthenticated);
+    localStorage.setItem("isAuthenticated", String(isAuthenticated));
   }, [isAuthenticated]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      setUser(JSON.parse(savedUser) as User);
     }
     setLoading(false);
   }, []);
 
-  const register = async (userData) => {
+  const register = async (userData: RegisterData): Promise<User> => {
     setAuthLoading(true);
 
     try {
-      let existingUsers = [];
+      let existingUsers: User[] = [];
 
       try {
-        const response = await axios.get(`/users?email=${userData.email}`);
+        const response = await axios.get<User[]>(
+          `/users?email=${userData.email}`
+        );
         existingUsers = response.data || [];
       } catch (error) {
-        if (error.response && error.response.status !== 404) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response && axiosError.response.status !== 404) {
           throw error;
         }
       }
@@ -41,8 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error("El correo electrónico ya está registrado");
       }
 
-      const newUserData = {
-        ...userData,
+      const newUserData: Omit<User, "id"> = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        password: userData.password,
         role: "customer",
         createdAt: new Date().toISOString(),
         avatar:
@@ -51,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             : "https://i.imgur.com/p4HoTq6.jpeg",
       };
 
-      const response = await axios.post("/users", newUserData);
+      const response = await axios.post<User>("/users", newUserData);
       const newUser = response.data;
 
       setUser(newUser);
@@ -60,24 +68,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       return newUser;
     } catch (error) {
-      console.error("Error en registro:", error.message);
+      const err = error as Error;
+      console.error("Error en registro:", err.message);
       throw error;
     } finally {
       setAuthLoading(false);
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email: string, password: string): Promise<User> => {
     setAuthLoading(true);
 
     try {
-      let users = [];
+      let users: User[] = [];
 
       try {
-        const response = await axios.get(`/users?email=${email}`);
+        const response = await axios.get<User[]>(`/users?email=${email}`);
         users = response.data || [];
       } catch (error) {
-        if (error.response && error.response.status === 404) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response && axiosError.response.status === 404) {
           throw new Error("El correo electrónico no está registrado");
         }
 
@@ -99,7 +109,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("user", JSON.stringify(foundUser));
       return foundUser;
     } catch (error) {
-      console.error("Error en login:", error.message);
+      const err = error as Error;
+      console.error("Error en login:", err.message);
       throw error;
     } finally {
       setAuthLoading(false);
@@ -112,9 +123,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("user");
   };
 
-  const updateUserProfile = async (updateUserData) => {
+  const updateUserProfile = async (updateUserData: User): Promise<User> => {
     setUser(updateUserData);
     localStorage.setItem("user", JSON.stringify(updateUserData));
+    return updateUserData;
   };
 
   return (
