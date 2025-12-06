@@ -113,7 +113,7 @@ function ProductsTable() {
         <ProductModalForm
           show={showModal}
           onHide={handleModalClose}
-          productId={selectedProductId}
+          productId={selectedProductId as number}
           onUpdate={notify}
           onSuccess={handleProductSaved}
         />
