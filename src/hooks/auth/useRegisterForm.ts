@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../useAuth";
 import { validateRegisterForm } from "../../utils/utils";
+import { RegisterData, ValidationErrors } from "../../types";
 
 export function useRegisterForm() {
   const { register, authLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<RegisterData>({
     firstName: "",
     lastName: "",
     email: "",
@@ -14,15 +15,15 @@ export function useRegisterForm() {
     confirmPassword: "",
     avatar: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (authLoading) return;
 
@@ -34,8 +35,11 @@ export function useRegisterForm() {
       try {
         const newUser = await register(dataToSend);
         console.log("Nuevo usuario:", newUser);
-      } catch (error) {
-        if (error.message.includes("ya está registrado")) {
+      } catch (error: unknown) {
+        if (
+          error instanceof Error &&
+          error.message.includes("ya está registrado")
+        ) {
           setErrors((prev) => ({
             ...prev,
             email: "Este correo ya está registrado",
