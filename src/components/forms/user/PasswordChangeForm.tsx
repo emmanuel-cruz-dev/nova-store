@@ -2,24 +2,44 @@ import { useState, useContext } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
 import { AuthContext, useUpdateUser } from "../../../hooks";
+import {
+  User,
+  PasswordChangeFormProps,
+  PasswordData,
+  PasswordFieldType,
+  ShowPasswordState,
+  PasswordDataKeys,
+} from "../../../types";
 
-function PasswordChangeForm({ profileData, onPasswordChanged }) {
-  const { user, updateUserProfile } = useContext(AuthContext);
+function PasswordChangeForm({
+  profileData,
+  onPasswordChanged,
+}: PasswordChangeFormProps) {
+  const { user, updateUserProfile } = useContext(AuthContext)!;
   const { updateUser } = useUpdateUser();
 
-  const [passwordData, setPasswordData] = useState({
+  const [passwordData, setPasswordData] = useState<PasswordData>({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
 
-  const [showPasswords, setShowPasswords] = useState({
+  const [showPasswords, setShowPasswords] = useState<ShowPasswordState>({
     old: false,
     new: false,
     confirm: false,
   });
 
-  const handlePasswordChange = async (e) => {
+  const passwordFields: Array<{
+    field: PasswordFieldType;
+    label: string;
+  }> = [
+    { field: "old", label: "Contraseña anterior" },
+    { field: "new", label: "Contraseña nueva" },
+    { field: "confirm", label: "Confirmar contraseña" },
+  ];
+
+  const handlePasswordChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (
@@ -57,12 +77,10 @@ function PasswordChangeForm({ profileData, onPasswordChanged }) {
         password: passwordData.newPassword,
       });
 
-      updateUserProfile(updatedUser);
+      await updateUserProfile(updatedUser as User);
 
-      if (onPasswordChanged) {
-        onPasswordChanged();
-        console.log("Cambio de contraseña exitoso");
-      }
+      onPasswordChanged();
+      console.log("Cambio de contraseña exitoso");
     } catch (error) {
       console.error("Error al cambiar la contraseña:", error);
       alert("Error al cambiar la contraseña");
@@ -75,6 +93,24 @@ function PasswordChangeForm({ profileData, onPasswordChanged }) {
     }
   };
 
+  const handlePasswordFieldChange = (
+    field: PasswordFieldType,
+    value: string
+  ) => {
+    const fieldKey = `${field}Password` as PasswordDataKeys;
+    setPasswordData({
+      ...passwordData,
+      [fieldKey]: value,
+    });
+  };
+
+  const togglePasswordVisibility = (field: PasswordFieldType) => {
+    setShowPasswords({
+      ...showPasswords,
+      [field]: !showPasswords[field],
+    });
+  };
+
   return (
     <Card className="border-0 shadow-sm">
       <Card.Body>
@@ -83,14 +119,10 @@ function PasswordChangeForm({ profileData, onPasswordChanged }) {
 
         <Form onSubmit={handlePasswordChange}>
           <Row className="g-3">
-            {["old", "new", "confirm"].map((field) => (
+            {passwordFields.map(({ field, label }) => (
               <Col md={6} key={field}>
                 <Form.Label className="text-muted small" htmlFor={field}>
-                  {field === "old"
-                    ? "Contraseña anterior"
-                    : field === "new"
-                    ? "Contraseña nueva"
-                    : "Confirmar contraseña"}
+                  {label}
                 </Form.Label>
                 <div className="input-group">
                   <Form.Control
@@ -98,23 +130,15 @@ function PasswordChangeForm({ profileData, onPasswordChanged }) {
                     type={showPasswords[field] ? "text" : "password"}
                     className="bg-light border-0"
                     placeholder="********"
-                    value={passwordData[`${field}Password`]}
+                    value={passwordData[`${field}Password` as PasswordDataKeys]}
                     onChange={(e) =>
-                      setPasswordData({
-                        ...passwordData,
-                        [`${field}Password`]: e.target.value,
-                      })
+                      handlePasswordFieldChange(field, e.target.value)
                     }
                   />
                   <Button
                     variant="light"
                     className="border-0"
-                    onClick={() =>
-                      setShowPasswords({
-                        ...showPasswords,
-                        [field]: !showPasswords[field],
-                      })
-                    }
+                    onClick={() => togglePasswordVisibility(field)}
                   >
                     {showPasswords[field] ? (
                       <Eye size={20} />
