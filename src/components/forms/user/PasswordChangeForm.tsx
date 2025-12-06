@@ -10,6 +10,7 @@ import {
   ShowPasswordState,
   PasswordDataKeys,
 } from "../../../types";
+import { toast } from "react-toastify";
 
 function PasswordChangeForm({
   profileData,
@@ -80,10 +81,10 @@ function PasswordChangeForm({
       await updateUserProfile(updatedUser as User);
 
       onPasswordChanged();
-      console.log("Cambio de contraseña exitoso");
+      toast.success("Contraseña actualizada correctamente");
     } catch (error) {
-      console.error("Error al cambiar la contraseña:", error);
-      alert("Error al cambiar la contraseña");
+      console.error("Error al actualizar la contraseña:", error);
+      toast.error("Error al actualizar la contraseña");
     } finally {
       setPasswordData({
         oldPassword: "",
