@@ -2,13 +2,15 @@ import { useState, useContext } from "react";
 import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
 import { AuthContext, useUpdateUser } from "../../../hooks";
 import { PasswordChangeForm } from "../..";
+import { User, UserData } from "../../../types";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 function ProfileMainContent() {
-  const { user, updateUserProfile } = useContext(AuthContext);
+  const { user, updateUserProfile } = useContext(AuthContext)!;
   const { updateUser, loading } = useUpdateUser();
 
-  const [profileData, setProfileData] = useState({
-    id: user?.id || "",
+  const [profileData, setProfileData] = useState<UserData>({
+    id: user?.id || null,
     email: user?.email || "",
     password: user?.password || "",
     firstName: user?.firstName || "",
@@ -18,14 +20,15 @@ function ProfileMainContent() {
 
   const [showPasswordChange, setShowPasswordChange] = useState(false);
 
-  const handleProfileUpdate = async (e) => {
+  const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const updatedUser = await updateUser(profileData);
-      updateUserProfile(updatedUser);
+      const updatedUser = await updateUser(profileData as User);
+      updateUserProfile(updatedUser as User);
+      toast.success("Perfil actualizado correctamente");
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
-      alert("Error al actualizar el perfil");
+      toast.error("Error al actualizar el perfil");
     }
   };
 
@@ -123,10 +126,16 @@ function ProfileMainContent() {
           </Form>
         </Card.Body>
       </Card>
+      <ToastContainer
+        position="bottom-left"
+        pauseOnHover={true}
+        theme="dark"
+        transition={Bounce}
+      />
 
       {showPasswordChange && (
         <PasswordChangeForm
-          profileData={profileData}
+          profileData={profileData as User}
           onPasswordChanged={handlePasswordChange}
         />
       )}
