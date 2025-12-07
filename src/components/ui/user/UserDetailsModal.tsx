@@ -1,8 +1,9 @@
 import { Modal, Button, ListGroup } from "react-bootstrap";
 import { CircleUser, Mail, CalendarDays, Trash2 } from "lucide-react";
 import { formatDateDetailed } from "../../../utils/utils";
+import { UserDetailsModalProps } from "../../../types";
 
-function UserDetailsModal({ user, onClose, onDelete }) {
+function UserDetailsModal({ user, onClose, onDelete }: UserDetailsModalProps) {
   return (
     <Modal show={true} onHide={onClose} centered dialogClassName="user-modal">
       <Modal.Header closeButton className="border-0 pb-0">
