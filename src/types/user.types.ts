@@ -51,3 +51,9 @@ export interface UseUpdateUserReturn {
   loading: boolean;
   error: Error | undefined;
 }
+
+export interface UserDetailsModalProps {
+  user: User;
+  onClose: () => void;
+  onDelete: (user: User) => void;
+}
