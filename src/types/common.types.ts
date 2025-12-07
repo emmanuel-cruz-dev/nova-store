@@ -23,7 +23,7 @@ export interface DeleteConfirmationModalProps {
   onClose: () => void;
   onConfirm: () => void;
   name: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export interface BannerItemProps {
