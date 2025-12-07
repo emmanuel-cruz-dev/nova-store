@@ -16,6 +16,7 @@ import {
   PaginationItem,
   UsersTableRowSkeleton,
 } from "../..";
+import { User } from "../../../types";
 
 function UsersTable() {
   const {
@@ -68,7 +69,7 @@ function UsersTable() {
               <td colSpan={6}>Error al cargar usuarios</td>
             </tr>
           ) : (
-            users.map((user) => (
+            users.map((user: User) => (
               <tr key={user.id}>
                 <td>
                   <img
@@ -124,7 +125,7 @@ function UsersTable() {
             ? `${userToDelete.firstName} ${userToDelete.lastName}`
             : ""
         }
-        isDeleting={isDeleting}
+        loading={isDeleting}
       />
 
       <ToastContainer
