@@ -2,8 +2,13 @@ import { Camera } from "lucide-react";
 import { Card, Button, ListGroup, Image } from "react-bootstrap";
 import { useProfileSidebar } from "../../../hooks";
 import { AvatarUpdateModal } from "../..";
+import { ProfileSidebarProps } from "../../../types";
 
-function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
+function ProfileSidebar({
+  menuItems,
+  activeSection,
+  setActiveSection,
+}: ProfileSidebarProps) {
   const {
     user,
     profileData,
@@ -17,7 +22,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
     handleMenuClick,
   } = useProfileSidebar();
 
-  const onMenuClick = (menuId) => {
+  const onMenuClick = (menuId: string) => {
     handleMenuClick(menuId);
     if (menuId !== "logout") {
       setActiveSection(menuId);
@@ -72,7 +77,7 @@ function ProfileSidebar({ menuItems, activeSection, setActiveSection }) {
                       : ""
                   }`}
                 >
-                  <Icon size={20} className="me-3" />
+                  <Icon className="me-3" />
                   <span
                     className={activeSection === item.id ? "fw-semibold" : ""}
                   >
