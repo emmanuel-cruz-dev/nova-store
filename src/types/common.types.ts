@@ -40,3 +40,9 @@ export interface FeatureProps {
   title: string;
   subtitle: string;
 }
+
+export interface MenuItem {
+  id: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  label: string;
+}
