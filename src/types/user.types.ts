@@ -1,3 +1,5 @@
+import { MenuItem } from "./common.types";
+
 export interface User {
   id: number;
   firstName: string;
@@ -56,4 +58,10 @@ export interface UserDetailsModalProps {
   user: User;
   onClose: () => void;
   onDelete: (user: User) => void;
+}
+
+export interface ProfileSidebarProps {
+  menuItems: MenuItem[];
+  activeSection: string;
+  setActiveSection: React.Dispatch<React.SetStateAction<string>>;
 }
