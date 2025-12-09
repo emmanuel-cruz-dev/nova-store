@@ -5,7 +5,7 @@ import { AuthContext } from "./useAuth";
 export const useNavigationBar = () => {
   const { logout } = useContext(AuthContext)!;
   const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const toggleMenu = () => setShowMenu((prev) => !prev);
@@ -22,7 +22,7 @@ export const useNavigationBar = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setShowMenu(false);
       }
     };
