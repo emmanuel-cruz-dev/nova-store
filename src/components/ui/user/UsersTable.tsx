@@ -110,7 +110,7 @@ function UsersTable() {
 
       {showDetails && (
         <UserDetailsModal
-          user={selectedUser}
+          user={selectedUser as User}
           onClose={handleCloseDetails}
           onDelete={handleShowDeleteModal}
         />
