@@ -56,7 +56,7 @@ function Products() {
           <ProductsGallery
             title={
               categories.find((category) => category.id === selectedCategory)
-                ?.name
+                ?.name!
             }
             products={paginatedProducts}
             loading={loading}
