@@ -67,7 +67,7 @@ const getUserByRole = async (role: string, page = 1, limit = 10) => {
   }
 };
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (id: number) => {
   try {
     const response = await axios.delete(`/users/${id}`);
 
