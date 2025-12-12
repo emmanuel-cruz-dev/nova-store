@@ -1,12 +1,13 @@
 import { useState, useContext } from "react";
 import { AuthContext, useUpdateUser } from ".";
+import { User } from "../types";
 
 export const useProfileSidebar = () => {
   const { user, logout, updateUserProfile } = useContext(AuthContext)!;
   const { updateUser, loading } = useUpdateUser();
 
   const [profileData, setProfileData] = useState({
-    id: user?.id || "",
+    id: user?.id || null,
     email: user?.email || "",
     password: user?.password || "",
     firstName: user?.firstName || "",
@@ -36,7 +37,7 @@ export const useProfileSidebar = () => {
         avatar: newAvatarUrl,
       });
 
-      updateUserProfile(updatedUser);
+      updateUserProfile(updatedUser as User);
       setShowAvatarModal(false);
     } catch (error) {
       console.error("Error al actualizar el avatar:", error);
