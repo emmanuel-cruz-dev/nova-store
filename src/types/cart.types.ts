@@ -1,14 +1,14 @@
-import { Product, ProductToAdd } from "./product.types";
+import { ProductToAdd } from "./product.types";
 
-export interface CartItem extends Product {
+export interface CartItem extends ProductToAdd {
   quantity: number;
 }
 
 export interface CartContextType {
   cart: CartItem[];
   handleAddToCart: (product: ProductToAdd, quantity?: number) => void;
-  handleRemoveFromCart: (product: Product) => void;
-  handleDecreaseQuantity: (product: Product) => void;
+  handleRemoveFromCart: (product: ProductToAdd) => void;
+  handleDecreaseQuantity: (product: ProductToAdd) => void;
   handleClearCart: () => void;
   getCartTotal: () => number;
   getCartItemsCount: () => number;
