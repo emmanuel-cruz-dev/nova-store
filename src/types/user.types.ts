@@ -1,14 +1,23 @@
 import { MenuItem } from "./common.types";
 
 export interface User {
-  id: number;
+  id: number | null;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  role: UserRole;
+  role?: UserRole;
   avatar?: string;
-  createdAt: string;
+  createdAt?: string;
+}
+
+export interface UserResponse {
+  data?: {
+    users?: User[];
+    total?: number;
+    totalPages?: number;
+  };
+  total?: number;
 }
 
 export interface UserData
