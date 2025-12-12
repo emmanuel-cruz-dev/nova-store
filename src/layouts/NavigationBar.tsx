@@ -7,7 +7,6 @@ import { useAuthStore } from "../stores/authStore";
 function NavigationBar() {
   const { getCartItemsCount } = useCart();
   const { user, isAuthenticated } = useAuthStore();
-  // const { user, isAuthenticated } = useContext(AuthContext)!;
   const { showMenu, toggleMenu, handleLogout, handleNavigate, menuRef } =
     useNavigationBar();
 

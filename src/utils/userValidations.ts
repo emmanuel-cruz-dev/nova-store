@@ -1,4 +1,4 @@
-import { UserData } from "../types";
+import { RegisterData } from "../types";
 import { isValidUrl } from "./productValidations";
 
 export const validateLoginForm = (loginData: {
@@ -22,9 +22,7 @@ export const validateLoginForm = (loginData: {
   return errors;
 };
 
-export const validateRegisterForm = (
-  formData: UserData & { confirmPassword: string }
-) => {
+export const validateRegisterForm = (formData: RegisterData) => {
   const errors = {} as {
     [key: string]: string;
   };
