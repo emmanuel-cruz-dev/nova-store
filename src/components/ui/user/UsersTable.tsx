@@ -85,10 +85,10 @@ function UsersTable() {
                   {user.firstName} {user.lastName}
                 </td>
                 <td>{user.email}</td>
-                <td>{formatDateShort(user.createdAt)}</td>
+                <td>{formatDateShort(user.createdAt as string)}</td>
                 <td className="d-flex gap-2">
                   <button
-                    onClick={() => handleShowDetails(user.id)}
+                    onClick={() => handleShowDetails(user.id as number)}
                     className="btn btn-secondary btn-sm"
                   >
                     <Eye size={18} className="me-2" />
