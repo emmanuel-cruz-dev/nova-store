@@ -2,7 +2,7 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { userService } from "../api/services/user.service";
-import { UserResponse } from "../types";
+import { User, UserResponse } from "../types";
 
 export const useUsers = () => {
   const {
@@ -42,7 +42,17 @@ export const useUserByRole = (
   role: string,
   initialPage = 1,
   initialLimit = 10
-) => {
+): {
+  users: User[];
+  loading: boolean;
+  error: any;
+  deleteUser: (userId: number) => Promise<{ success: boolean }>;
+  refetch: () => Promise<any>;
+  currentPage: number;
+  totalPages: number;
+  totalUsers: number;
+  goToPage: (page: number) => void;
+} => {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   const {
@@ -97,7 +107,14 @@ export const useUserByRole = (
     }
   };
 
-  const users = data?.data?.users || data?.data || [];
+  let users: User[] = [];
+
+  if (data?.data?.users && Array.isArray(data.data.users)) {
+    users = data.data.users;
+  } else if (Array.isArray(data?.data)) {
+    users = data.data;
+  }
+
   const totalPages =
     data?.data?.totalPages ||
     (data?.total ? Math.ceil(data.total / initialLimit) : 1);
