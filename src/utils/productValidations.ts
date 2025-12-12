@@ -1,4 +1,6 @@
-export const isValidUrl = (string) => {
+import { CreateProductDTO } from "../types";
+
+export const isValidUrl = (string: string) => {
   if (!string) return true;
   try {
     new URL(string);
@@ -9,8 +11,10 @@ export const isValidUrl = (string) => {
   }
 };
 
-export const validateProductForm = (formData) => {
-  const errors = {};
+export const validateProductForm = (formData: CreateProductDTO) => {
+  const errors = {} as {
+    [key: string]: string;
+  };
 
   if (!formData.name.trim()) {
     errors.name = "El nombre es requerido";
@@ -28,13 +32,13 @@ export const validateProductForm = (formData) => {
     errors.price = "El precio es demasiado alto";
   }
 
-  if (formData.stock === "" || formData.stock < 0) {
+  if (!formData.stock || formData.stock < 0) {
     errors.stock = "El stock no puede ser negativo";
   } else if (formData.stock > 999999) {
     errors.stock = "El stock es demasiado alto";
   }
 
-  if (formData.rating !== "" && (formData.rating < 0 || formData.rating > 5)) {
+  if (!formData.rating && (formData.rating < 0 || formData.rating > 5)) {
     errors.rating = "El rating debe estar entre 0 y 5";
   }
 
