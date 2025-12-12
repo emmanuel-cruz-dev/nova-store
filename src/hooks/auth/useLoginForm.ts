@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../useAuth";
 import { LoginData, ValidationErrors } from "../../types";
-import { validateLoginForm } from "../../utils/utils";
+import { validateLoginForm } from "../../utils/userValidations";
 
 export function useLoginForm() {
   const [showPassword, setShowPassword] = useState(false);

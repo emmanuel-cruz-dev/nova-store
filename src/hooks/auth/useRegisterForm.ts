@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../useAuth";
-import { validateRegisterForm } from "../../utils/utils";
+import { validateRegisterForm } from "../../utils/userValidations";
 import { RegisterData, ValidationErrors } from "../../types";
 
 export function useRegisterForm() {
