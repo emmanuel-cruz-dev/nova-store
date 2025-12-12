@@ -2,6 +2,7 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { userService } from "../api/services/user.service";
+import { UserResponse } from "../types";
 
 export const useUsers = () => {
   const {
@@ -49,7 +50,7 @@ export const useUserByRole = (
     error,
     isLoading,
     mutate: refetch,
-  } = useSWR(
+  } = useSWR<UserResponse>(
     role ? ["usersByRole", role, currentPage, initialLimit] : null,
     () => userService.getUserByRole(role, currentPage, initialLimit),
     {
@@ -60,12 +61,13 @@ export const useUserByRole = (
 
   const { trigger: triggerDelete, isMutating: isDeleting } = useSWRMutation(
     ["deleteUser", role],
-    async (_, { arg: userId }) => {
-      await userService.deleteUser(userId);
+    async (_key, { arg }: { arg: number }) => {
+      await userService.deleteUser(arg);
 
       const currentData = data || {};
       const currentUsers = currentData.data?.users || currentData.data || [];
-      const remainingUsers = currentUsers.length - 1;
+      const usersArray = Array.isArray(currentUsers) ? currentUsers : [];
+      const remainingUsers = usersArray.length - 1;
 
       if (remainingUsers === 0 && currentPage > 1) {
         setCurrentPage(currentPage - 1);
