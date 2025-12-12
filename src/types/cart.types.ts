@@ -1,10 +1,6 @@
 import { ProductToAdd } from "./product.types";
 
-export interface CartItem extends ProductToAdd {
-  quantity: number;
-}
-
-export interface CartContextType {
+export interface CartStore {
   cart: CartItem[];
   handleAddToCart: (product: ProductToAdd, quantity?: number) => void;
   handleRemoveFromCart: (product: ProductToAdd) => void;
@@ -12,6 +8,10 @@ export interface CartContextType {
   handleClearCart: () => void;
   getCartTotal: () => number;
   getCartItemsCount: () => number;
+}
+
+export interface CartItem extends ProductToAdd {
+  quantity: number;
 }
 
 export interface CartItemProps {
