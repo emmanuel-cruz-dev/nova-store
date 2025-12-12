@@ -26,7 +26,8 @@ export const useUsersTable = (
 
   const handleShowDetails = (userId: number) => {
     setShowDetails(true);
-    setSelectedUser(users.find((u) => u.id === userId));
+    const userArray = Array.isArray(users) ? users : [];
+    setSelectedUser(userArray.find((u: User) => u.id === userId) || null);
   };
 
   const handleCloseDetails = () => {
@@ -48,7 +49,7 @@ export const useUsersTable = (
     if (!userToDelete) return;
 
     setIsDeleting(true);
-    const result = await deleteUser(userToDelete.id);
+    const result = await deleteUser(userToDelete.id as number);
 
     if (result.success) {
       toast.success(
