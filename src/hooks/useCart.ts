@@ -1,14 +1,25 @@
-import { createContext, useContext } from "react";
-import { CartContextType } from "../types";
+import { useCartStore } from "../stores/cartStore";
 
-export const CartContext = createContext<CartContextType | undefined>(
-  undefined
-);
+export const useCart = () => {
+  const cart = useCartStore((state) => state.cart);
+  const handleAddToCart = useCartStore((state) => state.handleAddToCart);
+  const handleRemoveFromCart = useCartStore(
+    (state) => state.handleRemoveFromCart
+  );
+  const handleDecreaseQuantity = useCartStore(
+    (state) => state.handleDecreaseQuantity
+  );
+  const handleClearCart = useCartStore((state) => state.handleClearCart);
+  const getCartTotal = useCartStore((state) => state.getCartTotal);
+  const getCartItemsCount = useCartStore((state) => state.getCartItemsCount);
 
-export const useCart = (): CartContextType => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
+  return {
+    cart,
+    handleAddToCart,
+    handleRemoveFromCart,
+    handleDecreaseQuantity,
+    handleClearCart,
+    getCartTotal,
+    getCartItemsCount,
+  };
 };
