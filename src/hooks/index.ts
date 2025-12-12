@@ -1,6 +1,6 @@
 export { useUpdateUser } from "./auth/useUpdateUser";
 export { useAuth, AuthContext } from "./useAuth";
-export { useCart, CartContext } from "./useCart";
+export { useCart } from "./useCart";
 export { useCategorySelect } from "./useCategorySelect";
 export { useCheckoutOrder } from "./useCheckoutOrder";
 export { useNavigation } from "./useNavigation";
