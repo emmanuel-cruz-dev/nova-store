@@ -1,9 +1,10 @@
-import { useState, useContext } from "react";
-import { AuthContext, useUpdateUser } from ".";
+import { useState } from "react";
+import { useAuthStore } from "../stores/authStore";
+import { useUpdateUser } from ".";
 import { User } from "../types";
 
 export const useProfileSidebar = () => {
-  const { user, logout, updateUserProfile } = useContext(AuthContext)!;
+  const { user, logout, updateUserProfile } = useAuthStore();
   const { updateUser, loading } = useUpdateUser();
 
   const [profileData, setProfileData] = useState({

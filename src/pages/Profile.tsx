@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useAuth } from "../hooks";
+import { useAuthStore } from "../stores/authStore";
 import {
   ProfileMainContent,
   ProfileSidebar,
@@ -10,7 +10,7 @@ import {
 import { adminMenuItems, userMenuItems } from "../data/menuItems";
 
 function Profile() {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const isAdmin = user?.role === "admin";
   const [activeSection, setActiveSection] = useState("profile");
 

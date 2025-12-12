@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../useAuth";
+import { useAuthStore } from "../../stores/authStore";
 import { LoginData, ValidationErrors } from "../../types";
 import { validateLoginForm } from "../../utils/userValidations";
 
@@ -12,7 +12,7 @@ export function useLoginForm() {
   });
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const { login, authLoading } = useAuth();
+  const { login, authLoading } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 

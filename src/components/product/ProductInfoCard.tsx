@@ -2,11 +2,12 @@ import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { ProductInfoDisplay, ProductQuantitySelector } from "../index";
-import { useAuth, useProductCard, useProductQuantity } from "../../hooks";
+import { useAuthStore } from "../../stores/authStore";
+import { useProductCard, useProductQuantity } from "../../hooks";
 import { ProductItemProps } from "../../types";
 
 const ProductInfoCard = ({ product }: ProductItemProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
 
   const { handleAddToCartClick } = useProductCard({
     id: product.id || 0,

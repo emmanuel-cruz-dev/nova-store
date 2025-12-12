@@ -1,12 +1,13 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
-import { AuthContext, useUpdateUser } from "../../../hooks";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import { useAuthStore } from "../../../stores/authStore";
+import { useUpdateUser } from "../../../hooks";
 import { PasswordChangeForm } from "../..";
 import { User, UserData } from "../../../types";
-import { Bounce, toast, ToastContainer } from "react-toastify";
 
 function ProfileMainContent() {
-  const { user, updateUserProfile } = useContext(AuthContext)!;
+  const { user, updateUserProfile } = useAuthStore();
   const { updateUser, loading } = useUpdateUser();
 
   const [profileData, setProfileData] = useState<UserData>({

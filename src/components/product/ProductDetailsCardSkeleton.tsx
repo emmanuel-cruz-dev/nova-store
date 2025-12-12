@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { Container, Card, Row, Col, Placeholder } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import { useAuth } from "../../hooks";
+import { useAuthStore } from "../../stores/authStore";
 import HighlightedFeatures from "../ui/HighlightedFeatures";
 import { highlightedFeatures } from "../../data/highlightedFeatures";
 
 function ProductDetailsCardSkeleton() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <Container className="py-5">

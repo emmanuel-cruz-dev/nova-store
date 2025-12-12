@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { ShoppingBag } from "lucide-react";
-import { useAuth } from "../../hooks";
+import { useAuthStore } from "../../stores/authStore";
 
 function EmptyCartCard() {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   return (
     <Card className="shadow-sm border-0 text-center py-5">

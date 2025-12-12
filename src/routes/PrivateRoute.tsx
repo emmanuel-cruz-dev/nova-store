@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../hooks";
+import { useAuthStore } from "../stores/authStore";
 import { Loader } from "../components";
 
 function PrivateRoute({ children }: { children: ReactNode }) {
-  const { user, loading, authLoading } = useAuth();
+  const { user, loading, authLoading } = useAuthStore();
   const location = useLocation();
 
   if (loading || authLoading) {

@@ -1,12 +1,13 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { ShoppingCart, ChevronDown, User, LogOut } from "lucide-react";
-import { AuthContext, useCart, useNavigationBar } from "../hooks";
+import { useCart, useNavigationBar } from "../hooks";
+import { useAuthStore } from "../stores/authStore";
 
 function NavigationBar() {
   const { getCartItemsCount } = useCart();
-  const { user, isAuthenticated } = useContext(AuthContext)!;
+  const { user, isAuthenticated } = useAuthStore();
+  // const { user, isAuthenticated } = useContext(AuthContext)!;
   const { showMenu, toggleMenu, handleLogout, handleNavigate, menuRef } =
     useNavigationBar();
 

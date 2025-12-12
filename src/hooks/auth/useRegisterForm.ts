@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../useAuth";
+import { useAuthStore } from "../../stores/authStore";
 import { validateRegisterForm } from "../../utils/userValidations";
 import { RegisterData, ValidationErrors } from "../../types";
 
 export function useRegisterForm() {
-  const { register, authLoading } = useAuth();
+  const { register, authLoading } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState<RegisterData>({

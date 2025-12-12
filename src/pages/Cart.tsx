@@ -1,10 +1,11 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { useCart, useAuth } from "../hooks";
+import { useAuthStore } from "../stores/authStore";
+import { useCart } from "../hooks";
 import { CartItem, EmptyCartCard, OrderSummary } from "../components";
 
 function Cart() {
+  const { user } = useAuthStore();
   const { cart, getCartItemsCount, handleClearCart } = useCart();
-  const { user } = useAuth();
 
   return (
     <Container className="py-5">

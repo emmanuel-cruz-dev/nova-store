@@ -1,7 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Row, Col, Card, Button, Form } from "react-bootstrap";
-import { AuthContext, useUpdateUser } from "../../../hooks";
+import { toast } from "react-toastify";
+import { useAuthStore } from "../../../stores/authStore";
+import { useUpdateUser } from "../../../hooks";
 import {
   User,
   PasswordChangeFormProps,
@@ -10,13 +12,12 @@ import {
   ShowPasswordState,
   PasswordDataKeys,
 } from "../../../types";
-import { toast } from "react-toastify";
 
 function PasswordChangeForm({
   profileData,
   onPasswordChanged,
 }: PasswordChangeFormProps) {
-  const { user, updateUserProfile } = useContext(AuthContext)!;
+  const { user, updateUserProfile } = useAuthStore();
   const { updateUser } = useUpdateUser();
 
   const [passwordData, setPasswordData] = useState<PasswordData>({
