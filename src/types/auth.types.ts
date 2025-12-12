@@ -1,14 +1,15 @@
 import { User } from "./user.types";
 
-export interface AuthContextType {
+export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
-  login: (email: string, password: string) => Promise<User>;
-  register: (userData: RegisterData) => Promise<User>;
-  logout: () => void;
   loading: boolean;
   authLoading: boolean;
-  updateUserProfile: (userData: User) => Promise<User>;
+  register: (userData: RegisterData) => Promise<User>;
+  login: (email: string, password: string) => Promise<User>;
+  logout: () => void;
+  updateUserProfile: (updateUserData: User) => Promise<User>;
+  initializeAuth: () => void;
 }
 
 export interface LoginData {
