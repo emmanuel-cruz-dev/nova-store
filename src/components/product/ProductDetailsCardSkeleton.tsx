@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Container, Card, Row, Col, Placeholder } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
-import HighlightedFeatures from "../ui/HighlightedFeatures";
+import HighlightedFeatures from "../common/HighlightedFeatures";
 import { highlightedFeatures } from "../../data/highlightedFeatures";
 
 function ProductDetailsCardSkeleton() {
