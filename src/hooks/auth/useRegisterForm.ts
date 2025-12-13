@@ -1,55 +1,56 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../../stores/authStore";
-import { validateRegisterForm } from "../../utils/userValidations";
-import { RegisterData, ValidationErrors } from "../../types";
+import { registerSchema, RegisterFormData } from "../../schemas/authSchemas";
 
 export function useRegisterForm() {
-  const { register, authLoading } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState<RegisterData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    avatar: "",
+  const { register: registerUser, authLoading } = useAuthStore();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      avatar: "",
+    },
   });
-  const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: RegisterFormData) => {
     if (authLoading) return;
 
-    const formErrors = validateRegisterForm(formData);
-    if (Object.keys(formErrors).length === 0) {
-      const { confirmPassword: _, ...dataToSend } = formData;
-      if (!dataToSend.avatar) delete dataToSend.avatar;
+    const { confirmPassword, avatar, ...dataToSend } = data;
 
-      try {
-        const newUser = await register(dataToSend);
-        console.log("Nuevo usuario:", newUser);
-      } catch (error: unknown) {
-        if (
-          error instanceof Error &&
-          error.message.includes("ya está registrado")
-        ) {
-          setErrors((prev) => ({
-            ...prev,
-            email: "Este correo ya está registrado",
-          }));
-        } else {
-          console.error("Error al registrar usuario:", error);
-        }
+    const finalData =
+      avatar && avatar.trim() !== "" ? { ...dataToSend, avatar } : dataToSend;
+
+    try {
+      const newUser = await registerUser(finalData);
+      console.log("Nuevo usuario:", newUser.email);
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        error.message.includes("ya está registrado")
+      ) {
+        setError("email", {
+          type: "manual",
+          message: "Este correo ya está registrado",
+        });
+      } else {
+        console.error("Error al registrar usuario:", error);
       }
-    } else {
-      setErrors(formErrors);
     }
   };
 
@@ -58,10 +59,10 @@ export function useRegisterForm() {
     setShowPassword,
     showConfirmPassword,
     setShowConfirmPassword,
-    formData,
+    register,
+    handleSubmit,
+    onSubmit,
     errors,
     authLoading,
-    handleChange,
-    handleSubmit,
   };
 }
