@@ -9,15 +9,15 @@ function RegisterForm() {
     setShowPassword,
     showConfirmPassword,
     setShowConfirmPassword,
-    formData,
+    register,
+    handleSubmit,
+    onSubmit,
     errors,
     authLoading,
-    handleChange,
-    handleSubmit,
   } = useRegisterForm();
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="row">
         <div className="col-md-6 mb-3">
           <Form.Group controlId="firstName">
@@ -30,14 +30,13 @@ function RegisterForm() {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                name="firstName"
                 placeholder="Juan"
-                value={formData.firstName}
-                onChange={handleChange}
+                {...register("firstName")}
                 isInvalid={!!errors.firstName}
+                autoComplete="given-name"
               />
               <Form.Control.Feedback type="invalid">
-                {errors.firstName}
+                {errors.firstName?.message}
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
@@ -54,14 +53,13 @@ function RegisterForm() {
               </InputGroup.Text>
               <Form.Control
                 type="text"
-                name="lastName"
                 placeholder="Pérez"
-                value={formData.lastName}
-                onChange={handleChange}
+                {...register("lastName")}
                 isInvalid={!!errors.lastName}
+                autoComplete="family-name"
               />
               <Form.Control.Feedback type="invalid">
-                {errors.lastName}
+                {errors.lastName?.message}
               </Form.Control.Feedback>
             </InputGroup>
           </Form.Group>
@@ -78,14 +76,13 @@ function RegisterForm() {
           </InputGroup.Text>
           <Form.Control
             type="email"
-            name="email"
             placeholder="nombre@mail.com"
-            value={formData.email}
-            onChange={handleChange}
+            {...register("email")}
             isInvalid={!!errors.email}
+            autoComplete="email"
           />
           <Form.Control.Feedback type="invalid">
-            {errors.email}
+            {errors.email?.message}
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
@@ -100,11 +97,10 @@ function RegisterForm() {
           </InputGroup.Text>
           <Form.Control
             type={showPassword ? "text" : "password"}
-            name="password"
             placeholder="Mínimo 6 caracteres"
-            value={formData.password}
-            onChange={handleChange}
+            {...register("password")}
             isInvalid={!!errors.password}
+            autoComplete="new-password"
           />
           <Button
             variant="light"
@@ -114,7 +110,7 @@ function RegisterForm() {
             {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </Button>
           <Form.Control.Feedback type="invalid">
-            {errors.password}
+            {errors.password?.message}
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
@@ -129,11 +125,10 @@ function RegisterForm() {
           </InputGroup.Text>
           <Form.Control
             type={showConfirmPassword ? "text" : "password"}
-            name="confirmPassword"
             placeholder="Repite tu contraseña"
-            value={formData.confirmPassword}
-            onChange={handleChange}
+            {...register("confirmPassword")}
             isInvalid={!!errors.confirmPassword}
+            autoComplete="new-password"
           />
           <Button
             variant="light"
@@ -143,7 +138,7 @@ function RegisterForm() {
             {showConfirmPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </Button>
           <Form.Control.Feedback type="invalid">
-            {errors.confirmPassword}
+            {errors.confirmPassword?.message}
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
@@ -158,14 +153,13 @@ function RegisterForm() {
           </InputGroup.Text>
           <Form.Control
             type="url"
-            name="avatar"
             placeholder="https://ejemplo.com/mi-foto.jpg"
-            value={formData.avatar}
-            onChange={handleChange}
+            {...register("avatar")}
             isInvalid={!!errors.avatar}
+            autoComplete="off"
           />
           <Form.Control.Feedback type="invalid">
-            {errors.avatar}
+            {errors.avatar?.message}
           </Form.Control.Feedback>
         </InputGroup>
         <Form.Text className="text-muted">URL de tu imagen de perfil</Form.Text>
