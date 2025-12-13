@@ -1,3 +1,5 @@
+import { CategoryDataProps } from "../types";
+
 export function formatPrice(price: number) {
   return price.toLocaleString("ar-AR", {
     currency: "ARS",
@@ -29,7 +31,7 @@ export function renderCategory(category: string) {
   }
 }
 
-export const getColSize = (displayCategories: string[]) => {
+export const getColSize = (displayCategories: CategoryDataProps[]) => {
   const count = displayCategories.length;
   if (count === 1) return 12;
   if (count === 2) return 6;
