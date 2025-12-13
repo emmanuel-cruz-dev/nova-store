@@ -7,17 +7,17 @@ function LoginForm() {
   const {
     showPassword,
     setShowPassword,
-    loginData,
+    register,
+    handleSubmit,
+    onSubmit,
     errors,
     authLoading,
-    handleChange,
-    handleLoginSubmit,
   } = useLoginForm();
 
   return (
-    <Form onSubmit={handleLoginSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Form.Group className="mb-3">
-        <Form.Label>
+        <Form.Label htmlFor="email">
           Correo electrónico <span className="text-danger">*</span>
         </Form.Label>
         <InputGroup hasValidation>
@@ -26,20 +26,19 @@ function LoginForm() {
           </InputGroup.Text>
           <Form.Control
             type="email"
-            name="email"
             placeholder="Ej. nombre@mail.com"
-            value={loginData.email}
-            onChange={handleChange}
+            {...register("email")}
             isInvalid={!!errors.email}
+            autoComplete="email"
           />
           <Form.Control.Feedback type="invalid">
-            {errors.email}
+            {errors.email?.message}
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>
+        <Form.Label htmlFor="password">
           Contraseña <span className="text-danger">*</span>
         </Form.Label>
         <InputGroup hasValidation>
@@ -48,11 +47,10 @@ function LoginForm() {
           </InputGroup.Text>
           <Form.Control
             type={showPassword ? "text" : "password"}
-            name="password"
             placeholder="********"
-            value={loginData.password}
-            onChange={handleChange}
+            {...register("password")}
             isInvalid={!!errors.password}
+            autoComplete="current-password"
           />
           <Button
             variant="light"
@@ -62,7 +60,7 @@ function LoginForm() {
             {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
           </Button>
           <Form.Control.Feedback type="invalid">
-            {errors.password}
+            {errors.password?.message}
           </Form.Control.Feedback>
         </InputGroup>
       </Form.Group>
