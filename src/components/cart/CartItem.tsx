@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Row, Col, Button, Badge } from "react-bootstrap";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "../../hooks";
@@ -44,8 +45,15 @@ const CartItem = ({ product, index }: CartItemProps) => {
           </figure>
         </Col>
 
-        <Col xs={12} sm={4}>
-          <h6 className="mb-1 line-clamp-1">{product.name}</h6>
+        <Col xs={12} sm={4} className="mt-0">
+          <Link
+            to={`/product/${product.id}`}
+            className="text-decoration-none mb-1 line-clamp-1"
+            style={{ fontWeight: 600 }}
+            title={product.name}
+          >
+            {product.name}
+          </Link>
           <p className="mb-0 small fw-semibold">
             Precio unitario: ${formatPrice(product.price)}
           </p>
