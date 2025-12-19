@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuthStore } from "../stores/authStore";
 import { useUpdateUser } from ".";
 import { User } from "../types";
@@ -40,9 +41,10 @@ export const useProfileSidebar = () => {
 
       updateUserProfile(updatedUser as User);
       setShowAvatarModal(false);
+      toast.success("Avatar actualizado correctamente");
     } catch (error) {
       console.error("Error al actualizar el avatar:", error);
-      alert("Error al actualizar el avatar");
+      toast.error("Error al actualizar el avatar");
       setNewAvatarUrl(profileData.avatar);
     }
   };
