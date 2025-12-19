@@ -33,5 +33,19 @@ export const registerSchema = z
     path: ["confirmPassword"],
   });
 
+export const passwordSchema = z
+  .object({
+    oldPassword: z.string().min(1, "La contraseña anterior es requerida"),
+    newPassword: z
+      .string()
+      .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    confirmPassword: z.string().min(1, "Debes confirmar la contraseña"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+export type PasswordFormData = z.infer<typeof passwordSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
