@@ -24,3 +24,4 @@ export { useProfileSidebar } from "./useProfileSidebar";
 export { useUsersTable } from "./useUsersTable";
 export { useLoginForm } from "./auth/useLoginForm";
 export { useRegisterForm } from "./auth/useRegisterForm";
+export { usePasswordChange } from "./usePasswordChange";
