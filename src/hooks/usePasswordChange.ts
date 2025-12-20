@@ -7,15 +7,13 @@ import { useUpdateUser } from "./auth/useUpdateUser";
 import { PasswordFormData, passwordSchema } from "../schemas/authSchemas";
 import { User } from "../types";
 
-interface UsePasswordChangeProps {
-  profileData: User;
-  onPasswordChanged: () => void;
-}
-
 export function usePasswordChange({
   profileData,
   onPasswordChanged,
-}: UsePasswordChangeProps) {
+}: {
+  profileData: User;
+  onPasswordChanged: () => void;
+}) {
   const { user, updateUserProfile } = useAuthStore();
   const { updateUser } = useUpdateUser();
 
@@ -48,7 +46,6 @@ export function usePasswordChange({
   };
 
   const onSubmit = async (data: PasswordFormData) => {
-    // Validar contraseña anterior
     if (data.oldPassword !== user?.password) {
       setError("oldPassword", {
         type: "manual",
@@ -57,7 +54,6 @@ export function usePasswordChange({
       return;
     }
 
-    // Validar que la nueva contraseña sea diferente
     if (data.newPassword === data.oldPassword) {
       setError("newPassword", {
         type: "manual",
