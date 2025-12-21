@@ -11,17 +11,16 @@ function ProductModalForm({
   onSuccess,
 }: ProductModalFormProps) {
   const {
-    formData,
-    validationErrors,
+    register,
+    handleSubmit,
+    errors,
+    watch,
     loadingProduct,
     saving,
     loading,
     error,
     errorUpdate,
     isEditMode,
-    handleChange,
-    handleIsActiveChange,
-    handleSubmit,
     resetForm,
   } = useProductForm(productId, onUpdate, onSuccess);
 
@@ -32,6 +31,11 @@ function ProductModalForm({
 
   const handleCancel = () => {
     onHide();
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
   };
 
   return (
@@ -55,15 +59,15 @@ function ProductModalForm({
             </Spinner>
           </div>
         ) : (
-          <ProductForm
-            formData={formData}
-            validationErrors={validationErrors}
-            error={error}
-            errorUpdate={errorUpdate}
-            handleChange={handleChange}
-            handleIsActiveChange={handleIsActiveChange}
-            handleSubmit={handleSubmit}
-          />
+          <form id="product-form" onSubmit={onSubmit}>
+            <ProductForm
+              register={register}
+              errors={errors}
+              watch={watch}
+              error={error}
+              errorUpdate={errorUpdate}
+            />
+          </form>
         )}
       </Modal.Body>
 
