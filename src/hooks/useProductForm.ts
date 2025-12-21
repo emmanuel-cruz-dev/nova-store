@@ -1,20 +1,16 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useProductById } from "./index";
 import { useCreateProduct, useUpdateProduct } from "./useProducts";
-import { validateProductForm } from "../utils/productValidations";
-import { productInitialFormData } from "../data/productInitialFormData";
-import {
-  CreateProductDTO,
-  ValidationErrors,
-  NotificationType,
-  UseProductFormReturn,
-} from "../types";
+import { productSchema, ProductFormData } from "../schemas/productSchema";
+import { NotificationType } from "../types";
 
 export function useProductForm(
   productId: number,
   onUpdate: (message: string, type: NotificationType) => void,
   onSuccess: () => void
-): UseProductFormReturn {
+) {
   const isEditMode = !!productId;
 
   const {
@@ -35,20 +31,34 @@ export function useProductForm(
     error: errorCreate,
   } = useCreateProduct();
 
-  const [formData, setFormData] = useState<CreateProductDTO>(
-    productInitialFormData
-  );
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0,
+      stock: 0,
+      rating: 0,
+      brand: "",
+      category: "",
+      isActive: true,
+      image: "",
+    },
+  });
 
-  const saving = loadingUpdate || loadingCreate;
+  const saving = loadingUpdate || loadingCreate || isSubmitting;
   const loading = loadingUpdate || loadingCreate;
   const error = errorProduct || errorUpdate || errorCreate;
 
   useEffect(() => {
     if (product && isEditMode) {
-      setFormData({
+      reset({
         name: product.name || "",
         description: product.description || "",
         price: product.price || 0,
@@ -59,78 +69,24 @@ export function useProductForm(
         isActive: product.isActive ?? true,
         image: product.image || "",
       });
-    } else if (!isEditMode) {
-      setFormData(productInitialFormData);
     }
-  }, [product, isEditMode]);
+  }, [product, isEditMode, reset]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value, type } = e.target;
-    const checked = (e.target as HTMLInputElement).checked;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : type === "number"
-          ? parseFloat(value) || ""
-          : value,
-    }));
-
-    if (validationErrors[name]) {
-      setValidationErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
-  };
-
-  const handleIsActiveChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      isActive: value === "true",
-    }));
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const dataToSend: CreateProductDTO = {
-      ...formData,
-      price: formData.price || 0,
-      stock: formData.stock || 0,
-      rating: formData.rating || 0,
-    };
-
-    const errors = validateProductForm(formData);
-    if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors);
-      return;
-    }
-
+  const onSubmit = async (data: ProductFormData) => {
     try {
       if (isEditMode) {
-        await updateProduct(productId, dataToSend);
+        await updateProduct(productId, data);
         onUpdate("Producto actualizado exitosamente", "success");
       } else {
-        await createProduct(dataToSend);
+        await createProduct(data);
         onUpdate("Producto creado exitosamente", "success");
       }
-
       onSuccess();
     } catch (error) {
-      if (onUpdate) {
-        onUpdate(
-          `Error al ${isEditMode ? "actualizar" : "crear"} el producto`,
-          "error"
-        );
-      }
+      onUpdate(
+        `Error al ${isEditMode ? "actualizar" : "crear"} el producto`,
+        "error"
+      );
       console.error(
         `Error al ${isEditMode ? "actualizar" : "crear"} el producto:`,
         error
@@ -139,22 +95,30 @@ export function useProductForm(
   };
 
   const resetForm = () => {
-    setFormData(productInitialFormData);
-    setValidationErrors({});
+    reset({
+      name: "",
+      description: "",
+      price: 0,
+      stock: 0,
+      rating: 0,
+      brand: "",
+      category: "",
+      isActive: true,
+      image: "",
+    });
   };
 
   return {
-    formData,
-    validationErrors,
+    register,
+    handleSubmit: handleSubmit(onSubmit),
+    errors,
+    watch,
     loadingProduct,
     saving,
     loading,
     error,
     errorUpdate,
     isEditMode,
-    handleChange,
-    handleIsActiveChange,
-    handleSubmit,
     resetForm,
   };
 }
