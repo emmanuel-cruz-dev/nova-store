@@ -12,113 +12,261 @@
 ---
 
 ## 📄 Descripción  
-**Nova Store** es una tienda e-commerce construida con **React**, que incluye autenticación (registro/login), carrito de compras, proceso de checkout y panel administrativo.  
+**Nova Store** es una tienda e-commerce moderna construida con **React**, que incluye autenticación (registro/login), carrito de compras, proceso de checkout y panel administrativo.  
 
-La aplicación consume una API generada con **MockAPI**, utilizada para la persistencia de productos y usuarios.
+La aplicación consume una API generada con **MockAPI**, utilizada para la persistencia de productos y usuarios, e implementa las mejores prácticas de desarrollo con validación de formularios, gestión de estado optimizada y una experiencia de usuario fluida.
 
 ---
 
 ## ✨ Funcionalidades principales  
+
+### 🔐 Autenticación y usuarios
 - Registro y login de usuarios (Customer).  
+- Validación de formularios con **React Hook Form** y **Zod**.
+- Gestión de sesión con **Zustand** (authStore).
+
+### 🛒 Carrito de compras
 - Gestión completa de carrito: agregar productos, modificar cantidad, eliminar.  
+- Persistencia del estado del carrito con **Zustand**.
 - Proceso de checkout y resumen de orden.  
-- Búsqueda, filtrado por categorías y paginación de productos.  
-- Panel de administración:  
-  - CRUD completo de productos.  
-  - Listado, visualización y eliminación de usuarios.  
-- Rutas públicas y privadas según rol.  
-- Componentes reutilizables, custom hooks y context para Auth y Cart.
+
+### 📦 Productos
+- Búsqueda y filtrado por categorías.
+- Paginación de productos.
+- Detalle de producto individual.
+
+### 👨‍💼 Panel de administración
+- CRUD completo de productos con formularios validados.
+- Listado, visualización y eliminación de usuarios.  
+- Rutas protegidas según rol de usuario.
+
+### 🎨 Interfaz de usuario
+- Diseño responsivo con **Bootstrap** y **Bootswatch**.
+- Carruseles interactivos con **Swiper**.
+- Notificaciones elegantes con **React Toastify**.
+- Indicadores de carga con **NProgress**.
+- Iconografía moderna con **Lucide React**.
 
 ---
 
 ## 🗂 Estructura relevante del proyecto  
-- `src/api/axiosConfig.js` — Configuración de Axios (usa `VITE_BASE_API_URL`).  
-- `src/api/services/` — Servicios API (`product.service.js`, `user.service.js`, etc.).  
-- `src/context/` — `AuthContext.jsx`, `CartContext.jsx`.  
-- `src/components/` — Componentes organizados por dominio (`product/`, `cart/`, `forms/`, `ui/`, `common/`).  
-- `src/hooks/` — Hooks personalizados (auth, cart, paginación, productos, etc.).  
-- `src/pages/` — Páginas principales (Home, Products, Product, Cart, Profile, Login, Register).  
-- `src/layouts/` — `NavigationBar.jsx`, `Footer.jsx`.  
-- `src/routes/` — Enrutamiento y protección de rutas.
+
+```
+src/
+├── api/
+│   ├── axiosConfig.ts          # Configuración de Axios
+│   └── services/               # Servicios API (products, users)
+├── assets/                     # Recursos estáticos
+├── components/
+│   ├── cart/                   # Componentes del carrito
+│   ├── common/                 # Componentes comunes
+│   ├── forms/                  # Formularios reutilizables
+│   ├── modals/                 # Modales
+│   ├── product/                # Componentes de productos
+│   └── ui/                     # Componentes de UI
+├── data/                       # Datos estáticos
+├── helpers/                    # Funciones auxiliares
+├── hooks/                      # Custom hooks
+├── icons/                      # Iconos personalizados
+├── layouts/
+│   ├── NavigationBar.jsx
+│   └── Footer.jsx
+├── pages/                      # Páginas principales
+├── routes/                     # Configuración de rutas
+├── schemas/                    # Esquemas de validación con Zod
+├── stores/
+│   ├── authStore.ts            # Store de autenticación (Zustand)
+│   └── cartStore.ts            # Store del carrito (Zustand)
+├── types/                      # Definiciones de tipos TypeScript
+└── utils/                      # Utilidades generales
+```
 
 ---
 
 ## 🧰 Tecnologías utilizadas  
-- React (Vite)  
-- React Router
-- React Toastify (Notificaciones)  
-- Context API + Custom Hooks  
-- Axios
-- SWR (Data Fetching & Cache)   
-- Bootstrap + estilos propios  
-- Swiper  
-- NProgress  
-- Lucide-React (íconos)
+
+### Core
+- **React 19** (Vite)  
+- **React Router DOM** - Enrutamiento y navegación
+- **TypeScript** - Tipado estático (configuración disponible)
+
+### Gestión de estado
+- **Zustand** - State management principal (auth y cart)
+- **SWR** - Data fetching, cache y sincronización
+
+### Formularios y validación
+- **React Hook Form** - Gestión eficiente de formularios
+- **Zod** - Validación de esquemas type-safe
+- **@hookform/resolvers** - Integración entre React Hook Form y Zod
+
+### UI/UX
+- **Bootstrap 5** + **React Bootstrap** - Framework CSS y componentes
+- **Bootswatch** - Temas de Bootstrap
+- **Swiper** - Carruseles y sliders táctiles
+- **Lucide React** - Iconos modernos y consistentes
+- **React Toastify** - Sistema de notificaciones
+- **NProgress** - Barra de progreso para navegación
+
+### HTTP y API
+- **Axios** - Cliente HTTP con interceptores
 
 ---
 
 ## 🔧 Requisitos  
-- Node.js ≥ 16  
-- npm o yarn  
+- **Node.js** ≥ 16  
+- **pnpm** ≥ 8 (recomendado) o **npm**  
 
 ---
 
 ## ⚙️ Variables de entorno  
-Crear un archivo `.env` (o `.env.local`) en la raíz con:
+
+Crear un archivo `.env` (o `.env.local`) en la raíz del proyecto:
 
 ```bash
 VITE_BASE_API_URL=https://<tu-id>.mockapi.io/api/v1
 ```
 
-> Nota: `src/api/axiosConfig.js` utiliza `import.meta.env.VITE_BASE_API_URL`.
+> **Nota:** `src/api/axiosConfig.js` utiliza `import.meta.env.VITE_BASE_API_URL` para la configuración de la API.
 
 ---
 
 ## 📥 Instalación y ejecución  
 
-### PowerShell (Windows)  
+### Windows (PowerShell) / macOS / Linux
+
 ```bash
-# 1. Instalar dependencias
-npm install
+# 1. Clonar el repositorio
+git clone <url-del-repositorio>
+cd nova-store
 
-# 2. Ejecutar en modo desarrollo
-npm run dev
+# 2. Instalar dependencias
+pnpm install
+# o si prefieres npm: npm install
 
-# 3. Construir para producción
-npm run build
+# 3. Configurar variables de entorno
+# Crear archivo .env y agregar VITE_BASE_API_URL
 
-# 4. Ejecutar la build de producción localmente
-npm run preview
+# 4. Ejecutar en modo desarrollo
+pnpm dev
+# o: npm run dev
+
+# 5. Construir para producción
+pnpm build
+# o: npm run build
+
+# 6. Previsualizar la build de producción localmente
+pnpm preview
+# o: npm run preview
 ```
 
 ---
 
 ## 🔎 Notas sobre la API  
-- El proyecto está pensado para trabajar con **MockAPI** (https://mockapi.io).  
+
+- El proyecto está diseñado para trabajar con **MockAPI** (https://mockapi.io).  
 - Endpoints esperados:  
-  - `/products` — id, title, price, category, isActive, images, etc.  
-  - `/users` — id, email, name, role (`customer` | `admin`).  
-- Para usar el panel administrativo, crear un usuario con `role: "admin"`.
+  - `/products` — Campos: id, title, price, category, isActive, images, etc.  
+  - `/users` — Campos: id, email, name, password, role (`customer` | `admin`).  
+- Para acceder al panel administrativo, es necesario crear un usuario con `role: "admin"` en MockAPI.
+
+### Estructura de datos recomendada
+
+**Productos:**
+```json
+{
+  "id": "1",
+  "name": "Producto ejemplo",  
+  "price": 99.99,
+  "stock": 10,
+  "rating": 5,
+  "category": "electronics",
+  "brand": "Marca ejemplo",
+  "isActive": true,
+  "image": "url",
+  "description": "Descripción del producto"
+}
+```
+
+**Usuarios:**
+```json
+{
+  "id": "1",
+  "email": "user@example.com",
+  "firstName": "Nombre",
+  "lastName": "Apellido",
+  "password": "password1234",
+  "avatar": "url",
+  "createdAt": "fecha",
+  "role": "customer"
+}
+```
 
 ---
 
 ## 🧪 Credenciales y pruebas  
-- No hay usuarios preconfigurados en el repo.  
-- Se recomienda crear usuarios desde MockAPI o mediante el formulario de registro y luego modificar el rol si es necesario.
+
+- No hay usuarios preconfigurados en el repositorio.  
+- Se puede crear usuarios mediante:
+  1. El formulario de registro de la aplicación.
+  2. Directamente desde MockAPI.
+- Para obtener permisos de administrador, modificar el campo `role` a `"admin"` en MockAPI.
 
 ---
 
 ## 🛠️ Desarrollo y mejores prácticas  
-- Los servicios HTTP están en `src/api/services/` para abstraer lógica de red.  
-- `AuthContext` maneja usuario y token.  
-- `CartContext` gestiona el estado del carrito.  
-- Hooks reutilizables en `src/hooks/` como `useProducts`, `useCart`, `useAuth`.
+
+### Arquitectura
+- **Separación de responsabilidades:** Servicios HTTP abstraídos en `src/api/services/`.
+- **Componentes reutilizables:** Organización modular por dominio.
+- **Custom hooks:** Lógica compartida encapsulada en hooks reutilizables.
+
+### Gestión de formularios
+- Todos los formularios utilizan **React Hook Form** para mejor rendimiento.
+- Validación robusta con esquemas **Zod** definidos en `src/schemas/`.
+- Mensajes de error consistentes y accesibles.
+
+### Estado global
+- **Zustand stores:** 
+  - `authStore.ts` - Maneja autenticación, usuario actual y token
+  - `cartStore.ts` - Gestión optimizada del estado del carrito
+- **SWR:** Cache inteligente y revalidación automática de datos
+
+### Hooks personalizados
+- `useAuth` - Autenticación y gestión de sesión
+- `useCart` - Operaciones del carrito de compras
+- `useProducts` - Fetching y filtrado de productos
+- `usePagination` - Lógica de paginación reutilizable
 
 ---
 
-## 📦 Scripts útiles (package.json)  
+## 📦 Scripts disponibles
+
 ```bash
-npm run dev       # Inicia modo desarrollo
-npm run build     # Crea la build de producción
-npm run preview   # Sirve la build localmente
+pnpm dev          # Inicia el servidor de desarrollo
+pnpm build        # Crea la build optimizada para producción
+pnpm preview      # Sirve la build de producción localmente
+pnpm lint         # Ejecuta el linter de código
+
+# También puedes usar npm:
+npm run dev
+npm run build
+npm run preview
+npm run lint
 ```
+
+---
+
+## 🚀 Próximas mejoras
+
+- [ ] Implementar tests unitarios y de integración
+- [ ] Agregar modo oscuro/claro
+- [ ] Implementar búsqueda avanzada con filtros múltiples
+- [ ] Sistema de favoritos/wishlist
+- [ ] Integración con pasarelas de pago reales
+- [ ] Panel de analytics para administradores
+
+---
+
+## 📝 Licencia
+
+Este proyecto fue desarrollado como entrega final para el curso React + Bootstrap de Talento Tech 2025.
