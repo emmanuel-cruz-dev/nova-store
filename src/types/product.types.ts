@@ -1,5 +1,7 @@
 import { FormEvent } from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { ValidationErrors } from "./common.types";
+import { ProductFormData } from "../schemas/productSchema";
 
 export interface Product {
   id: number;
@@ -110,15 +112,9 @@ export interface UseProductFormReturn {
 }
 
 export interface ProductFormProps {
-  formData: CreateProductDTO;
-  validationErrors: ValidationErrors;
-  error: any;
-  errorUpdate: any;
-  handleChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => void;
-  handleIsActiveChange: (value: string) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  register: UseFormRegister<ProductFormData>;
+  errors: FieldErrors<ProductFormData>;
+  watch: (field: keyof ProductFormData) => any;
+  error?: Error | null;
+  errorUpdate?: Error | null;
 }
