@@ -6,6 +6,8 @@ import {
   ProfileSidebar,
   ProductsTable,
   UsersTable,
+  OrdersTable,
+  AdminOrdersTable,
 } from "../components";
 import { adminMenuItems, userMenuItems } from "../data/menuItems";
 
@@ -26,6 +28,10 @@ function Profile() {
     switch (activeSection) {
       case "profile":
         return <ProfileMainContent />;
+      case "orders":
+        return <OrdersTable />;
+      case "all-orders":
+        return <AdminOrdersTable />;
       case "products":
         return <ProductsTable />;
       case "users":
