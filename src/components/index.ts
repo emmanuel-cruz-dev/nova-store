@@ -53,3 +53,4 @@ export { default as AdminOrdersTable } from "./ui/user/AdminOrdersTable";
 export { default as EmptyOrders } from "./ui/user/EmptyOrders";
 export { default as OrderItemsList } from "./ui/user/OrderItemsList";
 export { default as OrderTableSummary } from "./ui/user/OrderTableSummary";
+export { default as OrdersLoader } from "./ui/user/OrdersLoader";
