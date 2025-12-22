@@ -59,8 +59,7 @@ function ProductSlideList({
         ) : error ? (
           <Container className="d-flex justify-content-center fs-5">
             <ErrorMessage
-              error={error}
-              entity="Productos"
+              message="Error al cargar productos"
               onRetry={handleRetry}
             />
           </Container>

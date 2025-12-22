@@ -23,8 +23,7 @@ function ProductsGallery({
           ))
         ) : error ? (
           <ErrorMessage
-            error={error}
-            entity="Productos"
+            message="Error al cargar productos"
             onRetry={handleRetry}
           />
         ) : (
