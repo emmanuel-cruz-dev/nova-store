@@ -1,30 +1,15 @@
-import { Button } from "react-bootstrap";
-import { ErrorMessageProps } from "../../types";
+import { Alert, Button } from "react-bootstrap";
 
-const ErrorMessage = ({ error, entity, onRetry }: ErrorMessageProps) => {
-  let message;
-
-  if (error.message) {
-    message = error.message;
-  } else if (error.response) {
-    message = error.response.data.message;
-  } else {
-    message = "Algo ha salido mal";
-  }
-
-  if (entity) {
-    message = `${entity}: ${message}`;
-  }
-
+const ErrorMessage = ({
+  message,
+  onRetry,
+}: {
+  message: string;
+  onRetry?: () => void;
+}) => {
   return (
-    <article
-      className="alert alert-warning"
-      role="alert"
-      style={{ maxWidth: "460px" }}
-    >
-      <p className="text-danger">
-        <strong>Atención:</strong> {message}
-      </p>
+    <Alert variant="danger">
+      <p className="text-danger">{message}</p>
       {onRetry && (
         <footer className="mt-3">
           <Button
@@ -36,7 +21,7 @@ const ErrorMessage = ({ error, entity, onRetry }: ErrorMessageProps) => {
           </Button>
         </footer>
       )}
-    </article>
+    </Alert>
   );
 };
 
