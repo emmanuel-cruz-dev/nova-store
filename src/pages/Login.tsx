@@ -6,7 +6,6 @@ function Login() {
     <section
       style={{
         backgroundColor: "#f5f5f5",
-        minHeight: "100vh",
         paddingTop: "40px",
         paddingBottom: "40px",
       }}
