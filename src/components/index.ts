@@ -40,6 +40,7 @@ export { default as ProductsTable } from "./product/ProductsTable";
 export { default as ProductModalForm } from "./product/ProductModalForm";
 export { default as ProductInfoDisplay } from "./product/ProductInfoDisplay";
 export { default as ProductQuantitySelector } from "./product/ProductQuantitySelector";
+export { default as ProductNotFound } from "./product/ProductNotFound";
 
 export { default as Newsletter } from "./ui/home/Newsletter";
 export { default as ProfileMainContent } from "./ui/user/ProfileMainContent";
