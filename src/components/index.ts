@@ -48,3 +48,5 @@ export { default as ProfileSidebar } from "./ui/user/ProfileSidebar";
 export { default as UsersTable } from "./ui/user/UsersTable";
 export { default as UserDetailsModal } from "./ui/user/UserDetailsModal";
 export { default as UsersTableRowSkeleton } from "./ui/user/UsersTableRowSkeleton";
+export { default as OrdersTable } from "./ui/user/OrdersTable";
+export { default as AdminOrdersTable } from "./ui/user/AdminOrdersTable";
