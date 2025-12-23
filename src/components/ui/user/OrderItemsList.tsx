@@ -1,13 +1,7 @@
 import { formatPrice } from "../../../utils/utils";
 import { OrderItem } from "../../../types";
 
-function OrderItemsList({
-  items,
-  showUnitPrice = false,
-}: {
-  items: Omit<OrderItem, "productId">[];
-  showUnitPrice?: boolean;
-}) {
+function OrderItemsList({ items }: { items: Omit<OrderItem, "productId">[] }) {
   return (
     <article className="d-flex flex-column gap-2">
       {items.map((item, index) => (
@@ -29,8 +23,7 @@ function OrderItemsList({
           <div className="flex-grow-1">
             <p className="mb-0 fw-medium">{item.productTitle}</p>
             <small className="text-muted">
-              Cantidad: {item.quantity}
-              {showUnitPrice && <> × ${formatPrice(item.price)}</>}
+              Cantidad: {item.quantity} × ${formatPrice(item.price)}
             </small>
           </div>
 
