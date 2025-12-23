@@ -26,7 +26,7 @@ export const publicRoutes = [
 ];
 
 export const privateRoutes = [
-  { path: "/profile", element: <Profile /> },
+  { path: "/profile/:section?", element: <Profile /> },
   { path: "/cart", element: <Cart /> },
 ];
 
