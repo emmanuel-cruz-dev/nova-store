@@ -18,6 +18,6 @@ export const adminMenuItems: MenuItem[] = [
 
 export const userMenuItems: MenuItem[] = [
   { id: "profile", icon: User, label: "Mi Perfil" },
-  { id: "orders", icon: ShoppingCart, label: "Mis Pedidos" },
+  { id: "orders", icon: ShoppingCart, label: "Mis Órdenes" },
   { id: "logout", icon: LogOut, label: "Cerrar Sesión" },
 ];
