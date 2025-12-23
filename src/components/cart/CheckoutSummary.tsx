@@ -1,18 +1,21 @@
 import SummaryRow from "./SummaryRow";
 import { formatPrice } from "../../utils/utils";
-import { CheckoutSummaryProps } from "../../types";
+import { useCheckoutStore } from "../../stores/checkoutStore";
 
-function CheckoutSummary({ orderTotal, itemsCount }: CheckoutSummaryProps) {
-  const orderNumber = Math.floor(Math.random() * 1000000);
-  const itemsText = `${itemsCount} ${
-    itemsCount === 1 ? "artículo" : "artículos"
+function CheckoutSummary() {
+  const { orderData } = useCheckoutStore();
+
+  if (!orderData) return null;
+
+  const itemsText = `${orderData.itemsCount} ${
+    orderData.itemsCount === 1 ? "artículo" : "artículos"
   }`;
-  const formattedTotal = formatPrice(orderTotal);
+  const formattedTotal = formatPrice(orderData.total);
 
   const summaryData = [
     {
-      label: "Número de orden",
-      value: `#${orderNumber}`,
+      label: "Órden",
+      value: `#${orderData.orderId.slice(0, 6)}`,
       rowClass: "mb-1",
     },
     {

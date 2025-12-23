@@ -1,4 +1,5 @@
 import { MenuItem } from "./common.types";
+import { Order } from "./order.types";
 
 export interface User {
   id: number | null;
@@ -9,6 +10,7 @@ export interface User {
   role?: UserRole;
   avatar?: string;
   createdAt?: string;
+  orders?: Order[];
 }
 
 export interface UserResponse {
@@ -72,5 +74,5 @@ export interface UserDetailsModalProps {
 export interface ProfileSidebarProps {
   menuItems: MenuItem[];
   activeSection: string;
-  setActiveSection: React.Dispatch<React.SetStateAction<string>>;
+  setActiveSection: (section: string) => void;
 }

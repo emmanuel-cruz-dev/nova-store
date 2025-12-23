@@ -5,12 +5,6 @@ export interface PaginationItemProps {
   isLoading: boolean;
 }
 
-export interface ErrorMessageProps {
-  error: any;
-  entity?: string;
-  onRetry?: () => void;
-}
-
 export interface TestimonialCardProps {
   image: string;
   name: string;

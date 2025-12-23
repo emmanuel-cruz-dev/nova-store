@@ -1,19 +1,27 @@
 import { Link } from "react-router-dom";
-import { Card, Button, Col } from "react-bootstrap";
+import { Card, Button, Col, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import { useCart, useCheckoutOrder } from "../../hooks";
+import { useAuthStore } from "../../stores/authStore";
+import { useCheckoutStore } from "../../stores/checkoutStore";
+import { useCart } from "../../hooks";
 import { CheckoutModal } from "..";
 import { formatPrice } from "../../utils/utils";
 
 function OrderSummary() {
-  const { cart, getCartTotal } = useCart();
-  const {
-    showModal,
-    orderData,
-    calculateTotal,
-    handleCheckout,
-    handleCloseModal,
-  } = useCheckoutOrder();
+  const { user } = useAuthStore();
+  const { cart, getCartTotal, getCartItemsCount, handleClearCart } = useCart();
+  const { isProcessing, calculateTotal, handleCheckout } = useCheckoutStore();
+
+  const onCheckout = () => {
+    if (!user?.id) return;
+    handleCheckout(
+      user.id,
+      cart,
+      getCartTotal,
+      getCartItemsCount,
+      handleClearCart
+    );
+  };
 
   return (
     <>
@@ -52,7 +60,7 @@ function OrderSummary() {
             <ul className="d-flex justify-content-between mb-4 list-unstyled">
               <li className="fw-bold fs-5">Total</li>
               <li className="fw-bold fs-5 text-primary">
-                {formatPrice(calculateTotal())}
+                {formatPrice(calculateTotal(getCartTotal()))}
               </li>
             </ul>
 
@@ -60,10 +68,24 @@ function OrderSummary() {
               variant="primary"
               size="lg"
               className="w-100 mb-3"
-              onClick={handleCheckout}
-              disabled={cart.length === 0}
+              onClick={onCheckout}
+              disabled={cart.length === 0 || isProcessing}
             >
-              Finalizar compra
+              {isProcessing ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="me-2"
+                  />
+                  Procesando...
+                </>
+              ) : (
+                "Finalizar compra"
+              )}
             </Button>
 
             <Link to="/products" className="text-decoration-none">
@@ -80,14 +102,7 @@ function OrderSummary() {
         </Card>
       </Col>
 
-      {orderData && (
-        <CheckoutModal
-          show={showModal}
-          onHide={handleCloseModal}
-          orderTotal={orderData.total}
-          itemsCount={orderData.itemsCount}
-        />
-      )}
+      <CheckoutModal />
     </>
   );
 }

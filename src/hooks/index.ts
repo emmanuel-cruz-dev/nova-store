@@ -1,7 +1,6 @@
 export { useUpdateUser } from "./auth/useUpdateUser";
 export { useCart } from "./useCart";
 export { useCategorySelect } from "./useCategorySelect";
-export { useCheckoutOrder } from "./useCheckoutOrder";
 export { useNavigation } from "./useNavigation";
 export { useNavigationBar } from "./useNavigationBar";
 export { useNewsletterSubscription } from "./useNewsletterSubscription";
@@ -25,3 +24,4 @@ export { useUsersTable } from "./useUsersTable";
 export { useLoginForm } from "./auth/useLoginForm";
 export { useRegisterForm } from "./auth/useRegisterForm";
 export { usePasswordChange } from "./usePasswordChange";
+export { useOrdersTable } from "./useOrdersTable";
