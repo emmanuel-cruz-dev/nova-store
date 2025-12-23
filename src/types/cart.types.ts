@@ -26,19 +26,8 @@ export interface SummaryRowProps {
   valueClassName?: string;
 }
 
-export interface CheckoutSummaryProps {
-  orderTotal: number;
-  itemsCount: number;
-}
-
-export interface CheckoutModalProps {
-  show: boolean;
-  onHide: () => void;
-  orderTotal: number;
-  itemsCount: number;
-}
-
 export type OrderData = {
   total: number;
+  orderId: string;
   itemsCount: number;
 };
