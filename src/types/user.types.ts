@@ -74,5 +74,5 @@ export interface UserDetailsModalProps {
 export interface ProfileSidebarProps {
   menuItems: MenuItem[];
   activeSection: string;
-  setActiveSection: React.Dispatch<React.SetStateAction<string>>;
+  setActiveSection: (section: string) => void;
 }
