@@ -1,7 +1,6 @@
 export { useUpdateUser } from "./auth/useUpdateUser";
 export { useCart } from "./useCart";
 export { useCategorySelect } from "./useCategorySelect";
-export { useCheckoutOrder } from "./useCheckoutOrder";
 export { useNavigation } from "./useNavigation";
 export { useNavigationBar } from "./useNavigationBar";
 export { useNewsletterSubscription } from "./useNewsletterSubscription";
