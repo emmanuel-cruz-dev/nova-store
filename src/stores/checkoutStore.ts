@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
+import { mutate } from "swr";
 import { orderService } from "../api/services/order.service";
 import { CheckoutState, CreateOrderDTO, OrderItem } from "../types";
 
@@ -59,6 +60,8 @@ export const useCheckoutStore = create<CheckoutState>((set, get) => ({
       };
 
       const newOrderResponse = await orderService.createOrder(newOrder);
+
+      await mutate(["orders", userId]);
 
       set({
         orderData: {
