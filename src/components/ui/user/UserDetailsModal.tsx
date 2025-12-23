@@ -49,7 +49,7 @@ function UserDetailsModal({ user, onClose, onDelete }: UserDetailsModalProps) {
             <CalendarDays className="me-3 text-danger" size={22} />
             <aside className="text-start">
               <small>Registrado</small>
-              <div>{formatDateDetailed(user.createdAt)}</div>
+              <div>{formatDateDetailed(user.createdAt!)}</div>
             </aside>
           </ListGroup.Item>
         </ListGroup>
