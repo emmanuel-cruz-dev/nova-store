@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
-import { User, LogOut, ClipboardList, Heart } from "lucide-react";
+import { User, LogOut, ClipboardList, Heart, Box, Users } from "lucide-react";
 import { useAuthStore } from "../stores";
 
 function UserMenu() {
@@ -16,10 +16,12 @@ function UserMenu() {
       >
         <Image
           src={user.avatar}
+          alt={`Foto de ${user.firstName} ${user.lastName}`}
           roundedCircle
           width={36}
           height={36}
           className="border border-light"
+          style={{ objectFit: "cover" }}
         />
       </Dropdown.Toggle>
 
@@ -29,7 +31,14 @@ function UserMenu() {
           to="/profile"
           className="d-flex align-items-center gap-2 text-white"
         >
-          <Image src={user.avatar} roundedCircle width={22} height={22} />
+          <Image
+            src={user.avatar}
+            alt={`Foto de ${user.firstName} ${user.lastName}`}
+            roundedCircle
+            style={{ objectFit: "cover" }}
+            width={22}
+            height={22}
+          />
           <span className="fw-medium">
             {user.firstName} {user.lastName}
           </span>
@@ -48,21 +57,43 @@ function UserMenu() {
 
         <Dropdown.Item
           as={Link}
-          to="/profile/favorites"
-          className="d-flex align-items-center gap-2 text-white"
-        >
-          <Heart size={16} />
-          Favoritos
-        </Dropdown.Item>
-
-        <Dropdown.Item
-          as={Link}
-          to="/profile/orders"
+          to={user.role === "admin" ? "/profile/all-orders" : "/profile/orders"}
           className="d-flex align-items-center gap-2 text-white"
         >
           <ClipboardList size={16} />
           Órdenes
         </Dropdown.Item>
+
+        {user.role === "customer" ? (
+          <Dropdown.Item
+            as={Link}
+            to="/profile/favorites"
+            className="d-flex align-items-center gap-2 text-white"
+          >
+            <Heart size={16} />
+            Favoritos
+          </Dropdown.Item>
+        ) : (
+          <>
+            <Dropdown.Item
+              as={Link}
+              to="/profile/products"
+              className="d-flex align-items-center gap-2 text-white"
+            >
+              <Box size={16} />
+              Productos
+            </Dropdown.Item>
+
+            <Dropdown.Item
+              as={Link}
+              to="/profile/users"
+              className="d-flex align-items-center gap-2 text-white"
+            >
+              <Users size={16} />
+              Usuarios
+            </Dropdown.Item>
+          </>
+        )}
 
         <Dropdown.Divider />
 
