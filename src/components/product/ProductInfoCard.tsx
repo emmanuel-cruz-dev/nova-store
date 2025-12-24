@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
+import { useAuthStore } from "../../stores";
 import { ProductInfoDisplay, ProductQuantitySelector } from "../index";
-import { useAuthStore } from "../../stores/authStore";
 import { useProductCard, useProductQuantity } from "../../hooks";
 import { ProductItemProps } from "../../types";
 

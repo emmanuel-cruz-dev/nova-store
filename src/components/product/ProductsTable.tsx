@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
-import { Pencil, Trash2, Info } from "lucide-react";
 import { ToastContainer, Bounce } from "react-toastify";
+import { Pencil, Trash2, Info } from "lucide-react";
 import { useProductsTable } from "../../hooks";
 import {
   ProductModalForm,
