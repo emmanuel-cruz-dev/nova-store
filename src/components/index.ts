@@ -20,6 +20,7 @@ export { default as HighlightedFeatures } from "./common/HighlightedFeatures";
 export { default as ProgressBar } from "./common/ProgressBar";
 export { default as StarRating } from "./common/StarRating";
 export { default as Categories } from "./common/Categories";
+export { default as CustomTooltip } from "./common/CustomTooltip";
 
 export { default as LoginForm } from "./forms/login/LoginForm";
 export { default as RegisterForm } from "./forms/register/RegisterForm";
