@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import { ShoppingBag } from "lucide-react";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../stores";
 
 function EmptyCartCard() {
   const { user } = useAuthStore();

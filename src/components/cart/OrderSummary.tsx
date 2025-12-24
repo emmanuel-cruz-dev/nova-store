@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card, Button, Col, Spinner } from "react-bootstrap";
 import { ArrowLeft } from "lucide-react";
-import { useAuthStore } from "../../stores/authStore";
-import { useCheckoutStore } from "../../stores/checkoutStore";
+import { useAuthStore, useCheckoutStore } from "../../stores";
 import { useCart } from "../../hooks";
 import { CheckoutModal } from "..";
 import { formatPrice } from "../../utils/utils";

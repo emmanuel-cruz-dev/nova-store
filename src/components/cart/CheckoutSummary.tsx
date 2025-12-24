@@ -1,6 +1,6 @@
 import SummaryRow from "./SummaryRow";
 import { formatPrice } from "../../utils/utils";
-import { useCheckoutStore } from "../../stores/checkoutStore";
+import { useCheckoutStore } from "../../stores";
 
 function CheckoutSummary() {
   const { orderData } = useCheckoutStore();
