@@ -1,4 +1,5 @@
 import { ChevronUp } from "lucide-react";
+import CustomTooltip from "./CustomTooltip";
 import { useScroll } from "../../hooks";
 
 function ScrollToTopButton() {
@@ -7,14 +8,15 @@ function ScrollToTopButton() {
   return (
     <>
       {isVisible && (
-        <button
-          onClick={scrollToTop}
-          className="scroll-to-top-button"
-          aria-label="Scroll to top"
-          title="Ir hacia arriba"
-        >
-          <ChevronUp className="icon" />
-        </button>
+        <CustomTooltip text="Ir hacia arriba" placement="top">
+          <button
+            onClick={scrollToTop}
+            className="scroll-to-top-button"
+            aria-label="Scroll to top"
+          >
+            <ChevronUp className="icon" />
+          </button>
+        </CustomTooltip>
       )}
     </>
   );
