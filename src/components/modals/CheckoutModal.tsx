@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { CheckCircle, X } from "lucide-react";
-import { useAuthStore } from "../../stores/authStore";
-import { useCheckoutStore } from "../../stores/checkoutStore";
+import { useAuthStore, useCheckoutStore } from "../../stores";
 import { CheckoutSteps, CheckoutSummary } from "..";
 
 function CheckoutModal() {
@@ -30,7 +29,7 @@ function CheckoutModal() {
         <h2 className="mb-2" style={{ fontSize: "1.75rem" }}>
           ¡Compra realizada con éxito!
         </h2>
-        <p className="text-muted mb-2">
+        <p className="text-muted mb-2 px-2">
           {user && (
             <>
               ¡Gracias por tu compra,{" "}
@@ -40,8 +39,12 @@ function CheckoutModal() {
               !{" "}
             </>
           )}
-          Todo salió bien. Podés seguir el estado desde{" "}
-          <Link to="/profile/orders" className="text-decoration-none">
+          Podés seguir el estado desde{" "}
+          <Link
+            onClick={handleCloseModal}
+            to="/profile/orders"
+            className="text-decoration-none"
+          >
             tus órdenes
           </Link>
           .
