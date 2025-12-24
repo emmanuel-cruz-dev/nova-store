@@ -1,11 +1,4 @@
-import {
-  User,
-  LogOut,
-  Boxes,
-  Users,
-  ShoppingCart,
-  ClipboardList,
-} from "lucide-react";
+import { User, LogOut, Boxes, Users, ClipboardList, Heart } from "lucide-react";
 import { MenuItem } from "../types";
 
 export const adminMenuItems: MenuItem[] = [
@@ -18,6 +11,7 @@ export const adminMenuItems: MenuItem[] = [
 
 export const userMenuItems: MenuItem[] = [
   { id: "profile", icon: User, label: "Mi Perfil" },
-  { id: "orders", icon: ShoppingCart, label: "Mis Órdenes" },
+  { id: "favorites", icon: Heart, label: "Favoritos" },
+  { id: "orders", icon: ClipboardList, label: "Mis Órdenes" },
   { id: "logout", icon: LogOut, label: "Cerrar Sesión" },
 ];
