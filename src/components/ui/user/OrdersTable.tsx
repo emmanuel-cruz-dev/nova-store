@@ -3,7 +3,7 @@ import { Calendar, Trash2 } from "lucide-react";
 import { Bounce, ToastContainer } from "react-toastify";
 import { useOrdersTable } from "../../../hooks";
 import {
-  EmptyOrders,
+  EmptySection,
   ErrorMessage,
   OrderItemsList,
   OrderTableSummary,
@@ -28,9 +28,9 @@ function OrdersTable({ userId }: { userId: number }) {
 
   if (orders.length === 0)
     return (
-      <EmptyOrders
-        title="No tienes órdenes aún"
-        message="Cuando realices una compra, aparecerá aquí."
+      <EmptySection
+        title="Aún no tienes órdenes registradas"
+        message="Explora nuestros productos y realiza tu primera compra cuando quieras."
       />
     );
 
