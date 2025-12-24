@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
-import ProductCardSkeleton from "./ProductCardSkeleton";
-import { useAuthStore } from "../../stores/authStore";
+import { Heart } from "lucide-react";
+import { useAuthStore, useFavoritesStore } from "../../stores";
 import { useProductCard } from "../../hooks";
-import { ProductCardProps } from "../../types";
+import { ProductCardSkeleton, CustomTooltip } from "../index";
+import { Product, ProductCardProps } from "../../types";
 import { formatPrice, priceInstallments } from "../../utils/utils";
 
 function ProductCard(props: ProductCardProps) {
   const { isAuthenticated } = useAuthStore();
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const favorite = isFavorite(props.id!);
   const {
     id = 0,
     name = "",
@@ -29,8 +32,32 @@ function ProductCard(props: ProductCardProps) {
 
   if (props.isLoading) return <ProductCardSkeleton />;
 
+  const handleAddToFavorites = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleFavorite(props as Product);
+  };
+
   return (
     <Card>
+      {isAuthenticated && (
+        <CustomTooltip
+          text={favorite ? "Eliminar de favoritos" : "Añadir a favoritos"}
+        >
+          <Button
+            variant="light"
+            onClick={handleAddToFavorites}
+            className="position-absolute top-0 end-0 m-2 d-flex align-items-center justify-content-center rounded-circle "
+            style={{ width: "42px", height: "42px", zIndex: 1, padding: 0 }}
+          >
+            <Heart
+              size={20}
+              fill={favorite ? "black" : "none"}
+              color={favorite ? "black" : "black"}
+            />
+          </Button>
+        </CustomTooltip>
+      )}
+
       <Link
         to={`/product/${id}`}
         className="text-decoration-none card__img-link"
