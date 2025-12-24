@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
 import { Bounce, toast, ToastContainer } from "react-toastify";
-import { useAuthStore } from "../../../stores/authStore";
+import { useAuthStore } from "../../../stores";
 import { useUpdateUser } from "../../../hooks";
 import { PasswordChangeForm } from "../..";
 import { User, UserData } from "../../../types";

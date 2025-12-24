@@ -1,9 +1,9 @@
-import { Spinner, Alert, Badge, Card, Form, Accordion } from "react-bootstrap";
-import { Calendar, User, Mail } from "lucide-react";
+import { Spinner, Badge, Card, Form, Accordion } from "react-bootstrap";
 import { Bounce, ToastContainer } from "react-toastify";
+import { Calendar, User, Mail } from "lucide-react";
 import { useAdminOrders } from "../../../hooks/useAdminOrders";
 import {
-  EmptyOrders,
+  EmptySection,
   ErrorMessage,
   OrderItemsList,
   OrderTableSummary,
@@ -23,7 +23,7 @@ function AdminOrdersTable() {
 
   if (orders.length === 0) {
     return (
-      <EmptyOrders
+      <EmptySection
         title="No hay órdenes registradas"
         message="Las órdenes de los clientes aparecerán aquí."
       />

@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { useUsersTable } from "../../../hooks";
+import { ToastContainer, Bounce } from "react-toastify";
 import {
   AtSign,
   CalendarDays,
@@ -8,14 +8,14 @@ import {
   Eye,
   Trash2,
 } from "lucide-react";
-import { formatDateShort } from "../../../utils/utils";
-import { ToastContainer, Bounce } from "react-toastify";
+import { useUsersTable } from "../../../hooks";
 import {
   UserDetailsModal,
   DeleteConfirmationModal,
   PaginationItem,
   UsersTableRowSkeleton,
 } from "../..";
+import { formatDateShort } from "../../../utils/utils";
 import { User } from "../../../types";
 
 function UsersTable() {
