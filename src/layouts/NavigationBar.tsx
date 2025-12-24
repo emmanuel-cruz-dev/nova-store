@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import { ShoppingCart, ChevronDown, User, LogOut } from "lucide-react";
-import { useCart, useNavigationBar } from "../hooks";
-import { useAuthStore } from "../stores/authStore";
+import { ShoppingCart } from "lucide-react";
+import { useAuthStore } from "../stores";
+import { useCart } from "../hooks";
+import UserMenu from "./UserMenu";
 
 function NavigationBar() {
   const { getCartItemsCount } = useCart();
   const { user, isAuthenticated } = useAuthStore();
-  const { showMenu, toggleMenu, handleLogout, handleNavigate, menuRef } =
-    useNavigationBar();
 
   return (
     <Navbar bg="black" variant="dark" expand="lg" sticky="top">
@@ -21,6 +20,8 @@ function NavigationBar() {
           <img
             src="/nova-store.svg"
             style={{ width: "30px", height: "30px" }}
+            width={30}
+            height={30}
             alt="Logo de NovaStore"
             loading="lazy"
           />
@@ -53,81 +54,9 @@ function NavigationBar() {
             )}
 
             {isAuthenticated && user ? (
-              <div ref={menuRef} className="position-relative">
-                <button
-                  onClick={toggleMenu}
-                  className="d-flex align-items-center gap-2 border-0 bg-transparent text-white"
-                  aria-label="Abrir menú de usuario"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div
-                    className="rounded-circle overflow-hidden border border-light"
-                    style={{ width: "36px", height: "36px" }}
-                  >
-                    <img
-                      src={user.avatar}
-                      alt={`${user.firstName} ${user.lastName} avatar`}
-                      className="w-100 h-100 object-fit-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <ChevronDown
-                    size={18}
-                    className="bg-dark rounded-circle"
-                    style={{
-                      marginLeft: "-18px",
-                      marginTop: "22px",
-                      width: "20px",
-                      height: "20px",
-                      padding: "2px",
-                    }}
-                  />
-                </button>
-
-                {showMenu && (
-                  <div
-                    className="user-menu position-absolute bg-dark text-white p-2 rounded shadow mt-1"
-                    style={{
-                      right: 0,
-                      top: "48px",
-                      width: "192px",
-                      zIndex: 1000,
-                    }}
-                  >
-                    <button
-                      onClick={handleNavigate}
-                      className="user-menu__button"
-                      title="Ver perfil"
-                    >
-                      <img
-                        src={user.avatar}
-                        alt="Avatar"
-                        className="rounded-circle overflow-hidden border border-light me-2 flex-shrink-0 object-fit-cover"
-                        style={{ width: "22px", height: "22px" }}
-                        loading="lazy"
-                      />
-                      {user.firstName} {user.lastName}
-                    </button>
-                    <hr className="my-1" />
-                    <button
-                      onClick={handleNavigate}
-                      className="user-menu__button mt-2"
-                    >
-                      <User size={18} className="me-2 text-white" />
-                      Ver perfil
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="user-menu__button"
-                    >
-                      <LogOut size={18} className="me-2 text-white" />
-                      Cerrar sesión
-                    </button>
-                  </div>
-                )}
-              </div>
+              <UserMenu />
             ) : (
-              <Nav.Link as={Link} to="/login" aria-label="Iniciar sesión">
+              <Nav.Link as={Link} to="/login">
                 Iniciar sesión
               </Nav.Link>
             )}
