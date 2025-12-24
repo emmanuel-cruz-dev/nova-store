@@ -4,11 +4,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { ProductCard, ErrorMessage } from "../index";
 import { handleRetry } from "../../utils/utils";
+import { ProductsListProps } from "../../types";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { ProductsListProps } from "../../types";
 
 function ProductSlideList({
   title,
