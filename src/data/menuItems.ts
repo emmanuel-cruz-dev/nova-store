@@ -11,7 +11,7 @@ export const adminMenuItems: MenuItem[] = [
 
 export const userMenuItems: MenuItem[] = [
   { id: "profile", icon: User, label: "Mi Perfil" },
-  { id: "favorites", icon: Heart, label: "Favoritos" },
   { id: "orders", icon: ClipboardList, label: "Mis Órdenes" },
+  { id: "favorites", icon: Heart, label: "Favoritos" },
   { id: "logout", icon: LogOut, label: "Cerrar Sesión" },
 ];

@@ -126,38 +126,6 @@
   }
 }
 
-.user-menu {
-  animation: fadeIn 0.15s ease-in-out;
-}
-
-.user-menu__button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  border: none;
-  padding-block: 0.4rem;
-  color: white;
-  background-color: transparent;
-  border-radius: 0.25rem;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.user-menu__button:hover {
-  background-color: #c4c3c346;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .is-loading-pulse {
   animation: pulse-effect 1.5s infinite ease-in-out;
 }
