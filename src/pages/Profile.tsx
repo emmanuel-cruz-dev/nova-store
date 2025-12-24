@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuthStore } from "../stores/authStore";
+import { Container, Row, Col } from "react-bootstrap";
+import { useAuthStore } from "../stores";
 import {
   ProfileMainContent,
   ProfileSidebar,
@@ -9,6 +9,7 @@ import {
   UsersTable,
   OrdersTable,
   AdminOrdersTable,
+  FavoritesSection,
 } from "../components";
 import { adminMenuItems, userMenuItems } from "../data/menuItems";
 
@@ -34,6 +35,8 @@ function Profile() {
     switch (section) {
       case "profile":
         return <ProfileMainContent />;
+      case "favorites":
+        return <FavoritesSection />;
       case "orders":
         return <OrdersTable userId={user?.id!} />;
       case "all-orders":

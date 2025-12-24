@@ -1,5 +1,5 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "../stores";
 import { useCart } from "../hooks";
 import { CartItem, EmptyCartCard, OrderSummary } from "../components";
 
