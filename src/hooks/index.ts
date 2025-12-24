@@ -2,7 +2,6 @@ export { useUpdateUser } from "./auth/useUpdateUser";
 export { useCart } from "./useCart";
 export { useCategorySelect } from "./useCategorySelect";
 export { useNavigation } from "./useNavigation";
-export { useNavigationBar } from "./useNavigationBar";
 export { useNewsletterSubscription } from "./useNewsletterSubscription";
 export { usePagination } from "./usePagination";
 export { useProductCard } from "./useProductCard";
