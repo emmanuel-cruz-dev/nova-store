@@ -1,41 +1,23 @@
-import { useState } from "react";
-import { Row, Col, Card, Button, Form, Spinner } from "react-bootstrap";
-import { Bounce, toast, ToastContainer } from "react-toastify";
-import { useAuthStore } from "../../../stores";
-import { useUpdateUser } from "../../../hooks";
+import { Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap";
+import { Bounce, ToastContainer } from "react-toastify";
+import { User, Mail } from "lucide-react";
+import { useProfileUpdate } from "../../../hooks";
 import { PasswordChangeForm } from "../..";
-import { User, UserData } from "../../../types";
+import { User as UserType } from "../../../types";
 
 function ProfileMainContent() {
-  const { user, updateUserProfile } = useAuthStore();
-  const { updateUser, loading } = useUpdateUser();
-
-  const [profileData, setProfileData] = useState<UserData>({
-    id: user?.id || null,
-    email: user?.email || "",
-    password: user?.password || "",
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    avatar: user?.avatar || "",
-  });
-
-  const [showPasswordChange, setShowPasswordChange] = useState(false);
-
-  const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const updatedUser = await updateUser(profileData as User);
-      updateUserProfile(updatedUser as User);
-      toast.success("Perfil actualizado correctamente");
-    } catch (error) {
-      console.error("Error al actualizar el perfil:", error);
-      toast.error("Error al actualizar el perfil");
-    }
-  };
-
-  const handlePasswordChange = () => {
-    setShowPasswordChange(false);
-  };
+  const {
+    user,
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    isSubmitting,
+    loading,
+    showPasswordChange,
+    togglePasswordChange,
+    handlePasswordChange,
+  } = useProfileUpdate();
 
   return (
     <>
@@ -48,85 +30,101 @@ function ProfileMainContent() {
                 Toda tu información de cuenta en un solo lugar
               </p>
             </div>
-            <Button
-              variant="outline-primary"
-              onClick={() => setShowPasswordChange(!showPasswordChange)}
-            >
+            <Button variant="outline-primary" onClick={togglePasswordChange}>
               {showPasswordChange
                 ? "Ocultar cambiar contraseña"
                 : "Cambiar contraseña"}
             </Button>
           </header>
 
-          <Form onSubmit={handleProfileUpdate}>
+          <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Row className="g-3">
               <Col md={6}>
-                <Form.Label className="text-muted small" htmlFor="firstName">
-                  Nombre
-                </Form.Label>
-                <Form.Control
-                  id="firstName"
-                  type="text"
-                  className="bg-light border-0"
-                  value={profileData.firstName}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      firstName: e.target.value,
-                    })
-                  }
-                />
+                <Form.Group>
+                  <Form.Label htmlFor="firstName">
+                    Nombre <span className="text-danger">*</span>
+                  </Form.Label>
+                  <InputGroup hasValidation>
+                    <InputGroup.Text>
+                      <User size={18} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      id="firstName"
+                      type="text"
+                      placeholder="Ingresa tu nombre"
+                      {...register("firstName")}
+                      isInvalid={!!errors.firstName}
+                      autoComplete="given-name"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.firstName?.message}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
               </Col>
+
               <Col md={6}>
-                <Form.Label className="text-muted small" htmlFor="lastName">
-                  Apellido
-                </Form.Label>
-                <Form.Control
-                  id="lastName"
-                  type="text"
-                  className="bg-light border-0"
-                  value={profileData.lastName}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      lastName: e.target.value,
-                    })
-                  }
-                />
+                <Form.Group>
+                  <Form.Label htmlFor="lastName">
+                    Apellido <span className="text-danger">*</span>
+                  </Form.Label>
+                  <InputGroup hasValidation>
+                    <InputGroup.Text>
+                      <User size={18} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      id="lastName"
+                      type="text"
+                      placeholder="Ingresa tu apellido"
+                      {...register("lastName")}
+                      isInvalid={!!errors.lastName}
+                      autoComplete="family-name"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.lastName?.message}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
               </Col>
+
               <Col md={6}>
-                <Form.Label className="text-muted small" htmlFor="email">
-                  Email
-                </Form.Label>
-                <Form.Control
-                  id="email"
-                  type="email"
-                  className="bg-light border-0"
-                  autoComplete="email"
-                  value={profileData.email}
-                  onChange={(e) =>
-                    setProfileData({
-                      ...profileData,
-                      email: e.target.value,
-                    })
-                  }
-                />
+                <Form.Group>
+                  <Form.Label htmlFor="email">
+                    Email <span className="text-danger">*</span>
+                  </Form.Label>
+                  <InputGroup hasValidation>
+                    <InputGroup.Text>
+                      <Mail size={18} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      id="email"
+                      type="email"
+                      placeholder="correo@ejemplo.com"
+                      {...register("email")}
+                      isInvalid={!!errors.email}
+                      autoComplete="email"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email?.message}
+                    </Form.Control.Feedback>
+                  </InputGroup>
+                </Form.Group>
               </Col>
             </Row>
 
-            <Button type="submit" variant="primary" className="mt-4">
-              {loading ? (
-                <>
-                  <Spinner animation="border" size="sm" className="me-2" />
-                  Guardando...
-                </>
-              ) : (
-                "Guardar Cambios"
-              )}
+            <Button
+              type="submit"
+              variant="primary"
+              className="mt-4 px-5 py-2"
+              style={{ fontWeight: "500" }}
+              disabled={isSubmitting || loading}
+            >
+              {isSubmitting || loading ? "Guardando..." : "Guardar Cambios"}
             </Button>
           </Form>
         </Card.Body>
       </Card>
+
       <ToastContainer
         position="bottom-left"
         pauseOnHover={true}
@@ -136,7 +134,7 @@ function ProfileMainContent() {
 
       {showPasswordChange && (
         <PasswordChangeForm
-          profileData={profileData as User}
+          profileData={user as UserType}
           onPasswordChanged={handlePasswordChange}
         />
       )}
