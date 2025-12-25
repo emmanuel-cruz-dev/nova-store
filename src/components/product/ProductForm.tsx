@@ -7,6 +7,7 @@ function ProductForm({
   watch,
   error,
   errorUpdate,
+  setValue,
 }: ProductFormProps) {
   const nameLength = watch("name")?.length || 0;
   const descriptionLength = watch("description")?.length || 0;
@@ -150,9 +151,9 @@ function ProductForm({
         <Form.Group as={Col} md={4} controlId="formStatus">
           <Form.Label className="mb-1">Estado</Form.Label>
           <Form.Select
-            {...register("isActive", {
-              setValueAs: (v) => v === "true",
-            })}
+            {...register("isActive")}
+            value={watch("isActive") ? "true" : "false"}
+            onChange={(e) => setValue("isActive", e.target.value === "true")}
           >
             <option value="true">Activo</option>
             <option value="false">Inactivo</option>

@@ -35,6 +35,7 @@ export function useProductForm(
     register,
     handleSubmit,
     reset,
+    setValue,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
@@ -113,6 +114,7 @@ export function useProductForm(
     handleSubmit: handleSubmit(onSubmit),
     errors,
     watch,
+    setValue,
     loadingProduct,
     saving,
     loading,
