@@ -1,3 +1,15 @@
+.custom__text-primary {
+  color: #0056b3;
+}
+
+.custom__text-muted {
+  color: #495057;
+}
+
+.custom__text-bg-dark {
+  color: #9ca3af;
+}
+
 .line-clamp-1 {
   -webkit-line-clamp: 1;
   line-clamp: 1;
@@ -34,15 +46,6 @@
 
 .footer__developer-link:hover {
   text-decoration: underline;
-}
-
-.hero-banner__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  margin: 0;
-  padding: 0;
 }
 
 .card__img-link .card__img {
@@ -212,20 +215,4 @@
     opacity: 1;
     transform: scale(1.05);
   }
-}
-
-.user-modal .modal-content {
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
-}
-
-.avatar-enhanced {
-  border: 3px solid #fff;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.list-item-clean {
-  border: 0 !important;
-  border-radius: 0.5rem !important;
-  background: #f9f9f9;
-  transition: background 0.2s ease;
 }
