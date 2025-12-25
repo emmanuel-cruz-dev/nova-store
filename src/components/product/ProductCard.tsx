@@ -48,6 +48,7 @@ function ProductCard(props: ProductCardProps) {
             onClick={handleAddToFavorites}
             className="position-absolute top-0 end-0 m-2 d-flex align-items-center justify-content-center rounded-circle "
             style={{ width: "42px", height: "42px", zIndex: 1, padding: 0 }}
+            aria-label="Añadir a favoritos"
           >
             <Heart
               size={20}
@@ -85,18 +86,20 @@ function ProductCard(props: ProductCardProps) {
           className="text-decoration-none"
           title="Ver más información"
         >
-          <Card.Title className="line-clamp-1 mb-0">{name}</Card.Title>
-          <Card.Text className="text-secondary my-0">{brand}</Card.Text>
+          <Card.Title className="line-clamp-1 mb-0 custom__text-primary">
+            {name}
+          </Card.Title>
+          <Card.Text className="custom__text-muted my-0">{brand}</Card.Text>
           <Card.Text
             className="mb-1"
             style={{ color: "blue", fontSize: "1.2rem", fontWeight: "500" }}
           >
             ${formatPrice(price)}
           </Card.Text>
-          <Card.Text className="text-primary my-0">
+          <Card.Text className="custom__text-primary my-0">
             6 cuotas de ${priceInstallments(price)}
           </Card.Text>
-          <Card.Text className="line-clamp-2 text-secondary">
+          <Card.Text className="line-clamp-2 custom__text-muted">
             {description}
           </Card.Text>
         </Link>

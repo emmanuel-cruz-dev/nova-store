@@ -61,6 +61,7 @@ const ProductDetailsCard = ({
                       onClick={() => toggleFavorite(product)}
                       className="position-absolute top-0 end-0 m-4 d-flex align-items-center justify-content-center rounded-circle"
                       style={{ width: "42px", height: "42px", padding: "0" }}
+                      aria-label="Añadir a favoritos"
                     >
                       <Heart fill={isFavorite(product.id) ? "black" : "none"} />
                     </Button>

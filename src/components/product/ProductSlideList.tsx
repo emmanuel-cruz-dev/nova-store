@@ -23,7 +23,9 @@ function ProductSlideList({
       style={{ scrollMarginTop: "3.5rem" }}
     >
       <header>
-        <h2 className="display-6 text-center fw-bold mb-5">{title}</h2>
+        <h2 className="display-6 text-center fw-bold mb-5 custom__text-primary">
+          {title}
+        </h2>
       </header>
 
       <Swiper
