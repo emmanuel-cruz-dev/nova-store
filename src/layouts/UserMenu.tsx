@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
 import { User, LogOut, ClipboardList, Heart, Box, Users } from "lucide-react";
 import { useAuthStore } from "../stores";
+import { CustomTooltip } from "../components";
 
 function UserMenu() {
   const { user, logout } = useAuthStore();
@@ -10,20 +11,22 @@ function UserMenu() {
 
   return (
     <Dropdown align="end">
-      <Dropdown.Toggle
-        variant="link"
-        className="p-0 d-flex align-items-center text-white text-decoration-none"
-      >
-        <Image
-          src={user.avatar}
-          alt={`Foto de ${user.firstName} ${user.lastName}`}
-          roundedCircle
-          width={36}
-          height={36}
-          className="border border-light"
-          style={{ objectFit: "cover" }}
-        />
-      </Dropdown.Toggle>
+      <CustomTooltip text="Abrir menú de usuario">
+        <Dropdown.Toggle
+          variant="link"
+          className="p-0 d-flex align-items-center text-white text-decoration-none"
+        >
+          <Image
+            src={user.avatar}
+            alt={`Foto de ${user.firstName} ${user.lastName}`}
+            roundedCircle
+            width={36}
+            height={36}
+            className="border border-light"
+            style={{ objectFit: "cover" }}
+          />
+        </Dropdown.Toggle>
+      </CustomTooltip>
 
       <Dropdown.Menu className="bg-dark text-white shadow">
         <Dropdown.Item
