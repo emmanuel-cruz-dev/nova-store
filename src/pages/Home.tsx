@@ -7,17 +7,17 @@ import {
   Newsletter,
   Categories,
 } from "../components";
-import { heroBannerImgs } from "../data/heroBannerImgs";
+import { bannerSlides } from "../data/bannerSlides";
 
 function Home() {
   const { products, loading, error } = useProducts(1, 6);
 
   return (
     <>
-      <BannerCarousel images={heroBannerImgs} />
+      <BannerCarousel slides={bannerSlides} />
       <Categories categories={["mujeres", "tecnologia", "gaming"]} />
       <ProductSlideList
-        title="Productos Destacados"
+        title="Productos destacados"
         products={products}
         loading={loading}
         error={error}
