@@ -3,6 +3,7 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import { ShoppingCart } from "lucide-react";
 import { useAuthStore } from "../stores";
 import { useCart } from "../hooks";
+import { CustomTooltip } from "../components";
 import UserMenu from "./UserMenu";
 
 function NavigationBar() {
@@ -39,18 +40,19 @@ function NavigationBar() {
             </Nav.Link>
 
             {isAuthenticated && (
-              <Nav.Link
-                as={Link}
-                to="/cart"
-                className="cart__items-container"
-                aria-label="Carrito"
-                title="Ir al carrito"
-              >
-                <ShoppingCart size={20} className="me-2" />
-                {getCartItemsCount() > 0 && (
-                  <p className="cart__items-badge">{getCartItemsCount()}</p>
-                )}
-              </Nav.Link>
+              <CustomTooltip text="Ir al carrito">
+                <Nav.Link
+                  as={Link}
+                  to="/cart"
+                  className="cart__items-container"
+                  aria-label="Carrito"
+                >
+                  <ShoppingCart size={20} className="me-2" />
+                  {getCartItemsCount() > 0 && (
+                    <p className="cart__items-badge">{getCartItemsCount()}</p>
+                  )}
+                </Nav.Link>
+              </CustomTooltip>
             )}
 
             {isAuthenticated && user ? (
