@@ -24,3 +24,4 @@ export { useLoginForm } from "./auth/useLoginForm";
 export { useRegisterForm } from "./auth/useRegisterForm";
 export { usePasswordChange } from "./usePasswordChange";
 export { useOrdersTable } from "./useOrdersTable";
+export { useProfileUpdate } from "./useProfileUpdate";
