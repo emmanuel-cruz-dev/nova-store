@@ -65,7 +65,7 @@ export interface UseUpdateUserReturn {
   error: Error | undefined;
 }
 
-export interface UserDetailsModalProps {
+export interface UserDetailsSidebarProps {
   user: User;
   onClose: () => void;
   onDelete: (user: User) => void;

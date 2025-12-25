@@ -1,3 +1,6 @@
+import { ReactElement } from "react";
+import { Placement } from "react-bootstrap/esm/types";
+
 export interface PaginationItemProps {
   currentPage: number;
   totalPages: number;
@@ -39,4 +42,20 @@ export interface MenuItem {
   id: string;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
   label: string;
+}
+
+export interface BannerSlide {
+  image: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+  imagePosition?: "left" | "right";
+}
+
+export interface CustomTooltipProps {
+  text: string;
+  children: ReactElement;
+  placement?: Placement;
+  delay?: { show: number; hide: number };
 }

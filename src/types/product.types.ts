@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { ValidationErrors } from "./common.types";
 import { ProductFormData } from "../schemas/productSchema";
 
@@ -76,7 +76,7 @@ export type OnUpdate = (
   type: "success" | "error" | string
 ) => void;
 
-export interface ProductModalFormProps {
+export interface ProductSidebarFormProps {
   show: boolean;
   onHide: () => void;
   productId: number;
@@ -115,6 +115,7 @@ export interface ProductFormProps {
   register: UseFormRegister<ProductFormData>;
   errors: FieldErrors<ProductFormData>;
   watch: (field: keyof ProductFormData) => any;
+  setValue: UseFormSetValue<ProductFormData>;
   error?: Error | null;
   errorUpdate?: Error | null;
 }
