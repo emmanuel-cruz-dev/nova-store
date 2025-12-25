@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../stores";
 import { loginSchema, LoginFormData } from "../../schemas/authSchemas";
 
 export function useLoginForm() {
@@ -34,15 +34,13 @@ export function useLoginForm() {
     try {
       const loggedUser = await login(data.email, data.password);
 
-      setTimeout(() => {
-        if (loggedUser.role === "admin") {
-          navigate("/profile", { replace: true });
-        } else if (from && from !== "/login") {
-          navigate(from, { replace: true });
-        } else {
-          navigate("/", { replace: true });
-        }
-      }, 100);
+      if (loggedUser.role === "admin") {
+        navigate("/profile", { replace: true });
+      } else if (from && from !== "/login") {
+        navigate(from, { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (error: unknown) {
       if (
         error instanceof Error &&
