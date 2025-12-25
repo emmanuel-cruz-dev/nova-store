@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 import { useUsersTable } from "../../../hooks";
 import {
-  UserDetailsModal,
   DeleteConfirmationModal,
   PaginationItem,
   UsersTableRowSkeleton,
+  UserDetailsSidebar,
 } from "../..";
 import { formatDateShort } from "../../../utils/utils";
 import { User } from "../../../types";
@@ -109,7 +109,7 @@ function UsersTable() {
       </Table>
 
       {showDetails && (
-        <UserDetailsModal
+        <UserDetailsSidebar
           user={selectedUser as User}
           onClose={handleCloseDetails}
           onDelete={handleShowDeleteModal}

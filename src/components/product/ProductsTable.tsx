@@ -1,12 +1,13 @@
-import { Table } from "react-bootstrap";
+import { Badge, Table } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { Pencil, Trash2, Info } from "lucide-react";
 import { useProductsTable } from "../../hooks";
 import {
-  ProductModalForm,
   DeleteConfirmationModal,
   PaginationItem,
   TableRowSkeleton,
+  ProductSidebarForm,
+  ProductStockIndicator,
 } from "..";
 import { formatPrice } from "../../utils/utils";
 
@@ -42,10 +43,10 @@ function ProductsTable() {
         </button>
       </header>
       <Table
+        className="mb-0"
         striped
         bordered
         hover
-        className="mb-1"
         responsive
         style={{ minWidth: "680px" }}
       >
@@ -72,7 +73,10 @@ function ProductsTable() {
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td>${formatPrice(product.price)}</td>
-                <td>{product.stock}</td>
+                <td>
+                  {product.stock.toString().padStart(2, "0")}
+                  <ProductStockIndicator stock={product.stock} />
+                </td>
                 <td>{product.isActive ? "Activo" : "Inactivo"}</td>
                 <td
                   className="d-flex gap-2"
@@ -104,13 +108,33 @@ function ProductsTable() {
         </tbody>
       </Table>
 
-      <small className="text-muted d-flex align-items-center gap-1">
-        <Info size={15} />
-        Los productos inactivos no se muestran a los clientes
-      </small>
+      <div className="d-flex justify-content-between align-items-start mt-2">
+        <small
+          className="text-muted d-flex align-items-center gap-1"
+          style={{ lineHeight: 1 }}
+        >
+          <Info size={15} />
+          Los productos inactivos no se muestran a los clientes
+        </small>
+
+        <ul className="d-flex gap-1 mb-0 list-unstyled">
+          <li>
+            <Badge bg="danger">Crítico</Badge>
+          </li>
+          <li>
+            <Badge bg="warning">Bajo</Badge>
+          </li>
+          <li>
+            <Badge bg="success">OK</Badge>
+          </li>
+          <li>
+            <Badge bg="primary">Alto</Badge>
+          </li>
+        </ul>
+      </div>
 
       {showModal && (
-        <ProductModalForm
+        <ProductSidebarForm
           show={showModal}
           onHide={handleModalClose}
           productId={selectedProductId as number}
