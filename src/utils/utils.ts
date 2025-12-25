@@ -59,3 +59,38 @@ export function formatDateDetailed(dateString: string) {
     minute: "2-digit",
   });
 }
+
+export const getStockStatus = (
+  stock: number
+): {
+  label: string;
+  color: string;
+  description: string;
+} => {
+  if (stock <= 5)
+    return {
+      label: "Crítico",
+      color: "danger",
+      description: "Quedan muy pocas unidades",
+    };
+
+  if (stock <= 10)
+    return {
+      label: "Bajo",
+      color: "warning",
+      description: "Conviene reponer stock",
+    };
+
+  if (stock <= 20)
+    return {
+      label: "OK",
+      color: "success",
+      description: "Stock saludable",
+    };
+
+  return {
+    label: "Alto",
+    color: "primary",
+    description: "Stock elevado",
+  };
+};
