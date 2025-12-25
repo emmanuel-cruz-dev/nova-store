@@ -25,12 +25,16 @@ function TestimonialCard({ image, name, role, text }: TestimonialCardProps) {
             }}
           />
           <div>
-            <h5 className="mb-0 fw-bold">{name}</h5>
-            <p className="text-muted mb-0 small">{role}</p>
+            <h3
+              className="mb-0 fw-bold custom__text-primary"
+              style={{ fontSize: "1.2rem" }}
+            >
+              {name}
+            </h3>
+            <p className="custom__text-muted mb-0 small">{role}</p>
           </div>
         </div>
         <p
-          className="text-secondary"
           style={{
             fontSize: "0.95rem",
             lineHeight: "1.7",

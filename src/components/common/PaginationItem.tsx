@@ -99,7 +99,7 @@ function PaginationItem({
   );
 
   return (
-    <article className="d-flex justify-content-center mt-5 fw-medium">
+    <article className="d-flex justify-content-center mt-4 fw-medium">
       <Pagination>{items}</Pagination>
     </article>
   );

@@ -11,7 +11,7 @@ function Categories({ categories, maxCategories = null }: CategoriesProps) {
     .slice(0, maxCategories || categories.length);
 
   return (
-    <section className="py-5 bg-white" id="categories">
+    <section className="py-5 bg-white p-4 p-md-0 p-md-5" id="categories">
       <Container>
         <Row>
           {displayCategories.map((category) => (
@@ -19,7 +19,7 @@ function Categories({ categories, maxCategories = null }: CategoriesProps) {
               key={category.id}
               md={getColSize(displayCategories)}
               sm={6}
-              className="g-4"
+              className="g-4 g-md-5"
             >
               <Link
                 to={`/products?category=${category.id}`}
