@@ -19,8 +19,13 @@ function FeaturesSection() {
                 <figure className="mb-3">
                   <feature.icon />
                 </figure>
-                <h5 className="fw-bold mb-2">{feature.title}</h5>
-                <p className="text-muted mb-0">{feature.subtitle}</p>
+                <h2
+                  className="fw-bold mb-2 custom__text-primary"
+                  style={{ fontSize: "1.3rem" }}
+                >
+                  {feature.title}
+                </h2>
+                <p className="custom__text-muted mb-0">{feature.subtitle}</p>
               </div>
             </Col>
           ))}
