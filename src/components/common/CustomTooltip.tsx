@@ -1,13 +1,5 @@
-import { ReactElement } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { Placement } from "react-bootstrap/esm/types";
-
-interface CustomTooltipProps {
-  text: string;
-  children: ReactElement;
-  placement?: Placement;
-  delay?: { show: number; hide: number };
-}
+import { CustomTooltipProps } from "../../types";
 
 function CustomTooltip({
   text,
