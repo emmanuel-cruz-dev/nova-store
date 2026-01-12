@@ -9,7 +9,7 @@ function EmptyCartCard() {
   return (
     <Card className="shadow-sm border-0 text-center py-5">
       <Card.Body>
-        <ShoppingBag size={64} className="text-muted mb-3" />
+        <ShoppingBag size={64} className="custom__text-muted mb-3" />
         <h4 className="mb-1">
           {user ? (
             <>
@@ -22,7 +22,7 @@ function EmptyCartCard() {
             "Tu carrito está vacío"
           )}
         </h4>
-        <p className="text-muted mb-4">
+        <p className="custom__text-muted mb-4">
           Agrega productos para comenzar tu compra
         </p>
         <Link to="/products">

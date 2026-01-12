@@ -7,8 +7,8 @@ function CheckoutSteps() {
         const Icon = step.icon;
         return (
           <li key={step.text} className="text-center">
-            <Icon size={32} className="text-primary mb-2" />
-            <p className="small text-muted mb-0">{step.text}</p>
+            <Icon size={32} className="custom__text-primary mb-2" />
+            <p className="small custom__text-muted mb-0">{step.text}</p>
           </li>
         );
       })}

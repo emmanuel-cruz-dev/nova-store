@@ -40,7 +40,7 @@ const CartItem = ({ product, index }: CartItemProps) => {
                 }}
               />
             ) : (
-              <ShoppingBag size={40} className="text-muted" />
+              <ShoppingBag size={40} className="custom__text-muted" />
             )}
           </figure>
         </Col>
@@ -57,7 +57,7 @@ const CartItem = ({ product, index }: CartItemProps) => {
           <p className="mb-0 small fw-semibold">
             Precio unitario: ${formatPrice(product.price)}
           </p>
-          <p className="text-muted mb-0 small line-clamp-2">
+          <p className="custom__text-muted mb-0 small line-clamp-2">
             {product.description || "Sin descripción"}
           </p>
         </Col>

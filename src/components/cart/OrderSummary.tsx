@@ -33,12 +33,12 @@ function OrderSummary() {
             <h4 className="mb-4">Resumen del pedido</h4>
 
             <ul className="d-flex justify-content-between mb-2 list-unstyled">
-              <li className="text-muted">Subtotal</li>
+              <li className="custom__text-muted">Subtotal</li>
               <li className="fw-semibold">${formatPrice(getCartTotal())}</li>
             </ul>
 
             <ul className="d-flex justify-content-between mb-2 list-unstyled">
-              <li className="text-muted">Envío</li>
+              <li className="custom__text-muted">Envío</li>
               <li className="fw-semibold">
                 {getCartTotal() > 100000 ? (
                   <span className="text-success">Gratis</span>
@@ -49,7 +49,10 @@ function OrderSummary() {
             </ul>
 
             {getCartTotal() > 0 && getCartTotal() < 100000 && (
-              <small className="text-muted" style={{ fontSize: "0.8rem" }}>
+              <small
+                className="custom__text-muted"
+                style={{ fontSize: "0.8rem" }}
+              >
                 Envío gratis a partir de $100,000
               </small>
             )}
@@ -58,7 +61,7 @@ function OrderSummary() {
 
             <ul className="d-flex justify-content-between mb-4 list-unstyled">
               <li className="fw-bold fs-5">Total</li>
-              <li className="fw-bold fs-5 text-primary">
+              <li className="fw-bold fs-5 custom__text-primary">
                 {formatPrice(calculateTotal(getCartTotal()))}
               </li>
             </ul>

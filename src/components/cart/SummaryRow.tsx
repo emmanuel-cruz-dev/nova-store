@@ -11,7 +11,7 @@ function SummaryRow({
 
   return (
     <ul className={rowClasses}>
-      <li className="text-muted">{label}:</li>
+      <li className="custom__text-muted">{label}:</li>
       <li className={valueClasses}>{value}</li>
     </ul>
   );
