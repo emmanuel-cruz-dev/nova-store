@@ -30,7 +30,7 @@ function AvatarUpdateModal({
           </Form.Group>
 
           <div className="text-center mt-4">
-            <p className="text-muted small mb-2">Vista Previa:</p>
+            <p className="custom__text-muted small mb-2">Vista Previa:</p>
             <Image
               src={newAvatarUrl || "https://placehold.it/150x150"}
               roundedCircle
@@ -55,9 +55,11 @@ function AvatarUpdateModal({
                 animation="border"
                 size="sm"
                 role="status"
-                className="me-2 text-primary"
+                className="me-2 custom__text-primary"
               />
-              <span className="text-primary small">Actualizando...</span>
+              <span className="custom__text-primary small">
+                Actualizando...
+              </span>
             </div>
           )}
         </Form>

@@ -29,7 +29,7 @@ function CheckoutModal() {
         <h2 className="mb-2" style={{ fontSize: "1.75rem" }}>
           ¡Compra realizada con éxito!
         </h2>
-        <p className="text-muted mb-2 px-2">
+        <p className="custom__text-muted mb-2 px-2">
           {user && (
             <>
               ¡Gracias por tu compra,{" "}
