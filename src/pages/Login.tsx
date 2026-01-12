@@ -12,10 +12,10 @@ function Login() {
     >
       <Container>
         <header className="mb-2 text-center">
-          <h1 className="text-primary" style={{ fontWeight: "bold" }}>
+          <h1 className="custom__text-primary" style={{ fontWeight: "bold" }}>
             Bienvenido de nuevo
           </h1>
-          <p className="text-muted mb-4">
+          <p className="custom__text-muted mb-4">
             Ingresa tus credenciales para continuar
           </p>
         </header>

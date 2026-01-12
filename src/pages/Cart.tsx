@@ -11,7 +11,7 @@ function Cart() {
     <Container className="py-5">
       <header className="mb-4">
         <h1 className="display-5 fw-bold mb-2">Mi carrito</h1>
-        <div className="text-muted">
+        <div className="custom__text-muted">
           {cart.length > 0 && (
             <>
               {user && (
