@@ -62,7 +62,7 @@ function AdminOrdersTable() {
                       {getStatusBadge(order.status)}
                     </div>
 
-                    <ul className="d-flex flex-wrap gap-3 text-muted small p-0">
+                    <ul className="d-flex flex-wrap gap-3 custom__text-muted small p-0">
                       <li className="d-flex align-items-center gap-1">
                         <Calendar size={14} />
                         {formatDateDetailed(order.createdAt)}
@@ -79,12 +79,12 @@ function AdminOrdersTable() {
                   </div>
 
                   <div className="d-flex flex-md-column justify-content-between gap-2 text-end me-md-3">
-                    <div className="fw-bold fs-5 text-primary">
+                    <div className="fw-bold fs-5 custom__text-primary">
                       ${formatPrice(order.total)}
                     </div>
 
                     {updatingOrderId === order.id ? (
-                      <div className="d-flex align-items-center gap-2 mt-1 text-muted small">
+                      <div className="d-flex align-items-center gap-2 mt-1 custom__text-muted small">
                         <Spinner animation="border" size="sm" />
                         Actualizando estado...
                       </div>
@@ -116,7 +116,7 @@ function AdminOrdersTable() {
               </Accordion.Header>
 
               <Accordion.Body>
-                <h6 className="text-muted mb-3">
+                <h6 className="custom__text-muted mb-3">
                   Productos ({order.items.length})
                 </h6>
 
