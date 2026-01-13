@@ -78,7 +78,7 @@ function LoginForm() {
         >
           {authLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
         </Button>
-        <p className="d-lg-none text-muted text-center mt-3 mb-0">
+        <p className="d-lg-none custom__text-muted text-center mt-3 mb-0">
           ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
         </p>
       </footer>
