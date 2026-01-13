@@ -16,7 +16,7 @@ function NotFound() {
         <Col xs={12}>
           <header>
             <h1
-              className="display-1 fw-bold text-primary mb-0"
+              className="display-1 fw-bold custom__text-primary mb-0"
               style={{
                 fontSize: "clamp(6rem, 12vw, 8rem)",
               }}
