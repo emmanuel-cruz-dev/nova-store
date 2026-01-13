@@ -8,7 +8,7 @@ function ProductNotFound() {
       <header className="mb-4">
         <Link
           to="/products"
-          className="text-decoration-none text-muted d-flex align-items-center gap-2"
+          className="text-decoration-none custom__text-muted d-flex align-items-center gap-2"
         >
           <ArrowLeft size={20} />
           Volver a la tienda

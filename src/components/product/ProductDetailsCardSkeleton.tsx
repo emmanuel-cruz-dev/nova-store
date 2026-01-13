@@ -13,7 +13,7 @@ function ProductDetailsCardSkeleton() {
       <header className="mb-4">
         <Link
           to="/products"
-          className="text-decoration-none text-muted d-inline-flex align-items-center gap-2"
+          className="text-decoration-none custom__text-muted d-inline-flex align-items-center gap-2"
         >
           <ArrowLeft size={20} />
           Ir a la tienda

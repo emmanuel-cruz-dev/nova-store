@@ -19,7 +19,7 @@ const ProductInfoDisplay = ({ product }: ProductItemProps) => {
       <StarRating rating={product.rating} />
 
       <div className="mb-4">
-        <p className="display-6 fw-bold text-primary mb-0">
+        <p className="display-6 fw-bold custom__text-primary mb-0">
           ${formatPrice(product.price)}
         </p>
         <p className="text-muted mb-0">
