@@ -13,7 +13,9 @@ const HighlightedFeatures = ({
             <Col key={index} xs={6} md={3}>
               <div className="text-center">
                 <feature.icon size={32} className="text-primary mb-2" />
-                <small className="d-block text-muted">{feature.title}</small>
+                <small className="d-block custom__text-muted">
+                  {feature.title}
+                </small>
               </div>
             </Col>
           ))}
