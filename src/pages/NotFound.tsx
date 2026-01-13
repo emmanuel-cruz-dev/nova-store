@@ -26,7 +26,9 @@ function NotFound() {
           </header>
 
           <main className="mb-4">
-            <h2 className="h3 fw-bold mb-3">¡Oops! Página no encontrada</h2>
+            <h2 className="h3 fw-bold mb-3 custom__text-secondary">
+              ¡Oops! Página no encontrada
+            </h2>
             <p className="lead mb-4 px-3">
               La página que estás buscando no existe o ha sido movida.
             </p>
