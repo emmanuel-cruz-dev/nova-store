@@ -86,7 +86,7 @@ function OrdersTable({ userId }: { userId: number }) {
                       </div>
                     </div>
 
-                    <div className="fw-bold fs-5 text-primary d-flex align-items-center gap-1 me-md-3">
+                    <div className="fw-bold fs-5 custom__text-primary d-flex align-items-center gap-1 me-md-3">
                       ${formatPrice(order.total)}
                     </div>
                   </div>

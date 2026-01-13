@@ -32,7 +32,10 @@ function UserDetailsSidebar({
 
         <ListGroup variant="flush" className="flex-grow-1">
           <ListGroup.Item className="d-flex align-items-center py-3 border-0 bg-light rounded mb-2">
-            <CircleUser className="me-3 text-primary flex-shrink-0" size={22} />
+            <CircleUser
+              className="me-3 custom__text-primary flex-shrink-0"
+              size={22}
+            />
             <div className="text-start">
               <small className="text-muted d-block">Nombre Completo</small>
               <div className="fw-semibold">

@@ -4,7 +4,7 @@ function OrdersLoader() {
   return (
     <article className="text-center py-5">
       <Spinner animation="border" />
-      <p className="mt-3 text-muted">Cargando órdenes...</p>
+      <p className="mt-3 custom__text-muted">Cargando órdenes...</p>
     </article>
   );
 }
