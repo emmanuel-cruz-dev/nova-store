@@ -56,16 +56,17 @@ function ProfileSidebar({
                 className="position-absolute bottom-0 end-0 rounded-circle shadow border border-2 d-flex align-items-center justify-content-center p-1"
                 style={{ width: "36px", height: "36px" }}
                 onClick={openAvatarModal}
+                aria-label="Actualizar foto de perfil"
               >
                 <Camera size={20} className="text-primary" />
               </Button>
             </CustomTooltip>
           </div>
 
-          <h5 className="fw-bold mb-1">
+          <h5 className="fw-bold mb-1 custom__text-secondary">
             {user?.firstName} {user?.lastName}
           </h5>
-          <p className="text-muted small mb-4">{user?.email}</p>
+          <p className="custom__text-muted small mb-4">{user?.email}</p>
 
           <ListGroup variant="flush">
             {menuItems.map((item) => {
@@ -77,8 +78,8 @@ function ProfileSidebar({
                   onClick={() => onMenuClick(item.id)}
                   className={`d-flex align-items-center border-0 py-3 ${
                     activeSection === item.id
-                      ? "bg-primary bg-opacity-10 border-start border-primary border-4"
-                      : ""
+                      ? "text-black bg-primary bg-opacity-10 border-start border-primary border-4"
+                      : "custom__text-muted"
                   }`}
                 >
                   <Icon className="me-3" />

@@ -25,12 +25,15 @@ function ProfileMainContent() {
         <Card.Body>
           <header className="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h4 className="fw-bold mb-1">Mi Perfil</h4>
-              <p className="text-muted mb-0">
+              <h4 className="fw-bold mb-1 custom__text-primary">Mi Perfil</h4>
+              <p className="custom__text-muted mb-0">
                 Toda tu información de cuenta en un solo lugar
               </p>
             </div>
-            <Button variant="outline-primary" onClick={togglePasswordChange}>
+            <Button
+              variant="outline-primary custom__text-primary"
+              onClick={togglePasswordChange}
+            >
               {showPasswordChange
                 ? "Ocultar cambiar contraseña"
                 : "Cambiar contraseña"}
