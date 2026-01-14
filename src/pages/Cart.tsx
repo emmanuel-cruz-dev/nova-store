@@ -10,7 +10,9 @@ function Cart() {
   return (
     <Container className="py-5">
       <header className="mb-4">
-        <h1 className="display-5 fw-bold mb-2">Mi carrito</h1>
+        <h1 className="display-5 fw-bold mb-2 custom__text-primary">
+          Mi carrito
+        </h1>
         <div className="custom__text-muted">
           {cart.length > 0 && (
             <>

@@ -32,7 +32,10 @@ function Products() {
           style={{ background: "#eee" }}
         >
           <div className="sticky-top" style={{ top: "68px", zIndex: 1 }}>
-            <h5 className="mb-3" style={{ fontSize: "1.5rem" }}>
+            <h5
+              className="mb-3 custom__text-primary"
+              style={{ fontSize: "1.5rem" }}
+            >
               Categorías
             </h5>
             <ListGroup>
@@ -42,7 +45,7 @@ function Products() {
                   action
                   active={selectedCategory === category.id}
                   onClick={() => handleCategoryClick(category.id)}
-                  className="border-0 rounded mb-2"
+                  className="border-0 rounded mb-2 custom__text-muted"
                   style={{ cursor: "pointer" }}
                 >
                   {category.name}
