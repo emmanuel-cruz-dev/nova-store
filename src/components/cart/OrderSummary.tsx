@@ -30,7 +30,12 @@ function OrderSummary() {
           style={{ top: "100px", position: "sticky" }}
         >
           <Card.Body>
-            <h4 className="mb-4">Resumen del pedido</h4>
+            <h2
+              className="mb-4 custom__text-primary"
+              style={{ fontSize: "1.5rem" }}
+            >
+              Resumen del pedido
+            </h2>
 
             <ul className="d-flex justify-content-between mb-2 list-unstyled">
               <li className="custom__text-muted">Subtotal</li>
@@ -41,7 +46,7 @@ function OrderSummary() {
               <li className="custom__text-muted">Envío</li>
               <li className="fw-semibold">
                 {getCartTotal() > 100000 ? (
-                  <span className="text-success">Gratis</span>
+                  <span className="custom__text-success">Gratis</span>
                 ) : (
                   "$5,000"
                 )}

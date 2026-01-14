@@ -10,7 +10,10 @@ function EmptyCartCard() {
     <Card className="shadow-sm border-0 text-center py-5">
       <Card.Body>
         <ShoppingBag size={64} className="custom__text-muted mb-3" />
-        <h4 className="mb-1">
+        <h2
+          className="mb-1 custom__text-primary"
+          style={{ fontSize: "1.5rem" }}
+        >
           {user ? (
             <>
               <span style={{ textTransform: "capitalize" }}>
@@ -21,7 +24,7 @@ function EmptyCartCard() {
           ) : (
             "Tu carrito está vacío"
           )}
-        </h4>
+        </h2>
         <p className="custom__text-muted mb-4">
           Agrega productos para comenzar tu compra
         </p>

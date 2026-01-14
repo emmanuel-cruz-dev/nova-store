@@ -48,7 +48,7 @@ const CartItem = ({ product, index }: CartItemProps) => {
         <Col xs={12} sm={4} className="mt-0">
           <Link
             to={`/product/${product.id}`}
-            className="text-decoration-none mb-1 line-clamp-1"
+            className="text-decoration-none mb-1 line-clamp-1 custom__text-secondary"
             style={{ fontWeight: 600 }}
             title={product.name}
           >
@@ -70,6 +70,7 @@ const CartItem = ({ product, index }: CartItemProps) => {
               onClick={() => handleDecreaseQuantity(product)}
               className="rounded-circle d-flex align-items-center justify-content-center"
               style={{ width: "32px", height: "32px" }}
+              aria-label="Reducir cantidad"
             >
               <Minus size={16} />
             </Button>
@@ -82,6 +83,7 @@ const CartItem = ({ product, index }: CartItemProps) => {
               onClick={() => handleAddToCart(product)}
               className="rounded-circle d-flex align-items-center justify-content-center"
               style={{ width: "32px", height: "32px" }}
+              aria-label="Aumentar cantidad"
             >
               <Plus size={16} />
             </Button>
