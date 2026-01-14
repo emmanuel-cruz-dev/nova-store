@@ -6,6 +6,10 @@
   color: #0d6efd;
 }
 
+.custom__text-success {
+  color: #198754;
+}
+
 .custom__text-muted {
   color: #495057;
 }
