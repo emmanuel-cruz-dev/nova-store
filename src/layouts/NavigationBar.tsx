@@ -11,7 +11,7 @@ function NavigationBar() {
   const { user, isAuthenticated } = useAuthStore();
 
   return (
-    <Navbar bg="black" variant="dark" expand="lg" sticky="top">
+    <Navbar bg="black" variant="dark" expand="lg" fixed="top">
       <Container>
         <Navbar.Brand
           as={Link}
