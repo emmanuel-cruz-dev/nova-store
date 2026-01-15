@@ -1,14 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Youtube,
-  Phone,
-  Clock,
-  Building,
-  Mail,
-} from "lucide-react";
+import { Phone, Clock, Building, Mail } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Youtube } from "../icons";
 import "./Footer.css";
 
 function Footer() {
@@ -19,7 +11,7 @@ function Footer() {
     >
       <Container className="py-4">
         <Row className="g-4 pt-3">
-          <Col xs={12} md={6} lg={2} xl={3}>
+          <Col xs={12} sm={6} md={6} lg={4} xl={3}>
             <header className="mb-3">
               <h2 className="fw-bold mb-3">NovaStore</h2>
               <p className="mb-0">
@@ -35,7 +27,7 @@ function Footer() {
                   className="text-white hover-primary"
                   aria-label="Facebook"
                 >
-                  <Facebook size={24} />
+                  <Facebook />
                 </a>
               </li>
               <li>
@@ -44,7 +36,7 @@ function Footer() {
                   className="text-white hover-primary"
                   aria-label="Instagram"
                 >
-                  <Instagram size={24} />
+                  <Instagram />
                 </a>
               </li>
               <li>
@@ -53,7 +45,7 @@ function Footer() {
                   className="text-white hover-primary"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin size={24} />
+                  <Linkedin />
                 </a>
               </li>
               <li>
@@ -62,13 +54,13 @@ function Footer() {
                   className="text-white hover-primary"
                   aria-label="YouTube"
                 >
-                  <Youtube size={24} />
+                  <Youtube />
                 </a>
               </li>
             </ul>
           </Col>
 
-          <Col xs={12} md={6} lg={3} xl={2}>
+          <Col xs={12} sm={6} md={6} lg={4} xl={2}>
             <p className="fw-bold mb-3">Atención al cliente</p>
             <div className="d-flex align-items-center mb-3">
               <Phone size={18} className="me-2 text-primary flex-shrink-0" />
@@ -87,7 +79,7 @@ function Footer() {
             </div>
           </Col>
 
-          <Col xs={12} md={6} lg={3} xl={2}>
+          <Col xs={12} sm={6} md={6} lg={4} xl={2}>
             <p className="fw-bold mb-3">Venta telefónica</p>
             <div className="d-flex align-items-center mb-3">
               <Phone size={18} className="me-2 text-primary flex-shrink-0" />
@@ -105,7 +97,7 @@ function Footer() {
             </div>
           </Col>
 
-          <Col xs={12} md={6} lg={3} xl={2}>
+          <Col xs={12} sm={6} md={6} lg={6} xl={2}>
             <p className="fw-bold mb-3">Servicios a empresas</p>
             <div className="d-flex align-items-center mb-3">
               <Building size={18} className="me-2 text-primary flex-shrink-0" />
@@ -123,7 +115,7 @@ function Footer() {
             </div>
           </Col>
 
-          <Col xs={12} md={6} lg={3} xl={3}>
+          <Col xs={12} sm={6} md={6} lg={6} xl={3}>
             <p className="fw-bold mb-3">Medios de pago</p>
             <div className="small mb-3">
               <div className="fw-medium">Aceptamos todas las tarjetas</div>
