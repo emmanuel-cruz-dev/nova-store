@@ -141,6 +141,7 @@ const createProduct = async (formData: CreateProductDTO) => {
 };
 
 export const productService = {
+  getAllProducts,
   getProducts,
   getProductById,
   getActiveProducts,
