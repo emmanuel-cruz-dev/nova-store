@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Card, Button } from "react-bootstrap";
-import { Heart } from "lucide-react";
+import { Card, Button, Row, Col } from "react-bootstrap";
+import { Heart, ShoppingCart, LogIn } from "lucide-react";
 import { useAuthStore, useFavoritesStore } from "../../stores";
 import { useProductCard } from "../../hooks";
 import { ProductCardSkeleton, CustomTooltip } from "../index";
@@ -86,41 +86,51 @@ function ProductCard(props: ProductCardProps) {
           className="text-decoration-none"
           title="Ver más información"
         >
-          <Card.Title className="line-clamp-1 mb-0 custom__text-primary">
+          <Card.Text className="custom__text-muted my-0 mb-1">
+            {brand}
+          </Card.Text>
+          <Card.Title className="line-clamp-1 mb-1 custom__text-primary">
             {name}
           </Card.Title>
-          <Card.Text className="custom__text-muted my-0">{brand}</Card.Text>
-          <Card.Text
-            className="mb-1"
-            style={{ color: "blue", fontSize: "1.2rem", fontWeight: "500" }}
-          >
-            ${formatPrice(price)}
-          </Card.Text>
-          <Card.Text className="custom__text-primary my-0">
+          <Card.Text className="custom__text-primary my-0 mb-2">
             6 cuotas de ${priceInstallments(price)}
           </Card.Text>
           <Card.Text className="line-clamp-2 custom__text-muted">
             {description}
           </Card.Text>
         </Link>
-        {isAuthenticated ? (
-          <Button
-            variant="primary"
-            className="mt-3 d-inline-flex justify-content-center gap-2 px-4 w-100"
-            onClick={() => handleAddToCartClick(1)}
-          >
-            Añadir al carrito
-          </Button>
-        ) : (
-          <Link to="/login">
-            <Button
-              variant="primary"
-              className="mt-2 d-inline-flex justify-content-center gap-2 px-4 w-100"
+        <Row className="align-items-center mt-3">
+          <Col>
+            <Card.Text
+              style={{ color: "blue", fontSize: "1.4rem", fontWeight: "600" }}
             >
-              Inicia sesión para comprar
-            </Button>
-          </Link>
-        )}
+              ${formatPrice(price)}
+            </Card.Text>
+          </Col>
+          <Col>
+            {isAuthenticated ? (
+              <Button
+                variant="primary"
+                className="d-inline-flex justify-content-center align-items-center gap-2 w-100"
+                onClick={() => handleAddToCartClick(1)}
+              >
+                <ShoppingCart size={20} />
+                Agregar
+              </Button>
+            ) : (
+              <Link to="/login">
+                <Button
+                  variant="primary"
+                  className="d-inline-flex justify-content-center align-items-center gap-2 w-100"
+                  style={{ whiteSpace: "nowrap" }}
+                >
+                  <LogIn size={20} />
+                  Iniciar sesión
+                </Button>
+              </Link>
+            )}
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );
