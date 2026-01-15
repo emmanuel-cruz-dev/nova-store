@@ -85,6 +85,7 @@ const deleteUser = async (id: number) => {
 export const userService = {
   getUsers,
   getUserById,
+  getCustomerUsers,
   getUserByRole,
   deleteUser,
 };
