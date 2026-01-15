@@ -3,3 +3,7 @@ export { default as HeadsetHelp } from "./HeadsetHelp";
 export { default as Gift } from "./Gift";
 export { default as Wallet } from "./Wallet";
 export { default as Undo } from "./Undo";
+export { default as Youtube } from "./Youtube";
+export { default as Facebook } from "./Facebook";
+export { default as Instagram } from "./Instagram";
+export { default as Linkedin } from "./Linkedin";
