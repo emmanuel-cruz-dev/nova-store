@@ -258,10 +258,7 @@ npm run lint
 
 ## 🚀 Próximas mejoras
 
-- [ ] Implementar tests unitarios y de integración
-- [ ] Agregar modo oscuro/claro
 - [ ] Implementar búsqueda avanzada con filtros múltiples
-- [ ] Sistema de favoritos/wishlist
 - [ ] Integración con pasarelas de pago reales
 - [ ] Panel de analytics para administradores
 
