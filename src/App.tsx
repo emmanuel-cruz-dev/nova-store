@@ -10,7 +10,7 @@ function App() {
       <ProgressBar />
       <div className="d-flex flex-column min-vh-100">
         <NavigationBar />
-        <main className="flex-grow-1 bg-light">
+        <main className="flex-grow-1 bg-light" style={{ marginTop: "56px" }}>
           <AppRouter />
         </main>
         <Footer />
