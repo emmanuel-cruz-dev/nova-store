@@ -10,7 +10,7 @@ import {
   OrdersLoader,
 } from "../../../components";
 import { getStatusBadge } from "../../../helpers/GetStatusBadge";
-import { formatDateDetailed, formatPrice } from "../../../utils/utils";
+import { formatDateDetailed, formatPrice } from "../../../utils";
 
 function OrdersTable({ userId }: { userId: number }) {
   const {

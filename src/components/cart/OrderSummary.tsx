@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useAuthStore, useCheckoutStore } from "../../stores";
 import { useCart } from "../../hooks";
 import { CheckoutModal } from "..";
-import { formatPrice } from "../../utils/utils";
+import { formatPrice } from "../../utils";
 
 function OrderSummary() {
   const { user } = useAuthStore();

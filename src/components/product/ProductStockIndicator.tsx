@@ -1,5 +1,5 @@
 import { OverlayTrigger, Tooltip, Badge } from "react-bootstrap";
-import { getStockStatus } from "../../utils/utils";
+import { getStockStatus } from "../../utils";
 
 function ProductStockIndicator({ stock }: { stock: number }) {
   const status = getStockStatus(stock);

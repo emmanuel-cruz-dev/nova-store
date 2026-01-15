@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { categoryData } from "../../data/categoryData";
 import { CategoriesProps } from "../../types";
-import { getColSize } from "../../utils/utils";
+import { getColSize } from "../../utils/common";
 
 function Categories({ categories, maxCategories = null }: CategoriesProps) {
   const displayCategories = categories

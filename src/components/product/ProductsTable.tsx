@@ -9,7 +9,7 @@ import {
   ProductSidebarForm,
   ProductStockIndicator,
 } from "..";
-import { formatPrice } from "../../utils/utils";
+import { formatPrice } from "../../utils";
 
 function ProductsTable() {
   const {

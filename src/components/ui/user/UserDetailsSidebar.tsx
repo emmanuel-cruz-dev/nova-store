@@ -1,6 +1,6 @@
 import { Offcanvas, Button, ListGroup } from "react-bootstrap";
 import { CircleUser, Mail, CalendarDays, Trash2 } from "lucide-react";
-import { formatDateDetailed } from "../../../utils/utils";
+import { formatDateDetailed } from "../../../utils";
 import { UserDetailsSidebarProps } from "../../../types";
 
 function UserDetailsSidebar({

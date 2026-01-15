@@ -3,7 +3,7 @@ import { Row, Col, Button, Badge } from "react-bootstrap";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "../../hooks";
 import { CartItemProps } from "../../types";
-import { formatPrice } from "../../utils/utils";
+import { formatPrice } from "../../utils";
 
 const CartItem = ({ product, index }: CartItemProps) => {
   const {

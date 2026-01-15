@@ -5,7 +5,7 @@ import { useAuthStore, useFavoritesStore } from "../../stores";
 import { useProductCard } from "../../hooks";
 import { ProductCardSkeleton, CustomTooltip } from "../index";
 import { Product, ProductCardProps } from "../../types";
-import { formatPrice, priceInstallments } from "../../utils/utils";
+import { formatPrice, priceInstallments } from "../../utils";
 
 function ProductCard(props: ProductCardProps) {
   const { isAuthenticated } = useAuthStore();

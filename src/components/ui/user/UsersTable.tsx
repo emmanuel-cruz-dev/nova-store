@@ -15,7 +15,7 @@ import {
   UsersTableRowSkeleton,
   UserDetailsSidebar,
 } from "../..";
-import { formatDateShort } from "../../../utils/utils";
+import { formatDateShort } from "../../../utils";
 import { User } from "../../../types";
 
 function UsersTable() {

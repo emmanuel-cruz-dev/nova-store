@@ -1,11 +1,7 @@
 import { Badge } from "react-bootstrap";
 import StarRating from "../common/StarRating";
 import { ProductItemProps } from "../../types";
-import {
-  formatPrice,
-  priceInstallments,
-  renderCategory,
-} from "../../utils/utils";
+import { formatPrice, priceInstallments, renderCategory } from "../../utils";
 
 const ProductInfoDisplay = ({ product }: ProductItemProps) => {
   return (

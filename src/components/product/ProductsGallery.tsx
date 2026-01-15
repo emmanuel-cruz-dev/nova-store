@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { ProductCard, ErrorMessage } from "../index";
-import { handleRetry } from "../../utils/utils";
+import { handleRetry } from "../../utils";
 import { ProductsListProps } from "../../types";
 
 function ProductsGallery({

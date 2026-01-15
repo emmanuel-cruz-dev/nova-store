@@ -1,4 +1,4 @@
-import { formatPrice } from "../../../utils/utils";
+import { formatPrice } from "../../../utils";
 
 function OrderTableSummary({
   subtotal,
