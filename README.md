@@ -259,7 +259,6 @@ npm run lint
 ## 🚀 Próximas mejoras
 
 - [ ] Implementar búsqueda avanzada con filtros múltiples
-- [ ] Integración con pasarelas de pago reales
 - [ ] Panel de analytics para administradores
 
 ---
