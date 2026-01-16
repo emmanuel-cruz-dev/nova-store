@@ -172,7 +172,7 @@
   justify-content: center;
   font-size: 0.8rem;
   font-weight: 500;
-  background-color: var(--bs-primary);
+  background-color: #0056b3;
   color: var(--bs-white);
   border-radius: 5rem;
   z-index: 1;
