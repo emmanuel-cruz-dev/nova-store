@@ -1,4 +1,5 @@
 import { Row, Col } from "react-bootstrap";
+import { HeartCrack } from "lucide-react";
 import { useFavoritesStore } from "../../../stores";
 import { ProductCard, EmptySection, SectionHeader } from "../../index";
 
@@ -15,6 +16,7 @@ function FavoritesSection() {
         <EmptySection
           title="¿Todavía no tienes favoritos?"
           message="Marca los productos que te interesan y accede a ellos fácilmente luego."
+          icon={<HeartCrack size={56} className="text-white" />}
         />
       ) : (
         <Row className="g-4">
