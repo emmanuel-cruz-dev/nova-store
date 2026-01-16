@@ -2,7 +2,7 @@ import { Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap";
 import { Bounce, ToastContainer } from "react-toastify";
 import { User, Mail } from "lucide-react";
 import { useProfileUpdate } from "../../../hooks";
-import { PasswordChangeForm } from "../..";
+import { SectionHeader, PasswordChangeForm } from "../..";
 import { User as UserType } from "../../../types";
 
 function ProfileMainContent() {
@@ -20,25 +20,14 @@ function ProfileMainContent() {
   } = useProfileUpdate();
 
   return (
-    <>
+    <section>
+      <SectionHeader
+        title="Mi Perfil"
+        subtitle="Toda tu información de cuenta en un solo lugar"
+      />
       <Card className="border-0 shadow-sm mb-4">
         <Card.Body>
-          <header className="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 className="fw-bold mb-1 custom__text-primary">Mi Perfil</h4>
-              <p className="custom__text-muted mb-0">
-                Toda tu información de cuenta en un solo lugar
-              </p>
-            </div>
-            <Button
-              variant="outline-primary custom__text-primary"
-              onClick={togglePasswordChange}
-            >
-              {showPasswordChange
-                ? "Ocultar cambiar contraseña"
-                : "Cambiar contraseña"}
-            </Button>
-          </header>
+          <h5 className="custom__text-secondary mb-3">Datos personales</h5>
 
           <Form onSubmit={handleSubmit(onSubmit)} noValidate>
             <Row className="g-3">
@@ -115,15 +104,25 @@ function ProfileMainContent() {
               </Col>
             </Row>
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="mt-4 px-5 py-2"
-              style={{ fontWeight: "500" }}
-              disabled={isSubmitting || loading}
-            >
-              {isSubmitting || loading ? "Guardando..." : "Guardar Cambios"}
-            </Button>
+            <div className="d-flex justify-content-end gap-3 mt-3">
+              <Button
+                type="submit"
+                variant="primary"
+                className="px-4 py-2"
+                style={{ fontWeight: "500" }}
+                disabled={isSubmitting || loading}
+              >
+                {isSubmitting || loading ? "Guardando..." : "Guardar Cambios"}
+              </Button>
+
+              <Button
+                variant="outline-primary"
+                className="px-4 py-2 custom__text-primary"
+                onClick={togglePasswordChange}
+              >
+                {showPasswordChange ? "Cancelar cambios" : "Cambiar contraseña"}
+              </Button>
+            </div>
           </Form>
         </Card.Body>
       </Card>
@@ -141,7 +140,7 @@ function ProfileMainContent() {
           onPasswordChanged={handlePasswordChange}
         />
       )}
-    </>
+    </section>
   );
 }
 
