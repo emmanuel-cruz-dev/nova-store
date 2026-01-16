@@ -11,7 +11,7 @@ function EmptySection({ title, message }: { title: string; message: string }) {
         <h4 className="fw-semibold mb-2">{title}</h4>
         <p className="custom__text-muted mb-3">{message}</p>
 
-        <Link to="/products" className="btn btn-primary mt-2">
+        <Link to="/products" className="btn btn-primary mt-2 px-4 py-2">
           Explorar productos
         </Link>
       </Card.Body>
