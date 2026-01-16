@@ -1,14 +1,31 @@
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
-import { Package } from "lucide-react";
 
-function EmptySection({ title, message }: { title: string; message: string }) {
+function EmptySection({
+  title,
+  message,
+  icon,
+}: {
+  title: string;
+  message: string;
+  icon: React.ReactNode;
+}) {
   return (
     <Card className="shadow-sm border-0 py-2 py-md-5">
       <Card.Body className="text-center d-flex flex-column align-items-center justify-content-center py-lg-5">
-        <Package size={64} className="custom__text-muted mb-3" />
+        <figure
+          className="d-flex justify-content-center align-items-center mb-3 rounded-circle custom__bg-primary"
+          style={{ width: "6.5rem", height: "6.5rem" }}
+        >
+          {icon}
+        </figure>
 
-        <h4 className="fw-semibold mb-2">{title}</h4>
+        <h2
+          className="custom__text-secondary fw-semibold mb-2"
+          style={{ fontSize: "1.5rem" }}
+        >
+          {title}
+        </h2>
         <p className="custom__text-muted mb-3">{message}</p>
 
         <Link to="/products" className="btn btn-primary mt-2 px-4 py-2">
