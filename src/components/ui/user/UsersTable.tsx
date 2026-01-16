@@ -14,6 +14,7 @@ import {
   PaginationItem,
   UsersTableRowSkeleton,
   UserDetailsSidebar,
+  SectionHeader,
 } from "../..";
 import { formatDateShort } from "../../../utils";
 import { User } from "../../../types";
@@ -40,7 +41,10 @@ function UsersTable() {
 
   return (
     <section>
-      <h2 className="mb-4">Usuarios</h2>
+      <SectionHeader
+        title="Usuarios"
+        subtitle="Administra los usuarios registrados en la plataforma"
+      />
 
       <Table striped bordered hover responsive style={{ minWidth: "680px" }}>
         <thead>
