@@ -49,7 +49,7 @@ export { default as ProfileSidebar } from "./ui/user/ProfileSidebar";
 export { default as UsersTable } from "./ui/user/UsersTable";
 export { default as UserDetailsSidebar } from "./ui/user/UserDetailsSidebar";
 export { default as UsersTableRowSkeleton } from "./ui/user/UsersTableRowSkeleton";
-export { default as OrdersTable } from "./ui/user/OrdersTable";
+export { default as OrdersSection } from "./ui/user/OrdersSection";
 export { default as AdminOrdersTable } from "./ui/user/AdminOrdersTable";
 export { default as EmptySection } from "./ui/user/EmptySection";
 export { default as OrderItemsList } from "./ui/user/OrderItemsList";
