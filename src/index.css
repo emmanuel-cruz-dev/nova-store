@@ -18,6 +18,10 @@
   color: #9ca3af;
 }
 
+.custom__bg-primary {
+  background-color: #007bff;
+}
+
 .line-clamp-1 {
   -webkit-line-clamp: 1;
   line-clamp: 1;
