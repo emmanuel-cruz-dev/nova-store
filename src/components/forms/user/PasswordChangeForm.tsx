@@ -19,10 +19,9 @@ function PasswordChangeForm({
   } = usePasswordChange({ profileData, onPasswordChanged });
 
   return (
-    <Card className="border-0 shadow-sm">
+    <Card className="border-0 shadow-sm mb-2">
       <Card.Body>
-        <h4 className="fw-bold mb-1">Cambiar Contraseña</h4>
-        <p className="text-muted mb-4">Actualiza tu contraseña</p>
+        <h5 className="custom__text-secondary mb-3">Cambiar Contraseña</h5>
 
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Row className="g-3">
@@ -67,15 +66,17 @@ function PasswordChangeForm({
               </Col>
             ))}
           </Row>
-          <Button
-            type="submit"
-            variant="primary"
-            className="mt-4 px-5 py-2"
-            style={{ fontWeight: "500" }}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Guardando..." : "Guardar Cambios"}
-          </Button>
+          <div className="d-flex justify-content-end mt-3">
+            <Button
+              type="submit"
+              variant="primary"
+              className="px-4 py-2"
+              style={{ fontWeight: "500" }}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Guardando..." : "Guardar Cambios"}
+            </Button>
+          </div>
         </Form>
       </Card.Body>
     </Card>
