@@ -3,5 +3,13 @@ import { statusConfig } from "../data/statusConfig";
 
 export const getStatusBadge = (status: string) => {
   const config = statusConfig[status as keyof typeof statusConfig];
-  return <Badge bg={config.variant}>{config.text}</Badge>;
+
+  return (
+    <Badge
+      pill
+      className={`bg-white border text-${config.variant} border-${config.variant}`}
+    >
+      {config.text}
+    </Badge>
+  );
 };
