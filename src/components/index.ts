@@ -56,3 +56,9 @@ export { default as OrderItemsList } from "./ui/user/OrderItemsList";
 export { default as OrderTableSummary } from "./ui/user/OrderTableSummary";
 export { default as OrdersLoader } from "./ui/user/OrdersLoader";
 export { default as FavoritesSection } from "./ui/user/FavoritesSection";
+export { default as SectionHeader } from "./ui/user/SectionHeader";
+
+export { default as StatCard } from "./ui/dashboard/StatCard";
+export { default as OrderStatusChart } from "./ui/dashboard/OrderStatusChart";
+export { default as TopProductsTable } from "./ui/dashboard/TopProductsTable";
+export { default as DashboardSkeleton } from "./ui/dashboard/DashboardSkeleton";
