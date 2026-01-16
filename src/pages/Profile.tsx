@@ -7,7 +7,7 @@ import {
   ProfileSidebar,
   ProductsTable,
   UsersTable,
-  OrdersTable,
+  OrdersSection,
   AdminOrdersTable,
   FavoritesSection,
 } from "../components";
@@ -38,7 +38,7 @@ function Profile() {
       case "favorites":
         return <FavoritesSection />;
       case "orders":
-        return <OrdersTable userId={user?.id!} />;
+        return <OrdersSection userId={user?.id!} />;
       case "all-orders":
         return <AdminOrdersTable />;
       case "products":
