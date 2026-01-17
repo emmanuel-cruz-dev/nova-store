@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import StarRating from "../common/StarRating";
+import StarRating from "../shared/StarRating";
 import { ProductItemProps } from "../../types";
 import { formatPrice, priceInstallments, renderCategory } from "../../utils";
 

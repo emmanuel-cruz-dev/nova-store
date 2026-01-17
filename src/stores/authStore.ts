@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import axios from "../api/axiosConfig";
+import axios from "../api/config/axiosConfig";
 import { AuthState, RegisterData, User } from "../types";
 
 export const useAuthStore = create<AuthState>()(

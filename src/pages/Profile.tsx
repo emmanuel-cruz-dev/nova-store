@@ -10,6 +10,7 @@ import {
   OrdersSection,
   AdminOrdersTable,
   FavoritesSection,
+  Dashboard,
 } from "../components";
 import { adminMenuItems, userMenuItems } from "../data/menuItems";
 
@@ -33,6 +34,8 @@ function Profile() {
 
   const renderSection = () => {
     switch (section) {
+      case "dashboard":
+        return <Dashboard />;
       case "profile":
         return <ProfileMainContent />;
       case "favorites":
@@ -46,7 +49,7 @@ function Profile() {
       case "users":
         return <UsersTable />;
       default:
-        return <ProfileMainContent />;
+        return isAdmin ? <Dashboard /> : <ProfileMainContent />;
     }
   };
 

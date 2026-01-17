@@ -1,4 +1,5 @@
-import axios from "../axiosConfig";
+import axios from "../config/axiosConfig";
+import { User } from "../../types";
 
 const getUsers = async () => {
   try {
@@ -67,6 +68,21 @@ const getUserByRole = async (role: string, page = 1, limit = 10) => {
   }
 };
 
+const updateUser = async (userData: User) => {
+  try {
+    const response = await axios.put(`/users/${userData.id}`, userData);
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user", error);
+    throw error;
+  }
+};
+
 const deleteUser = async (id: number) => {
   try {
     const response = await axios.delete(`/users/${id}`);
@@ -87,5 +103,6 @@ export const userService = {
   getUserById,
   getCustomerUsers,
   getUserByRole,
+  updateUser,
   deleteUser,
 };

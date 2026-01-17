@@ -1,7 +1,7 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { NavigationBar, Footer } from "./layouts";
 import { AppRouter } from "./routes";
-import ScrollToTop from "./helpers/ScrollToTop";
+import ScrollToTop from "./utils/helpers/ScrollToTop";
 import { ProgressBar, ScrollToTopButton } from "./components";
 
 function App() {

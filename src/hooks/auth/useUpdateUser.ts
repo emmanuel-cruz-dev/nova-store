@@ -1,6 +1,6 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-import { userAuthService } from "../../api/services/auth/user.service";
+import { userService } from "../../api/services/user.service";
 import { User, UseUpdateUserReturn } from "../../types";
 
 export const useUpdateUser = (): UseUpdateUserReturn => {
@@ -12,7 +12,7 @@ export const useUpdateUser = (): UseUpdateUserReturn => {
   >(
     "updateUser",
     async (_, { arg: userData }: { arg: User }) => {
-      return await userAuthService.updateUser(userData);
+      return await userService.updateUser(userData);
     },
     {
       onSuccess: (updatedUser: User) => {

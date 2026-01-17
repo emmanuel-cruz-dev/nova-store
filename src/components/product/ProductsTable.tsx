@@ -1,6 +1,6 @@
 import { Badge, Table } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
-import { Pencil, Trash2, Info } from "lucide-react";
+import { Pencil, Trash2, Info, Package, PackagePlus } from "lucide-react";
 import { useProductsTable } from "../../hooks";
 import {
   DeleteConfirmationModal,
@@ -8,6 +8,8 @@ import {
   TableRowSkeleton,
   ProductSidebarForm,
   ProductStockIndicator,
+  SectionHeader,
+  EmptySection,
 } from "..";
 import { formatPrice } from "../../utils";
 
@@ -36,102 +38,124 @@ function ProductsTable() {
 
   return (
     <section>
-      <header className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Productos</h2>
-        <button onClick={handleModalShow} className="btn btn-primary">
+      <div
+        className="d-flex justify-content-between align-items-center"
+        style={{ marginBottom: "-16px" }}
+      >
+        <SectionHeader
+          title="Productos"
+          subtitle="Gestiona el catálogo de productos de tu tienda"
+        />
+        <button
+          className="btn btn-primary mb-5 px-4 d-flex align-items-center gap-2"
+          onClick={handleModalShow}
+        >
+          <PackagePlus size={16} />
           Crear producto
         </button>
-      </header>
-      <Table
-        className="mb-0"
-        striped
-        bordered
-        hover
-        responsive
-        style={{ minWidth: "680px" }}
-      >
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Estado</th>
-            <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            Array.from({ length: 5 }).map((_, index) => (
-              <TableRowSkeleton key={`placeholder-${index}`} />
-            ))
-          ) : error ? (
-            <tr>
-              <td colSpan={6}>Error al cargar productos</td>
-            </tr>
-          ) : (
-            products.map((product) => (
-              <tr key={product.id}>
-                <td>{product.name}</td>
-                <td>${formatPrice(product.price)}</td>
-                <td>
-                  {product.stock.toString().padStart(2, "0")}
-                  <ProductStockIndicator stock={product.stock} />
-                </td>
-                <td>{product.isActive ? "Activo" : "Inactivo"}</td>
-                <td
-                  className="d-flex gap-2"
-                  style={{
-                    width: "200px",
-                    height: "100%",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <button
-                    onClick={() => handleEditProduct(product.id)}
-                    className="btn btn-secondary btn-sm"
-                  >
-                    <Pencil size={18} className="me-2" />
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => handleDeleteProduct(product)}
-                  >
-                    <Trash2 size={18} className="me-2" />
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
-
-      <div className="d-flex justify-content-between align-items-start mt-2">
-        <small
-          className="text-muted d-flex align-items-center gap-1"
-          style={{ lineHeight: 1 }}
-        >
-          <Info size={15} />
-          Los productos inactivos no se muestran a los clientes
-        </small>
-
-        <ul className="d-flex gap-1 mb-0 list-unstyled">
-          <li>
-            <Badge bg="danger">Crítico</Badge>
-          </li>
-          <li>
-            <Badge bg="warning">Bajo</Badge>
-          </li>
-          <li>
-            <Badge bg="success">OK</Badge>
-          </li>
-          <li>
-            <Badge bg="primary">Alto</Badge>
-          </li>
-        </ul>
       </div>
+
+      {products.length === 0 ? (
+        <EmptySection
+          title="Tu catálogo está vacío"
+          message="Agrega productos para empezar a vender y gestionar tu tienda desde el panel de control."
+          icon={<Package size={56} className="text-white" />}
+          showButton={false}
+        />
+      ) : (
+        <>
+          <Table
+            className="mb-0"
+            striped
+            bordered
+            hover
+            responsive
+            style={{ minWidth: "680px" }}
+          >
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <TableRowSkeleton key={`placeholder-${index}`} />
+                ))
+              ) : error ? (
+                <tr>
+                  <td colSpan={6}>Error al cargar productos</td>
+                </tr>
+              ) : (
+                products.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>${formatPrice(product.price)}</td>
+                    <td>
+                      {product.stock.toString().padStart(2, "0")}
+                      <ProductStockIndicator stock={product.stock} />
+                    </td>
+                    <td>{product.isActive ? "Activo" : "Inactivo"}</td>
+                    <td
+                      className="d-flex gap-2"
+                      style={{
+                        width: "200px",
+                        height: "100%",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <button
+                        onClick={() => handleEditProduct(product.id)}
+                        className="btn btn-secondary btn-sm"
+                      >
+                        <Pencil size={18} className="me-2" />
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleDeleteProduct(product)}
+                      >
+                        <Trash2 size={18} className="me-2" />
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </Table>
+
+          <div className="d-flex justify-content-between align-items-start mt-2">
+            <small
+              className="text-muted d-flex align-items-center gap-1"
+              style={{ lineHeight: 1 }}
+            >
+              <Info size={15} />
+              Los productos inactivos no se muestran a los clientes
+            </small>
+
+            <ul className="d-flex gap-1 mb-0 list-unstyled">
+              <li>
+                <Badge bg="danger">Crítico</Badge>
+              </li>
+              <li>
+                <Badge bg="warning">Bajo</Badge>
+              </li>
+              <li>
+                <Badge bg="success">OK</Badge>
+              </li>
+              <li>
+                <Badge bg="primary">Alto</Badge>
+              </li>
+            </ul>
+          </div>
+        </>
+      )}
 
       {showModal && (
         <ProductSidebarForm

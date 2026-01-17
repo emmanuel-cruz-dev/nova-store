@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import axios from "../axiosConfig";
+import axios from "../config/axiosConfig";
 import { CreateProductDTO } from "../../types";
 
 const getAllProducts = async () => {

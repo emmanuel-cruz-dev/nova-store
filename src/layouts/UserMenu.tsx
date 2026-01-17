@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import { Dropdown, Image } from "react-bootstrap";
-import { User, LogOut, ClipboardList, Heart, Box, Users } from "lucide-react";
+import {
+  LayoutDashboard,
+  User,
+  ClipboardList,
+  Users,
+  Heart,
+  Box,
+  LogOut,
+} from "lucide-react";
 import { useAuthStore } from "../stores";
 import { CustomTooltip } from "../components";
 
@@ -49,6 +57,16 @@ function UserMenu() {
 
         <Dropdown.Divider />
 
+        {user.role === "admin" && (
+          <Dropdown.Item
+            as={Link}
+            to="/profile/dashboard"
+            className="d-flex align-items-center gap-2 text-white"
+          >
+            <LayoutDashboard size={16} />
+            Panel de control
+          </Dropdown.Item>
+        )}
         <Dropdown.Item
           as={Link}
           to="/profile"
@@ -86,7 +104,6 @@ function UserMenu() {
               <Box size={16} />
               Productos
             </Dropdown.Item>
-
             <Dropdown.Item
               as={Link}
               to="/profile/users"
