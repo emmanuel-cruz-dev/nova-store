@@ -1,44 +1,66 @@
-# 🛍️ Nova Store - E-Commerce  
+# 🛍️ Nova Store - E-Commerce
 **Entrega Final - Curso React + Bootstrap – Talento Tech 2025**
 
-👨‍💻 **Autor:** Emmanuel Cruz  
-🎓 **Comisión:** 25235  
+👨‍💻 **Autor:** Emmanuel Cruz
+🎓 **Comisión:** 25235
 
 ---
 
-## 🚀 Demo en vivo  
+## 🚀 Demo en vivo
 👉 **[Visitar la página](https://nova-store-shop.vercel.app/)**
 
 ---
 
-## 📄 Descripción  
-**Nova Store** es una tienda e-commerce moderna construida con **React**, que incluye autenticación (registro/login), carrito de compras, proceso de checkout y panel administrativo.  
+## 📄 Descripción
+**Nova Store** es una tienda e-commerce moderna y completa construida con **React** y **TypeScript**, que incluye autenticación (registro/login), carrito de compras, proceso de checkout, gestión de órdenes y un completo panel administrativo con estadísticas en tiempo real.
 
-La aplicación consume una API generada con **MockAPI**, utilizada para la persistencia de productos y usuarios, e implementa las mejores prácticas de desarrollo con validación de formularios, gestión de estado optimizada y una experiencia de usuario fluida.
+La aplicación consume una API generada con **MockAPI**, utilizada para la persistencia de productos, usuarios y órdenes, e implementa las mejores prácticas de desarrollo con validación de formularios, gestión de estado optimizada, arquitectura modular por features y una experiencia de usuario fluida.
 
 ---
 
-## ✨ Funcionalidades principales  
+## ✨ Funcionalidades principales
 
 ### 🔐 Autenticación y usuarios
-- Registro y login de usuarios (Customer).  
+- Registro y login de usuarios con validación robusta.
+- Gestión de perfiles con actualización de datos personales.
+- Cambio de contraseña seguro.
 - Validación de formularios con **React Hook Form** y **Zod**.
 - Gestión de sesión con **Zustand** (authStore).
 
 ### 🛒 Carrito de compras
-- Gestión completa de carrito: agregar productos, modificar cantidad, eliminar.  
+- Gestión completa de carrito: agregar productos, modificar cantidad, eliminar.
 - Persistencia del estado del carrito con **Zustand**.
-- Proceso de checkout y resumen de orden.  
+- Proceso de checkout con validación de datos de envío.
+- Resumen de orden y confirmación de compra.
 
 ### 📦 Productos
-- Búsqueda y filtrado por categorías.
-- Paginación de productos.
-- Detalle de producto individual.
+- Búsqueda y filtrado avanzado por categorías.
+- Paginación optimizada de productos.
+- Vista detallada de producto individual con galería de imágenes.
+- Sistema de ratings y valoraciones.
+- Gestión de stock en tiempo real.
 
-### 👨‍💼 Panel de administración
-- CRUD completo de productos con formularios validados.
-- Listado, visualización y eliminación de usuarios.  
-- Rutas protegidas según rol de usuario.
+### 📊 Panel de administración (Dashboard)
+- **Estadísticas en tiempo real:**
+  - Ingresos totales y valor promedio de órdenes
+  - Total de productos, productos activos y alertas de stock bajo
+  - Total de órdenes y distribución por estados
+  - Total de usuarios (clientes y administradores)
+- **Visualizaciones:**
+  - Gráficos de distribución de órdenes por estado
+  - Tabla de productos más vendidos
+  - Tarjetas de estadísticas con indicadores visuales
+- **Gestión completa:**
+  - CRUD de productos con formularios validados
+  - Gestión de órdenes (visualización, actualización de estados)
+  - Listado y administración de usuarios
+  - Rutas protegidas según rol de usuario
+
+### 📋 Gestión de órdenes
+- Visualización de historial de órdenes del usuario.
+- Estados de órdenes: Pendiente, En proceso, Completada, Cancelada.
+- Detalles completos de cada orden (productos, cantidades, precios, datos de envío).
+- Panel administrativo para gestionar todas las órdenes del sistema.
 
 ### 🎨 Interfaz de usuario
 - Diseño responsivo con **Bootstrap** y **Bootswatch**.
@@ -46,47 +68,85 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 - Notificaciones elegantes con **React Toastify**.
 - Indicadores de carga con **NProgress**.
 - Iconografía moderna con **Lucide React**.
+- Skeletons de carga para mejor UX.
 
 ---
 
-## 🗂 Estructura relevante del proyecto  
+## 🗂 Estructura del proyecto
+
+El proyecto está organizado siguiendo una arquitectura modular por features para mejor escalabilidad y mantenibilidad:
 
 ```
 src/
 ├── api/
-│   ├── axiosConfig.ts          # Configuración de Axios
-│   └── services/               # Servicios API (products, users)
-├── assets/                     # Recursos estáticos
-├── components/
-│   ├── cart/                   # Componentes del carrito
-│   ├── common/                 # Componentes comunes
-│   ├── forms/                  # Formularios reutilizables
-│   ├── modals/                 # Modales
-│   ├── product/                # Componentes de productos
-│   └── ui/                     # Componentes de UI
-├── data/                       # Datos estáticos
-├── helpers/                    # Funciones auxiliares
-├── hooks/                      # Custom hooks
-├── icons/                      # Iconos personalizados
-├── layouts/
-│   ├── NavigationBar.jsx
-│   └── Footer.jsx
-├── pages/                      # Páginas principales
-├── routes/                     # Configuración de rutas
-├── schemas/                    # Esquemas de validación con Zod
-├── stores/
-│   ├── authStore.ts            # Store de autenticación (Zustand)
-│   └── cartStore.ts            # Store del carrito (Zustand)
-├── types/                      # Definiciones de tipos TypeScript
-└── utils/                      # Utilidades generales
+│   ├── axiosConfig.ts              # Configuración de Axios con interceptores
+│   └── services/                   # Servicios API organizados por dominio
+│       ├── dashboard.service.ts    # Servicio de estadísticas
+│       ├── order.service.ts        # Servicio de órdenes
+│       ├── product.service.ts      # Servicio de productos
+│       └── user.service.ts         # Servicio de usuarios
+├── assets/                         # Recursos estáticos (imágenes, etc.)
+├── components/                     # Componentes organizados por features
+│   ├── auth/                       # Componentes de autenticación
+│   ├── cart/                       # Componentes del carrito
+│   ├── dashboard/                  # Componentes del panel de control
+│   │   ├── Dashboard.tsx           # Panel principal con estadísticas
+│   │   ├── DashboardSkeleton.tsx   # Loading state
+│   │   ├── OrderStatusChart.tsx    # Gráfico de estados de órdenes
+│   │   ├── StatCard.tsx            # Tarjetas de estadísticas
+│   │   └── TopProductsTable.tsx    # Tabla de productos top
+│   ├── home/                       # Componentes de la página principal
+│   ├── modals/                     # Modales reutilizables
+│   ├── product/                    # Componentes de productos
+│   ├── shared/                     # Componentes compartidos
+│   └── user/                       # Componentes de usuario y perfil
+├── constants/                      # Constantes de la aplicación
+│   ├── features.ts                 # Features destacadas del e-commerce
+│   └── status.ts                   # Estados de órdenes
+├── data/                           # Datos estáticos y configuraciones
+├── hooks/                          # Custom hooks organizados por dominio
+│   ├── auth/                       # Hooks de autenticación
+│   ├── cart/                       # Hooks del carrito
+│   ├── dashboard/                  # Hooks del dashboard
+│   ├── orders/                     # Hooks de órdenes
+│   ├── products/                   # Hooks de productos
+│   ├── shared/                     # Hooks compartidos (pagination, navigation)
+│   └── user/                       # Hooks de usuario
+├── icons/                          # Iconos personalizados
+├── layouts/                        # Layouts principales
+│   ├── NavigationBar.tsx
+│   ├── Footer.tsx
+│   └── UserMenu.tsx
+├── pages/                          # Páginas principales
+│   ├── Home.tsx
+│   ├── Products.tsx
+│   ├── Product.tsx
+│   ├── Cart.tsx
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   ├── Profile.tsx                 # Incluye dashboard y gestión de perfil
+│   └── NotFound.tsx
+├── routes/                         # Configuración de rutas
+│   ├── AppRouter.tsx
+│   ├── PrivateRoute.tsx
+│   ├── PublicRoute.tsx
+│   └── config.tsx
+├── schemas/                        # Esquemas de validación con Zod
+├── stores/                         # State management con Zustand
+│   ├── authStore.ts                # Store de autenticación
+│   └── cartStore.ts                # Store del carrito
+├── types/                          # Definiciones de tipos TypeScript
+│   ├── dashboard.types.ts          # Tipos del dashboard
+│   └── index.ts                    # Exportaciones centralizadas
+└── utils/                          # Utilidades generales
 ```
 
 ---
 
-## 🧰 Tecnologías utilizadas  
+## 🧰 Tecnologías utilizadas
 
 ### Core
-- **React 19** (Vite)  
+- **React 19** (Vite)
 - **React Router DOM** - Enrutamiento y navegación
 - **TypeScript** - Tipado estático (configuración disponible)
 
@@ -112,13 +172,13 @@ src/
 
 ---
 
-## 🔧 Requisitos  
-- **Node.js** ≥ 16  
-- **pnpm** ≥ 8 (recomendado) o **npm**  
+## 🔧 Requisitos
+- **Node.js** ≥ 16
+- **pnpm** ≥ 8 (recomendado) o **npm**
 
 ---
 
-## ⚙️ Variables de entorno  
+## ⚙️ Variables de entorno
 
 Crear un archivo `.env` (o `.env.local`) en la raíz del proyecto:
 
@@ -130,7 +190,7 @@ VITE_BASE_API_URL=https://<tu-id>.mockapi.io/api/v1
 
 ---
 
-## 📥 Instalación y ejecución  
+## 📥 Instalación y ejecución
 
 ### Windows (PowerShell) / macOS / Linux
 
@@ -161,12 +221,12 @@ pnpm preview
 
 ---
 
-## 🔎 Notas sobre la API  
+## 🔎 Notas sobre la API
 
-- El proyecto está diseñado para trabajar con **MockAPI** (https://mockapi.io).  
-- Endpoints esperados:  
-  - `/products` — Campos: id, title, price, category, isActive, images, etc.  
-  - `/users` — Campos: id, email, name, password, role (`customer` | `admin`).  
+- El proyecto está diseñado para trabajar con **MockAPI** (https://mockapi.io).
+- Endpoints esperados:
+  - `/products` — Campos: id, title, price, category, isActive, images, etc.
+  - `/users` — Campos: id, email, name, password, role (`customer` | `admin`).
 - Para acceder al panel administrativo, es necesario crear un usuario con `role: "admin"` en MockAPI.
 
 ### Estructura de datos recomendada
@@ -175,7 +235,7 @@ pnpm preview
 ```json
 {
   "id": "1",
-  "name": "Producto ejemplo",  
+  "name": "Producto ejemplo",
   "price": 99.99,
   "stock": 10,
   "rating": 5,
@@ -203,9 +263,9 @@ pnpm preview
 
 ---
 
-## 🧪 Credenciales y pruebas  
+## 🧪 Credenciales y pruebas
 
-- No hay usuarios preconfigurados en el repositorio.  
+- No hay usuarios preconfigurados en el repositorio.
 - Se puede crear usuarios mediante:
   1. El formulario de registro de la aplicación.
   2. Directamente desde MockAPI.
@@ -213,7 +273,7 @@ pnpm preview
 
 ---
 
-## 🛠️ Desarrollo y mejores prácticas  
+## 🛠️ Desarrollo y mejores prácticas
 
 ### Arquitectura
 - **Separación de responsabilidades:** Servicios HTTP abstraídos en `src/api/services/`.
@@ -226,7 +286,7 @@ pnpm preview
 - Mensajes de error consistentes y accesibles.
 
 ### Estado global
-- **Zustand stores:** 
+- **Zustand stores:**
   - `authStore.ts` - Maneja autenticación, usuario actual y token
   - `cartStore.ts` - Gestión optimizada del estado del carrito
 - **SWR:** Cache inteligente y revalidación automática de datos
