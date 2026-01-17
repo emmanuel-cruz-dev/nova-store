@@ -13,7 +13,21 @@ function Footer() {
         <Row className="g-4 pt-3">
           <Col xs={12} sm={6} md={6} lg={4} xl={3}>
             <header className="mb-3">
-              <h2 className="fw-bold mb-3">NovaStore</h2>
+              <div className="d-flex align-items-center gap-2 mb-2">
+                <img
+                  className="mb-1"
+                  src="/nova-store.ico"
+                  style={{ width: "36px", height: "36px" }}
+                  width={256}
+                  height={256}
+                  alt="Logo de NovaStore"
+                  loading="lazy"
+                />
+                <h2 className="fw-bold">
+                  Nova
+                  <span className="text-white fw-normal">Store</span>
+                </h2>
+              </div>
               <p className="mb-0">
                 Tu tienda online con las últimas tendencias y los mejores
                 precios. Calidad y estilo en cada artículo.

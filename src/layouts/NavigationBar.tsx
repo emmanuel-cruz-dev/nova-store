@@ -16,17 +16,18 @@ function NavigationBar() {
         <Navbar.Brand
           as={Link}
           to="/"
-          className="d-flex align-items-center gap-2"
+          className="d-flex align-items-center fw-bold text-primary"
         >
           <img
-            src="/nova-store.svg"
+            className="me-2"
+            src="/nova-store.ico"
             style={{ width: "30px", height: "30px" }}
-            width={30}
-            height={30}
+            width={256}
+            height={256}
             alt="Logo de NovaStore"
             loading="lazy"
           />
-          NovaStore
+          Nova<span className="text-white fw-normal">Store</span>
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="main-navbar" />

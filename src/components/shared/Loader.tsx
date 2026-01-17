@@ -1,4 +1,4 @@
-import NovaLogo from "../../assets/logos/nova-store-logo.svg";
+import NovaLogo from "../../assets/logos/nova-store.avif";
 
 function Loader() {
   return (
