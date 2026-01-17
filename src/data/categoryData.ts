@@ -1,8 +1,8 @@
 import { CategoryDataProps } from "../types";
-import TecnologiaImg from "../assets/tecnologia.webp";
-import GamingImg from "../assets/gaming.webp";
-import MujeresImg from "../assets/indumentaria-masculina.webp";
-import HombresImg from "../assets/indumentaria-femenina.webp";
+import TecnologiaImg from "../assets/categories/tecnologia.webp";
+import GamingImg from "../assets/categories/gaming.webp";
+import MujeresImg from "../assets/categories/indumentaria-masculina.webp";
+import HombresImg from "../assets/categories/indumentaria-femenina.webp";
 
 export const categoryData: Record<string, CategoryDataProps> = {
   tecnologia: {

@@ -1,8 +1,8 @@
-import BannerImg1 from "../assets/banner1.webp";
-import BannerImg2 from "../assets/banner2.webp";
-import BannerImg3 from "../assets/banner3.webp";
-import BannerImg4 from "../assets/banner4.webp";
-import BannerImg5 from "../assets/banner5.webp";
+import BannerImg1 from "../assets/banners/banner1.webp";
+import BannerImg2 from "../assets/banners/banner2.webp";
+import BannerImg3 from "../assets/banners/banner3.webp";
+import BannerImg4 from "../assets/banners/banner4.webp";
+import BannerImg5 from "../assets/banners/banner5.webp";
 import { BannerSlide } from "../types";
 
 export const bannerSlides: BannerSlide[] = [
