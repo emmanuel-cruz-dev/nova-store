@@ -14,7 +14,7 @@ function Newsletter() {
       }}
       id="newsletter"
     >
-      <Container>
+      <Container className="py-lg-4">
         <Row className="justify-content-center align-items-center">
           <Col xs={12} className="text-center">
             <div className="d-flex justify-content-center align-items-center mb-4">
