@@ -47,6 +47,10 @@
   transform: scale(1.05);
 }
 
+.footer__badge-item:hover {
+  transform: scale(1) !important;
+}
+
 @media (max-width: 768px) {
   .footer h4 {
     font-size: 1.5rem;
