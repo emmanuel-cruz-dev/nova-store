@@ -49,6 +49,8 @@ export { default as ProgressBar } from "./shared/ProgressBar";
 export { default as ScrollToTopButton } from "./shared/ScrollToTopButton";
 export { default as StarRating } from "./shared/StarRating";
 export { default as TableRowSkeleton } from "./shared/TableRowSkeleton";
+export { default as AdminFooter } from "./shared/AdminFooter";
+export { default as CustomerFooter } from "./shared/CustomerFooter";
 
 export { default as AdminOrdersTable } from "./user/AdminOrdersTable";
 export { default as EmptySection } from "./user/EmptySection";
