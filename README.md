@@ -319,7 +319,6 @@ npm run lint
 ## 🚀 Próximas mejoras
 
 - [ ] Implementar búsqueda avanzada con filtros múltiples
-- [ ] Panel de analytics para administradores
 
 ---
 
