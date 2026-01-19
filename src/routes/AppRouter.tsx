@@ -2,10 +2,12 @@ import { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   publicRoutes,
-  privateRoutes,
+  customerRoutes,
+  adminRoutes,
   fallbackRoute,
   PublicRoute,
   PrivateRoute,
+  AdminRoute,
 } from "./index";
 import { Loader } from "../components";
 
@@ -21,11 +23,19 @@ function AppRouter() {
           />
         ))}
 
-        {privateRoutes.map(({ path, element }) => (
+        {customerRoutes.map(({ path, element }) => (
           <Route
             key={path}
             path={path}
             element={<PrivateRoute>{element}</PrivateRoute>}
+          />
+        ))}
+
+        {adminRoutes.map(({ path, element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<AdminRoute>{element}</AdminRoute>}
           />
         ))}
 
