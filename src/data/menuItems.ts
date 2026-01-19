@@ -12,7 +12,7 @@ import { MenuItem } from "../types";
 export const adminMenuItems: MenuItem[] = [
   { id: "dashboard", icon: LayoutDashboard, label: "Panel de control" },
   { id: "profile", icon: User, label: "Mi perfil" },
-  { id: "all-orders", icon: ClipboardList, label: "Órdenes" },
+  { id: "orders", icon: ClipboardList, label: "Órdenes" },
   { id: "products", icon: Boxes, label: "Productos" },
   { id: "users", icon: Users, label: "Usuarios" },
   { id: "logout", icon: LogOut, label: "Cerrar sesión" },
