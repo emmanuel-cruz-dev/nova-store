@@ -35,7 +35,7 @@ export function useLoginForm() {
       const loggedUser = await login(data.email, data.password);
 
       if (loggedUser.role === "admin") {
-        navigate("/profile/dashboard", { replace: true });
+        navigate("/admin/dashboard", { replace: true });
       } else if (from && from !== "/login") {
         navigate(from, { replace: true });
       } else {
