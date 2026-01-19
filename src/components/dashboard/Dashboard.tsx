@@ -1,4 +1,4 @@
-import { Container, Row, Col, Alert } from "react-bootstrap";
+import { Row, Col, Button, Card } from "react-bootstrap";
 import {
   DollarSign,
   Package,
@@ -15,6 +15,7 @@ import {
   TopProductsTable,
   DashboardSkeleton,
   SectionHeader,
+  DashboardError,
 } from "..";
 import { formatCurrency } from "../../utils";
 
@@ -22,33 +23,38 @@ function Dashboard() {
   const { stats, isLoading, error, refresh } = useDashboard();
 
   if (error) {
-    return (
-      <Container fluid className="py-4">
-        <Alert variant="danger">
-          <Alert.Heading>Error al cargar el dashboard</Alert.Heading>
-          <p>
-            No se pudieron cargar las estadísticas. Por favor, intenta
-            nuevamente.
-          </p>
-          <button
-            className="btn btn-outline-danger btn-sm"
-            onClick={() => refresh()}
-          >
-            <RefreshCw size={16} className="me-1" />
-            Reintentar
-          </button>
-        </Alert>
-      </Container>
-    );
+    return <DashboardError />;
   }
 
   if (!stats) {
     return null;
   }
 
+  const orderSummaryItems = [
+    {
+      label: "Pendientes",
+      value: stats.orders.pendingOrders,
+      variant: "warning",
+    },
+    {
+      label: "En Proceso",
+      value: stats.orders.processingOrders,
+      variant: "info",
+    },
+    {
+      label: "Completadas",
+      value: stats.orders.completedOrders,
+      variant: "success",
+    },
+    {
+      label: "Canceladas",
+      value: stats.orders.cancelledOrders,
+      variant: "danger",
+    },
+  ];
+
   return (
     <section>
-      {/* Header */}
       <div
         className="d-flex justify-content-between align-items-center"
         style={{ marginBottom: "-36px" }}
@@ -57,13 +63,14 @@ function Dashboard() {
           title="Panel de control"
           subtitle="Resumen de actividad, estadísticas y rendimiento"
         />
-        <button
-          className="btn btn-primary mb-5 px-4 d-flex align-items-center gap-2"
+        <Button
+          variant="primary"
+          className="mb-5 px-4 d-flex align-items-center gap-2"
           onClick={() => refresh()}
         >
           <RefreshCw size={16} />
           Actualizar
-        </button>
+        </Button>
       </div>
 
       {isLoading ? (
@@ -71,7 +78,6 @@ function Dashboard() {
       ) : (
         <>
           <Row className="g-4 mb-4">
-            {/* Stats Cards */}
             <Col xs={12} sm={6} lg={4} xl={3}>
               <StatCard
                 title="Ingresos Totales"
@@ -105,7 +111,6 @@ function Dashboard() {
               />
             </Col>
 
-            {/* Secondary Stats */}
             <Col xs={12} sm={6} lg={4} xl={3}>
               <StatCard
                 title="Valor Promedio Orden"
@@ -140,65 +145,37 @@ function Dashboard() {
             </Col>
           </Row>
 
-          {/* Charts */}
           <Row className="g-4 mb-4">
             <Col xs={12} lg={6}>
               <OrderStatusChart orderStats={stats.orders} />
             </Col>
             <Col xs={12} lg={6}>
-              <div className="h-100">
-                <div className="card shadow-sm h-100">
-                  <div className="card-body">
-                    <h5 className="card-title mb-4">Resumen de Órdenes</h5>
-                    <div className="row g-3">
-                      <div className="col-6">
-                        <div className="p-3 bg-warning bg-opacity-10 rounded">
-                          <div className="text-muted small mb-1">
-                            Pendientes
-                          </div>
-                          <div className="fs-4 fw-bold text-warning">
-                            {stats.orders.pendingOrders}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="p-3 bg-info bg-opacity-10 rounded">
-                          <div className="text-muted small mb-1">
-                            En Proceso
-                          </div>
-                          <div className="fs-4 fw-bold text-info">
-                            {stats.orders.processingOrders}
+              <Card className="h-100 shadow-sm">
+                <Card.Body>
+                  <Card.Title as="h5" className="mb-4">
+                    Resumen de Órdenes
+                  </Card.Title>
+                  <Row className="g-3">
+                    {orderSummaryItems.map((item) => (
+                      <Col key={item.label} xs={6}>
+                        <div
+                          className={`p-3 bg-${item.variant} bg-opacity-10 rounded`}
+                        >
+                          <small className="custom__text-muted d-block mb-1">
+                            {item.label}
+                          </small>
+                          <div className={`fs-4 fw-bold text-${item.variant}`}>
+                            {item.value}
                           </div>
                         </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="p-3 bg-success bg-opacity-10 rounded">
-                          <div className="text-muted small mb-1">
-                            Completadas
-                          </div>
-                          <div className="fs-4 fw-bold text-success">
-                            {stats.orders.completedOrders}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-6">
-                        <div className="p-3 bg-danger bg-opacity-10 rounded">
-                          <div className="text-muted small mb-1">
-                            Canceladas
-                          </div>
-                          <div className="fs-4 fw-bold text-danger">
-                            {stats.orders.cancelledOrders}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                      </Col>
+                    ))}
+                  </Row>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
 
-          {/* Top Products */}
           <Row>
             <Col xs={12}>
               <TopProductsTable products={stats.products.topProducts || []} />
