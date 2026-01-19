@@ -5,56 +5,37 @@ import { useAuthStore } from "../stores";
 import {
   ProfileMainContent,
   ProfileSidebar,
-  ProductsTable,
-  UsersTable,
   OrdersSection,
-  AdminOrdersTable,
   FavoritesSection,
-  Dashboard,
 } from "../components";
-import { adminMenuItems, userMenuItems } from "../data/menuItems";
+import { userMenuItems } from "../data/menuItems";
 
-function Profile() {
+function Account() {
   const { user } = useAuthStore();
-  const isAdmin = user?.role === "admin";
   const { section = "profile" } = useParams();
   const navigate = useNavigate();
 
-  const menuItems = useMemo(() => {
-    if (isAdmin) {
-      return adminMenuItems;
-    }
-
-    return userMenuItems;
-  }, [isAdmin]);
+  const menuItems = useMemo(() => userMenuItems, []);
 
   const setActiveSection = (newSection: string) => {
-    navigate(`/profile/${newSection}`);
+    navigate(`/account/${newSection}`);
   };
 
   const renderSection = () => {
     switch (section) {
-      case "dashboard":
-        return <Dashboard />;
       case "profile":
         return <ProfileMainContent />;
       case "favorites":
         return <FavoritesSection />;
       case "orders":
         return <OrdersSection userId={user?.id!} />;
-      case "all-orders":
-        return <AdminOrdersTable />;
-      case "products":
-        return <ProductsTable />;
-      case "users":
-        return <UsersTable />;
       default:
-        return isAdmin ? <Dashboard /> : <ProfileMainContent />;
+        return <ProfileMainContent />;
     }
   };
 
   return (
-    <Container fluid className="bg-light min-vh-100 py-4" id="profile">
+    <Container fluid className="bg-light min-vh-100 py-4" id="account">
       <Row>
         <Col lg={3} className="mb-4">
           <ProfileSidebar
@@ -70,4 +51,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Account;
