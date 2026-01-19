@@ -1,34 +1,29 @@
-import { Card } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
+import { statusColors, statusLabels } from "../../data/orderStatus";
 import { OrderStats } from "../../types";
 
 function OrderStatusChart({ orderStats }: { orderStats: OrderStats }) {
-  const statusColors = {
-    pending: "#ffc107",
-    processing: "#0dcaf0",
-    completed: "#198754",
-    cancelled: "#dc3545",
-  };
-
-  const statusLabels = {
-    pending: "Pendiente",
-    processing: "En Proceso",
-    completed: "Completada",
-    cancelled: "Cancelada",
-  };
-
   return (
     <Card className="h-100 shadow-sm">
       <Card.Body>
-        <h5 className="card-title mb-4">Distribución de Órdenes</h5>
+        <Card.Title as="h5" className="mb-4">
+          Distribución de Órdenes
+        </Card.Title>
 
-        <div
+        <section
           className="d-flex justify-content-center align-items-center mb-4"
           style={{ minHeight: "200px" }}
         >
           <div
             style={{ position: "relative", width: "200px", height: "200px" }}
           >
-            <svg width="200" height="200" viewBox="0 0 200 200">
+            <svg
+              width="200"
+              height="200"
+              viewBox="0 0 200 200"
+              role="img"
+              aria-label="Gráfico de distribución de órdenes"
+            >
               {orderStats.ordersByStatus.map((item, index) => {
                 let startAngle = 0;
 
@@ -70,47 +65,39 @@ function OrderStatusChart({ orderStats }: { orderStats: OrderStats }) {
               })}
               <circle cx="100" cy="100" r="50" fill="white" />
             </svg>
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                textAlign: "center",
-              }}
-            >
+            <div className="position-absolute top-50 start-50 translate-middle text-center">
               <div className="fw-bold fs-4">{orderStats.totalOrders}</div>
-              <div className="text-muted small">Total</div>
+              <small className="text-muted">Total</small>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div className="row g-2">
+        <Row className="g-2 list-unstyled" as="ul">
           {orderStats.ordersByStatus.map((item) => (
-            <div key={item.status} className="col-6">
-              <div className="d-flex align-items-center">
-                <div
+            <Col key={item.status} xs={6} as="li">
+              <div className="d-flex align-items-center gap-2">
+                <span
+                  className="d-inline-block rounded-1"
                   style={{
                     width: "12px",
                     height: "12px",
-                    borderRadius: "2px",
                     backgroundColor:
                       statusColors[item.status as keyof typeof statusColors],
-                    marginRight: "8px",
                   }}
+                  aria-hidden="true"
                 />
                 <div className="flex-grow-1">
-                  <div className="small text-muted">
+                  <small className="text-muted d-block">
                     {statusLabels[item.status as keyof typeof statusLabels]}
-                  </div>
-                  <div className="fw-semibold">
+                  </small>
+                  <span className="fw-semibold">
                     {item.count} ({item.percentage.toFixed(1)}%)
-                  </div>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Col>
           ))}
-        </div>
+        </Row>
       </Card.Body>
     </Card>
   );
