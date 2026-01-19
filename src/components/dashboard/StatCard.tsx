@@ -1,4 +1,6 @@
-import { Card, Placeholder } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import StatCardSkeleton from "./StatCardSkeleton";
+import { variantClasses, iconBgClasses } from "../../data/statCard";
 import { StatCardProps } from "../../types";
 
 function StatCard({
@@ -9,34 +11,8 @@ function StatCard({
   variant = "primary",
   isLoading = false,
 }: StatCardProps) {
-  const variantClasses = {
-    primary: "border-primary",
-    success: "border-success",
-    warning: "border-warning",
-    danger: "border-danger",
-    info: "border-info",
-  };
-
-  const iconBgClasses = {
-    primary: "bg-primary bg-opacity-10 text-primary",
-    success: "bg-success bg-opacity-10 text-success",
-    warning: "bg-warning bg-opacity-10 text-warning",
-    danger: "bg-danger bg-opacity-10 text-danger",
-    info: "bg-info bg-opacity-10 text-info",
-  };
-
   if (isLoading) {
-    return (
-      <Card className="h-100 shadow-sm">
-        <Card.Body>
-          <Placeholder as="div" animation="glow">
-            <Placeholder xs={6} className="mb-2" />
-            <Placeholder xs={8} size="lg" className="mb-2" />
-            <Placeholder xs={4} size="sm" />
-          </Placeholder>
-        </Card.Body>
-      </Card>
-    );
+    return <StatCardSkeleton />;
   }
 
   return (
