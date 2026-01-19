@@ -13,6 +13,7 @@ export { default as DashboardSkeleton } from "./dashboard/DashboardSkeleton";
 export { default as OrderStatusChart } from "./dashboard/OrderStatusChart";
 export { default as StatCard } from "./dashboard/StatCard";
 export { default as TopProductsTable } from "./dashboard/TopProductsTable";
+export { default as DashboardError } from "./dashboard/DashboardError";
 
 export { default as BannerCarousel } from "./home/BannerCarousel";
 export { default as Categories } from "./home/Categories";
