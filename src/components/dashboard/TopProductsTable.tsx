@@ -2,11 +2,7 @@ import { Card, Table, Badge } from "react-bootstrap";
 import { formatCurrency } from "../../utils";
 import { TopProduct } from "../../types";
 
-interface TopProductsTableProps {
-  products: TopProduct[];
-}
-
-function TopProductsTable({ products }: TopProductsTableProps) {
+function TopProductsTable({ products }: { products: TopProduct[] }) {
   const getCategoryBadgeVariant = (category: string) => {
     const variants: Record<string, string> = {
       tecnologia: "primary",
@@ -23,7 +19,7 @@ function TopProductsTable({ products }: TopProductsTableProps) {
         <h5 className="card-title mb-4">Productos Más Vendidos</h5>
 
         {products.length === 0 ? (
-          <div className="text-center text-muted py-4">
+          <div className="text-center custom__text-muted py-4">
             <p>No hay datos de ventas disponibles</p>
           </div>
         ) : (
@@ -66,7 +62,9 @@ function TopProductsTable({ products }: TopProductsTableProps) {
                         </div>
                         <div>
                           <div className="fw-semibold">{product.name}</div>
-                          <div className="small text-muted">#{index + 1}</div>
+                          <div className="small custom__text-muted">
+                            #{index + 1}
+                          </div>
                         </div>
                       </div>
                     </td>
