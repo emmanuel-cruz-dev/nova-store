@@ -42,7 +42,7 @@ function CheckoutModal() {
           Podés seguir el estado desde{" "}
           <Link
             onClick={handleCloseModal}
-            to="/profile/orders"
+            to="/account/orders"
             className="text-decoration-none"
           >
             tus órdenes
