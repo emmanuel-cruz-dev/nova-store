@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "../api/config/axiosConfig";
-import { AuthState, RegisterData, User } from "../types";
+import { AuthState, RegisterData, SafeUser, User } from "../types";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -16,7 +16,7 @@ export const useAuthStore = create<AuthState>()(
         set({ loading: false });
       },
 
-      register: async (userData: RegisterData): Promise<User> => {
+      register: async (userData: RegisterData): Promise<SafeUser> => {
         set({ authLoading: true });
 
         try {
@@ -54,13 +54,14 @@ export const useAuthStore = create<AuthState>()(
           const response = await axios.post<User>("/users", newUserData);
           const newUser = response.data;
 
+          const { password, ...safeUser } = newUser;
           set({
-            user: newUser,
+            user: safeUser,
             isAuthenticated: true,
             authLoading: false,
           });
 
-          return newUser;
+          return safeUser;
         } catch (error) {
           set({ authLoading: false });
           const err = error as Error;
@@ -69,7 +70,7 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      login: async (email: string, password: string): Promise<User> => {
+      login: async (email: string, password: string): Promise<SafeUser> => {
         set({ authLoading: true });
 
         try {
@@ -97,13 +98,15 @@ export const useAuthStore = create<AuthState>()(
             throw new Error("La contraseña es incorrecta");
           }
 
+          const { password: _, ...safeUser } = foundUser;
+
           set({
             isAuthenticated: true,
-            user: foundUser,
+            user: safeUser,
             authLoading: false,
           });
 
-          return foundUser;
+          return safeUser;
         } catch (error) {
           set({ authLoading: false });
           const err = error as Error;
@@ -119,7 +122,9 @@ export const useAuthStore = create<AuthState>()(
         });
       },
 
-      updateUserProfile: async (updateUserData: User): Promise<User> => {
+      updateUserProfile: async (
+        updateUserData: SafeUser
+      ): Promise<SafeUser> => {
         set({ user: updateUserData });
         return updateUserData;
       },
