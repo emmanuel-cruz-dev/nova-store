@@ -25,6 +25,7 @@ function LoginForm() {
             <Mail size={18} />
           </InputGroup.Text>
           <Form.Control
+            id="email"
             type="email"
             placeholder="Ej. nombre@mail.com"
             {...register("email")}
@@ -46,6 +47,7 @@ function LoginForm() {
             <Lock size={18} />
           </InputGroup.Text>
           <Form.Control
+            id="password"
             type={showPassword ? "text" : "password"}
             placeholder="********"
             {...register("password")}
