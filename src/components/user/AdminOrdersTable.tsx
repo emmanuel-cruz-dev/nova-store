@@ -7,7 +7,7 @@ import {
   ErrorMessage,
   OrderItemsList,
   OrderTableSummary,
-  OrdersLoader,
+  OrdersSkeleton,
   SectionHeader,
 } from "..";
 import { getStatusBadge } from "../../utils/helpers/GetStatusBadge";
@@ -17,10 +17,6 @@ import { Order } from "../../types";
 function AdminOrdersTable() {
   const { orders, isLoading, error, handleUpdateStatus, updatingOrderId } =
     useAdminOrders();
-
-  if (isLoading) return <OrdersLoader />;
-
-  if (error) return <ErrorMessage message="Error al cargar las órdenes" />;
 
   const handleStatusChange = (
     userId: number,
@@ -42,13 +38,17 @@ function AdminOrdersTable() {
         />
 
         <span className="mt-3">
-          {orders.length > 0 && (
+          {!isLoading && orders.length > 0 && (
             <Badge bg="secondary">{orders.length} órdenes</Badge>
           )}
         </span>
       </div>
 
-      {orders.length === 0 ? (
+      {isLoading ? (
+        <OrdersSkeleton />
+      ) : error ? (
+        <ErrorMessage message="Error al cargar las órdenes" />
+      ) : orders.length === 0 ? (
         <EmptySection
           title="No hay órdenes registradas"
           message="Cuando los usuarios completen pedidos, aparecerán aquí para su gestión."
