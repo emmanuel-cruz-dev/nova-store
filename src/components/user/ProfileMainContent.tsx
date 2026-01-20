@@ -1,8 +1,9 @@
 import { Row, Col, Card, Button, Form, InputGroup } from "react-bootstrap";
 import { Bounce, ToastContainer } from "react-toastify";
 import { User, Mail } from "lucide-react";
+import { useAuthStore } from "../../stores";
 import { useProfileUpdate } from "../../hooks";
-import { SectionHeader, PasswordChangeForm } from "..";
+import { SectionHeader, PasswordChangeForm, AccountDeletionSection } from "..";
 import { User as UserType } from "../../types";
 
 function ProfileMainContent() {
@@ -18,6 +19,7 @@ function ProfileMainContent() {
     togglePasswordChange,
     handlePasswordChange,
   } = useProfileUpdate();
+  const { logout } = useAuthStore();
 
   return (
     <section>
@@ -139,6 +141,10 @@ function ProfileMainContent() {
           profileData={user as UserType}
           onPasswordChanged={handlePasswordChange}
         />
+      )}
+
+      {user?.role === "customer" && (
+        <AccountDeletionSection userId={user?.id || 0} onLogout={logout} />
       )}
     </section>
   );
