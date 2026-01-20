@@ -7,7 +7,7 @@ import {
   ErrorMessage,
   OrderItemsList,
   OrderTableSummary,
-  OrdersLoader,
+  OrdersSkeleton,
   SectionHeader,
 } from "..";
 import { getStatusBadge } from "../../utils/helpers/GetStatusBadge";
@@ -23,17 +23,18 @@ function OrdersSection({ userId }: { userId: number }) {
     isOrderDeleting,
   } = useOrdersTable(userId);
 
-  if (isLoading) return <OrdersLoader />;
-
-  if (error) return <ErrorMessage message="Error al cargar las órdenes" />;
-
   return (
     <section>
       <SectionHeader
         title="Mis órdenes"
         subtitle="Revisa el estado y el historial de tus compras"
       />
-      {orders.length === 0 ? (
+
+      {isLoading ? (
+        <OrdersSkeleton />
+      ) : error ? (
+        <ErrorMessage message="Error al cargar las órdenes" />
+      ) : orders.length === 0 ? (
         <EmptySection
           title="Aún no tienes órdenes registradas"
           message="Explora nuestros productos y realiza tu primera compra cuando quieras."
