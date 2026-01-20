@@ -34,3 +34,4 @@ export { useProfileSidebar } from "./user/useProfileSidebar";
 export { useProfileUpdate } from "./user/useProfileUpdate";
 export { useUsers, useUserById, useUserByRole } from "./user/useUsers";
 export { useUsersTable } from "./user/useUsersTable";
+export { useAccountDeletion } from "./user/useAccountDeletion";
