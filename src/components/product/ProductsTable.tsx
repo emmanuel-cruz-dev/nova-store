@@ -55,7 +55,55 @@ function ProductsTable() {
         </button>
       </div>
 
-      {products.length === 0 ? (
+      {loading ? (
+        <Table
+          className="mb-0"
+          striped
+          bordered
+          hover
+          responsive
+          style={{ minWidth: "680px" }}
+        >
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Estado</th>
+              <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TableRowSkeleton key={`placeholder-${index}`} />
+            ))}
+          </tbody>
+        </Table>
+      ) : error ? (
+        <Table
+          className="mb-0"
+          striped
+          bordered
+          hover
+          responsive
+          style={{ minWidth: "680px" }}
+        >
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Estado</th>
+              <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={5}>Error al cargar productos</td>
+            </tr>
+          </tbody>
+        </Table>
+      ) : products.length === 0 ? (
         <EmptySection
           title="Tu catálogo está vacío"
           message="Agrega productos para empezar a vender y gestionar tu tienda desde el panel de control."
@@ -82,51 +130,41 @@ function ProductsTable() {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                Array.from({ length: 5 }).map((_, index) => (
-                  <TableRowSkeleton key={`placeholder-${index}`} />
-                ))
-              ) : error ? (
-                <tr>
-                  <td colSpan={6}>Error al cargar productos</td>
-                </tr>
-              ) : (
-                products.map((product) => (
-                  <tr key={product.id}>
-                    <td>{product.name}</td>
-                    <td>${formatPrice(product.price)}</td>
-                    <td>
-                      {product.stock.toString().padStart(2, "0")}
-                      <ProductStockIndicator stock={product.stock} />
-                    </td>
-                    <td>{product.isActive ? "Activo" : "Inactivo"}</td>
-                    <td
-                      className="d-flex gap-2"
-                      style={{
-                        width: "200px",
-                        height: "100%",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                      }}
+              {products.map((product) => (
+                <tr key={product.id}>
+                  <td>{product.name}</td>
+                  <td>${formatPrice(product.price)}</td>
+                  <td>
+                    {product.stock.toString().padStart(2, "0")}
+                    <ProductStockIndicator stock={product.stock} />
+                  </td>
+                  <td>{product.isActive ? "Activo" : "Inactivo"}</td>
+                  <td
+                    className="d-flex gap-2"
+                    style={{
+                      width: "200px",
+                      height: "100%",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <button
+                      onClick={() => handleEditProduct(product.id)}
+                      className="btn btn-secondary btn-sm"
                     >
-                      <button
-                        onClick={() => handleEditProduct(product.id)}
-                        className="btn btn-secondary btn-sm"
-                      >
-                        <Pencil size={18} className="me-2" />
-                        Editar
-                      </button>
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        onClick={() => handleDeleteProduct(product)}
-                      >
-                        <Trash2 size={18} className="me-2" />
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
+                      <Pencil size={18} className="me-2" />
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => handleDeleteProduct(product)}
+                    >
+                      <Trash2 size={18} className="me-2" />
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </Table>
 
