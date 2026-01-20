@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../stores/authStore";
+import { userService } from "../../api/services/user.service";
 import { useUpdateUser } from "../auth/useUpdateUser";
 import { PasswordFormData, passwordSchema } from "../../schemas/authSchemas";
 import { User } from "../../types";
@@ -46,7 +47,9 @@ export function usePasswordChange({
   };
 
   const onSubmit = async (data: PasswordFormData) => {
-    if (data.oldPassword !== user?.password) {
+    const userFound = await userService.getUserById(user?.id as number);
+
+    if (data.oldPassword !== userFound.password) {
       setError("oldPassword", {
         type: "manual",
         message: "La contraseña anterior es incorrecta",
