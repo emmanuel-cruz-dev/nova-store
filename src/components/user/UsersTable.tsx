@@ -6,6 +6,7 @@ import {
   CircleDot,
   CircleUser,
   Eye,
+  FileText,
   Trash2,
   Users,
 } from "lucide-react";
@@ -47,7 +48,61 @@ function UsersTable() {
         title="Usuarios"
         subtitle="Administra los usuarios registrados en la plataforma"
       />
-      {users.length === 0 ? (
+      {loading ? (
+        <Table striped bordered hover responsive style={{ minWidth: "680px" }}>
+          <thead>
+            <tr>
+              <th>
+                <CircleUser size={16} className="mb-1" /> Nombre Completo
+              </th>
+              <th>
+                <AtSign size={16} className="mb-1" /> Email
+              </th>
+              <th>
+                <FileText size={16} className="mb-1" /> Órdenes
+              </th>
+              <th>
+                <CalendarDays size={16} className="mb-1" /> Registrado
+              </th>
+              <th>
+                <CircleDot size={16} className="mb-1" /> Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <UsersTableRowSkeleton key={`placeholder-${index}`} />
+            ))}
+          </tbody>
+        </Table>
+      ) : error ? (
+        <Table striped bordered hover responsive style={{ minWidth: "680px" }}>
+          <thead>
+            <tr>
+              <th>
+                <CircleUser size={16} className="mb-1" /> Nombre Completo
+              </th>
+              <th>
+                <AtSign size={16} className="mb-1" /> Email
+              </th>
+              <th>
+                <FileText size={16} className="mb-1" /> Órdenes
+              </th>
+              <th>
+                <CalendarDays size={16} className="mb-1" /> Registrado
+              </th>
+              <th>
+                <CircleDot size={16} className="mb-1" /> Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={5}>Error al cargar usuarios</td>
+            </tr>
+          </tbody>
+        </Table>
+      ) : users.length === 0 ? (
         <EmptySection
           title="Aún no hay usuarios registrados"
           message="Cuando los usuarios se registren, aparecerán listados aquí."
@@ -65,6 +120,9 @@ function UsersTable() {
                 <AtSign size={16} className="mb-1" /> Email
               </th>
               <th>
+                <FileText size={16} className="mb-1" /> Órdenes
+              </th>
+              <th>
                 <CalendarDays size={16} className="mb-1" /> Registrado
               </th>
               <th>
@@ -73,51 +131,42 @@ function UsersTable() {
             </tr>
           </thead>
           <tbody>
-            {loading ? (
-              Array.from({ length: 5 }).map((_, index) => (
-                <UsersTableRowSkeleton key={`placeholder-${index}`} />
-              ))
-            ) : error ? (
-              <tr>
-                <td colSpan={6}>Error al cargar usuarios</td>
+            {users.map((user: User) => (
+              <tr key={user.id}>
+                <td>
+                  <img
+                    className="rounded-circle"
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      objectFit: "cover",
+                    }}
+                    src={user.avatar}
+                    alt={`${user.firstName} ${user.lastName}`}
+                  />{" "}
+                  {user.firstName} {user.lastName}
+                </td>
+                <td>{user.email}</td>
+                <td>{user.orders?.length}</td>
+                <td>{formatDateShort(user.createdAt as string)}</td>
+                <td className="d-flex gap-2">
+                  <button
+                    onClick={() => handleShowDetails(user.id as number)}
+                    className="btn btn-secondary btn-sm"
+                  >
+                    <Eye size={18} className="me-2" />
+                    Ver detalles
+                  </button>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleShowDeleteModal(user)}
+                  >
+                    <Trash2 size={18} className="me-2" />
+                    Eliminar
+                  </button>
+                </td>
               </tr>
-            ) : (
-              users.map((user: User) => (
-                <tr key={user.id}>
-                  <td>
-                    <img
-                      className="rounded-circle"
-                      style={{
-                        width: "32px",
-                        height: "32px",
-                        objectFit: "cover",
-                      }}
-                      src={user.avatar}
-                      alt={`${user.firstName} ${user.lastName}`}
-                    />{" "}
-                    {user.firstName} {user.lastName}
-                  </td>
-                  <td>{user.email}</td>
-                  <td>{formatDateShort(user.createdAt as string)}</td>
-                  <td className="d-flex gap-2">
-                    <button
-                      onClick={() => handleShowDetails(user.id as number)}
-                      className="btn btn-secondary btn-sm"
-                    >
-                      <Eye size={18} className="me-2" />
-                      Ver detalles
-                    </button>
-                    <button
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleShowDeleteModal(user)}
-                    >
-                      <Trash2 size={18} className="me-2" />
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </Table>
       )}
