@@ -40,6 +40,7 @@ export { default as ProductInfoDisplay } from "./product/ProductInfoDisplay";
 export { default as ProductQuantitySelector } from "./product/ProductQuantitySelector";
 export { default as ProductNotFound } from "./product/ProductNotFound";
 export { default as ProductStockIndicator } from "./product/ProductStockIndicator";
+export { default as ProductFilters } from "./product/ProductFilters";
 
 export { default as CreateAccountItem } from "./shared/CreateAccountItem";
 export { default as CustomTooltip } from "./shared/CustomTooltip";
