@@ -3,19 +3,9 @@ import { ProductCard, ErrorMessage } from "../index";
 import { handleRetry } from "../../utils";
 import { ProductsListProps } from "../../types";
 
-function ProductsGallery({
-  title,
-  products,
-  loading,
-  error,
-}: ProductsListProps) {
+function ProductsGallery({ products, loading, error }: ProductsListProps) {
   return (
     <Container>
-      <header>
-        <h1 className="display-6 text-center fw-bold my-4 custom__text-primary">
-          {title}
-        </h1>
-      </header>
       <Row className="g-3 align-items-center justify-content-center">
         {loading ? (
           Array.from({ length: 6 }).map((_, index) => (
