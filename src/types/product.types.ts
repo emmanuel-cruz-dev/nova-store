@@ -53,7 +53,7 @@ export interface ProductQuantitySelectorProps {
 }
 
 export interface ProductsListProps {
-  title: string;
+  title?: string;
   products: Product[];
   loading: boolean;
   error: any;
