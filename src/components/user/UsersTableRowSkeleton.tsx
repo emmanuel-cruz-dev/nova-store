@@ -23,6 +23,11 @@ function UsersTableRowSkeleton() {
           <Placeholder xs={12} className="rounded" />
         </Placeholder>
       </td>
+      <td>
+        <Placeholder animation="wave">
+          <Placeholder xs={6} className="rounded" />
+        </Placeholder>
+      </td>
     </tr>
   );
 }
