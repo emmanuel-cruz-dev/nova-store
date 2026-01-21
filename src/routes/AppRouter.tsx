@@ -6,6 +6,7 @@ import {
   adminRoutes,
   fallbackRoute,
   PublicRoute,
+  PublicOrCustomerRoute,
   PrivateRoute,
   AdminRoute,
 } from "./index";
@@ -19,7 +20,13 @@ function AppRouter() {
           <Route
             key={path}
             path={path}
-            element={isPublic ? <PublicRoute>{element}</PublicRoute> : element}
+            element={
+              isPublic ? (
+                <PublicRoute>{element}</PublicRoute>
+              ) : (
+                <PublicOrCustomerRoute>{element}</PublicOrCustomerRoute>
+              )
+            }
           />
         ))}
 
