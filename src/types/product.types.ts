@@ -119,3 +119,31 @@ export interface ProductFormProps {
   error?: Error | null;
   errorUpdate?: Error | null;
 }
+
+export type StockLevel = "all" | "critical" | "low" | "ok" | "high";
+export type ProductStatus = "all" | "active" | "inactive";
+
+export interface ProductFiltersCommon {
+  searchTerm: string;
+  statusFilter: ProductStatus;
+  stockFilter: StockLevel;
+  minPrice: string | number;
+  maxPrice: string | number;
+  hasActiveFilters: boolean;
+  setSearchTerm: (value: string) => void;
+  setStatusFilter: (value: ProductStatus) => void;
+  setStockFilter: (value: StockLevel) => void;
+  setMinPrice: (value: string) => void;
+  setMaxPrice: (value: string) => void;
+  clearFilters: () => void;
+}
+
+export interface UseProductsFilterReturn extends ProductFiltersCommon {
+  filteredProducts: Product[];
+  paginatedProducts: Product[];
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
+}
+
+export interface ProductFiltersProps extends ProductFiltersCommon {}
