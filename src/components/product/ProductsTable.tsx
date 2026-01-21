@@ -1,7 +1,7 @@
-import { Badge, Table } from "react-bootstrap";
+import { Badge, Table, Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { Pencil, Trash2, Info, Package, PackagePlus } from "lucide-react";
-import { useProductsTable } from "../../hooks";
+import { useProductsTable, useProductsFilter } from "../../hooks";
 import {
   DeleteConfirmationModal,
   PaginationItem,
@@ -10,6 +10,7 @@ import {
   ProductStockIndicator,
   SectionHeader,
   EmptySection,
+  ProductFilters,
 } from "..";
 import { formatPrice } from "../../utils";
 
@@ -18,14 +19,11 @@ function ProductsTable() {
     products,
     loading,
     error,
-    page,
-    totalPages,
     showModal,
     selectedProductId,
     showDeleteModal,
     productToDelete,
     loadingDelete,
-    goToPage,
     notify,
     handleModalShow,
     handleModalClose,
@@ -34,13 +32,33 @@ function ProductsTable() {
     handleDeleteProduct,
     handleCloseDeleteModal,
     handleConfirmDelete,
-  } = useProductsTable(1, 10);
+  } = useProductsTable(1, 100);
+
+  const {
+    searchTerm,
+    statusFilter,
+    stockFilter,
+    minPrice,
+    maxPrice,
+    hasActiveFilters,
+    setSearchTerm,
+    setStatusFilter,
+    setStockFilter,
+    setMinPrice,
+    setMaxPrice,
+    clearFilters,
+    handlePageChange,
+    filteredProducts,
+    paginatedProducts,
+    currentPage,
+    totalPages,
+  } = useProductsFilter(products, 10);
 
   return (
     <section>
       <div
         className="d-flex justify-content-between align-items-center"
-        style={{ marginBottom: "-16px" }}
+        style={{ marginBottom: "-28px" }}
       >
         <SectionHeader
           title="Productos"
@@ -55,63 +73,40 @@ function ProductsTable() {
         </button>
       </div>
 
-      {loading ? (
-        <Table
-          className="mb-0"
-          striped
-          bordered
-          hover
-          responsive
-          style={{ minWidth: "680px" }}
-        >
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Estado</th>
-              <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <TableRowSkeleton key={`placeholder-${index}`} />
-            ))}
-          </tbody>
-        </Table>
-      ) : error ? (
-        <Table
-          className="mb-0"
-          striped
-          bordered
-          hover
-          responsive
-          style={{ minWidth: "680px" }}
-        >
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Estado</th>
-              <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan={5}>Error al cargar productos</td>
-            </tr>
-          </tbody>
-        </Table>
-      ) : products.length === 0 ? (
-        <EmptySection
-          title="Tu catálogo está vacío"
-          message="Agrega productos para empezar a vender y gestionar tu tienda desde el panel de control."
-          icon={<Package size={56} className="text-white" />}
-          showButton={false}
+      <div className="bg-light py-3 rounded">
+        <ProductFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          stockFilter={stockFilter}
+          setStockFilter={setStockFilter}
+          hasActiveFilters={hasActiveFilters}
+          clearFilters={clearFilters}
         />
-      ) : (
-        <>
+
+        {!loading && (
+          <p className="mt-3 text-center text-muted mb-0">
+            <small>
+              {filteredProducts.length === products.length ? (
+                <>Mostrando {filteredProducts.length} productos</>
+              ) : (
+                <>
+                  Mostrando {filteredProducts.length} de {products.length}{" "}
+                  productos
+                </>
+              )}
+            </small>
+          </p>
+        )}
+      </div>
+
+      {loading ? (
+        <div className="card rounded-3 shadow-sm overflow-hidden">
           <Table
             className="mb-0"
             striped
@@ -124,49 +119,134 @@ function ProductsTable() {
               <tr>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th>Categoria</th>
                 <th>Stock</th>
                 <th>Estado</th>
                 <th style={{ width: "200px", height: "100%" }}>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr key={product.id}>
-                  <td>{product.name}</td>
-                  <td>${formatPrice(product.price)}</td>
-                  <td>
-                    {product.stock.toString().padStart(2, "0")}
-                    <ProductStockIndicator stock={product.stock} />
-                  </td>
-                  <td>{product.isActive ? "Activo" : "Inactivo"}</td>
-                  <td
-                    className="d-flex gap-2"
-                    style={{
-                      width: "200px",
-                      height: "100%",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <button
-                      onClick={() => handleEditProduct(product.id)}
-                      className="btn btn-secondary btn-sm"
-                    >
-                      <Pencil size={18} className="me-2" />
-                      Editar
-                    </button>
-                    <button
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleDeleteProduct(product)}
-                    >
-                      <Trash2 size={18} className="me-2" />
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <TableRowSkeleton key={`placeholder-${index}`} />
               ))}
             </tbody>
           </Table>
+        </div>
+      ) : error ? (
+        <div className="card rounded-3 shadow-sm overflow-hidden">
+          <Table
+            className="mb-0"
+            striped
+            bordered
+            hover
+            responsive
+            style={{ minWidth: "680px" }}
+          >
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Categoria</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan={6} className="text-center text-danger">
+                  Error al cargar productos
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      ) : products.length === 0 ? (
+        <EmptySection
+          title="Tu catálogo está vacío"
+          message="Agrega productos para empezar a vender y gestionar tu tienda desde el panel de control."
+          icon={<Package size={56} className="text-white" />}
+          showButton={false}
+        />
+      ) : filteredProducts.length === 0 ? (
+        <div className="text-center py-5 bg-light rounded">
+          <h5 className="text-muted">No se encontraron productos</h5>
+          <p className="text-muted">
+            Intenta ajustar los filtros o{" "}
+            <Button
+              variant="link"
+              className="p-0 text-decoration-none align-baseline"
+              onClick={clearFilters}
+            >
+              limpiar todos los filtros
+            </Button>
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="card rounded-3 shadow-sm overflow-hidden">
+            <Table
+              className="mb-0"
+              striped
+              bordered
+              hover
+              responsive
+              style={{ minWidth: "680px" }}
+            >
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Categoria</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th style={{ width: "200px", height: "100%" }}>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedProducts.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>${formatPrice(product.price)}</td>
+                    <td className="text-capitalize">{product.category}</td>
+                    <td>
+                      {product.stock.toString().padStart(2, "0")}
+                      <ProductStockIndicator stock={product.stock} />
+                    </td>
+                    <td>
+                      <Badge bg={product.isActive ? "success" : "secondary"}>
+                        {product.isActive ? "Activo" : "Inactivo"}
+                      </Badge>
+                    </td>
+                    <td
+                      className="d-flex gap-2"
+                      style={{
+                        width: "200px",
+                        height: "100%",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <button
+                        onClick={() => handleEditProduct(product.id)}
+                        className="btn btn-secondary btn-sm"
+                      >
+                        <Pencil size={18} className="me-2" />
+                        Editar
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleDeleteProduct(product)}
+                      >
+                        <Trash2 size={18} className="me-2" />
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
 
           <div className="d-flex justify-content-between align-items-start mt-2">
             <small
@@ -217,9 +297,9 @@ function ProductsTable() {
 
       {totalPages > 1 && (
         <PaginationItem
-          currentPage={page}
+          currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={goToPage}
+          onPageChange={handlePageChange}
           isLoading={loading}
         />
       )}
