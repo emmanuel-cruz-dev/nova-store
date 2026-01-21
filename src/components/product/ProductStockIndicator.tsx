@@ -13,7 +13,7 @@ function ProductStockIndicator({ stock }: { stock: number }) {
         bg={status.color}
         pill
         className="ms-2"
-        style={{ color: "transparent" }}
+        style={{ color: "transparent", width: "1.15rem", height: "1.15rem" }}
       >
         ·
       </Badge>
