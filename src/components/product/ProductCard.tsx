@@ -38,7 +38,7 @@ function ProductCard(props: ProductCardProps) {
   };
 
   return (
-    <Card>
+    <Card className="overflow-hidden custom__card-hover">
       {isAuthenticated && (
         <CustomTooltip
           text={favorite ? "Eliminar de favoritos" : "Añadir a favoritos"}
