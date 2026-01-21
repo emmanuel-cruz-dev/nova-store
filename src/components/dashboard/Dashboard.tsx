@@ -107,7 +107,7 @@ function Dashboard() {
                 title="Total Usuarios"
                 value={stats.users.totalUsers}
                 icon={Users}
-                variant="warning"
+                variant={stats.users.totalUsers <= 5 ? "danger" : "info"}
               />
             </Col>
 
@@ -140,7 +140,9 @@ function Dashboard() {
                 title="Stock Bajo"
                 value={stats.products.lowStockProducts}
                 icon={Package}
-                variant="danger"
+                variant={
+                  stats.products.lowStockProducts >= 5 ? "danger" : "info"
+                }
               />
             </Col>
           </Row>
