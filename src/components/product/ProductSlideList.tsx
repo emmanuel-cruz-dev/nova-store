@@ -50,7 +50,7 @@ function ProductSlideList({
             slidesPerView: 3,
           },
         }}
-        style={{ paddingBottom: "3.5rem" }}
+        style={{ paddingBottom: "3.5rem", paddingInline: "1rem" }}
       >
         {loading ? (
           Array.from({ length: 6 }).map((_, index) => (
