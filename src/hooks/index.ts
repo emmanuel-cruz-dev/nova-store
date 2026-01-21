@@ -22,6 +22,7 @@ export {
 } from "./products/useProducts";
 export { useProductsTable } from "./products/useProductsTable";
 export { useProductsFilter } from "./products/useProductsFilter";
+export { useProductsPublicFilter } from "./products/useProductsPublicFilter";
 
 export { useNavigation } from "./shared/useNavigation";
 export { usePagination } from "./shared/usePagination";
