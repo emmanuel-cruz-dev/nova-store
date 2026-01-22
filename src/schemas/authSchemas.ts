@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-const nameRegex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/;
+import { NAME_REGEX } from "../utils";
 
 export const loginSchema = z.object({
   email: z
@@ -24,14 +23,14 @@ export const registerSchema = z
       .min(1, { message: "El nombre es requerido" })
       .min(3, { message: "El nombre debe tener al menos 3 caracteres" })
       .max(50, { message: "El nombre no puede exceder 50 caracteres" })
-      .regex(nameRegex, { message: "El nombre solo puede contener letras" }),
+      .regex(NAME_REGEX, { message: "El nombre solo puede contener letras" }),
     lastName: z
       .string()
       .trim()
       .min(1, { message: "El apellido es requerido" })
       .min(3, { message: "El apellido debe tener al menos 3 caracteres" })
       .max(50, { message: "El apellido no puede exceder 50 caracteres" })
-      .regex(nameRegex, { message: "El apellido solo puede contener letras" }),
+      .regex(NAME_REGEX, { message: "El apellido solo puede contener letras" }),
     email: z
       .string()
       .trim()
@@ -86,14 +85,14 @@ export const profileUpdateSchema = z.object({
     .min(1, { message: "El nombre es requerido" })
     .min(3, { message: "El nombre debe tener al menos 3 caracteres" })
     .max(50, { message: "El nombre no puede exceder 50 caracteres" })
-    .regex(nameRegex, { message: "El nombre solo puede contener letras" }),
+    .regex(NAME_REGEX, { message: "El nombre solo puede contener letras" }),
   lastName: z
     .string()
     .trim()
     .min(1, { message: "El apellido es requerido" })
     .min(3, { message: "El apellido debe tener al menos 3 caracteres" })
     .max(50, { message: "El apellido no puede exceder 50 caracteres" })
-    .regex(nameRegex, { message: "El apellido solo puede contener letras" }),
+    .regex(NAME_REGEX, { message: "El apellido solo puede contener letras" }),
   email: z
     .string()
     .trim()

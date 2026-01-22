@@ -1,14 +1,5 @@
 import { z } from "zod";
-
-const isValidUrl = (string: string) => {
-  if (!string) return true;
-  try {
-    new URL(string);
-    return true;
-  } catch {
-    return false;
-  }
-};
+import { isValidUrl } from "../utils";
 
 export const productSchema = z.object({
   name: z
@@ -19,6 +10,8 @@ export const productSchema = z.object({
 
   description: z
     .string()
+    .min(1, "La descripción es requerida")
+    .min(10, "La descripción no puede ser menor a 10 caracteres")
     .max(300, "La descripción no puede exceder 300 caracteres"),
 
   price: z
@@ -47,75 +40,3 @@ export const productSchema = z.object({
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;
-
-// import { z } from "zod";
-
-// const isValidUrl = (string: string) => {
-//   if (!string) return true;
-//   try {
-//     new URL(string);
-//     return true;
-//   } catch {
-//     return false;
-//   }
-// };
-
-// export const productSchema = z.object({
-//   name: z
-//     .string()
-//     .min(1, { message: "El nombre es requerido" })
-//     .max(100, { message: "El nombre no puede exceder 100 caracteres" })
-//     .trim(),
-
-//   description: z
-//     .string()
-//     .max(300, { message: "La descripción no puede exceder 300 caracteres" })
-//     .optional()
-//     .default(""),
-
-//   price: z.preprocess(
-//     (value) => (typeof value === "string" ? parseFloat(value) : value),
-//     z
-//       .number()
-//       .positive({ message: "El precio debe ser mayor a 0" })
-//       .max(999999, { message: "El precio es demasiado alto" })
-//   ),
-
-//   stock: z.preprocess(
-//     (value) => (typeof value === "string" ? parseFloat(value) : value),
-//     z
-//       .number()
-//       .int({ message: "El stock debe ser un número entero" })
-//       .nonnegative({ message: "El stock no puede ser negativo" })
-//       .max(999999, { message: "El stock es demasiado alto" })
-//   ),
-
-//   rating: z
-//     .preprocess(
-//       (value) => (typeof value === "string" ? parseFloat(value) : value),
-//       z
-//         .number()
-//         .min(0, { message: "El rating debe estar entre 0 y 5" })
-//         .max(5, { message: "El rating debe estar entre 0 y 5" })
-//     )
-//     .optional()
-//     .default(0),
-
-//   brand: z
-//     .string()
-//     .max(50, { message: "La marca no puede exceder 50 caracteres" })
-//     .optional()
-//     .default(""),
-
-//   category: z.string().min(1, { message: "La categoría es requerida" }),
-
-//   isActive: z.boolean().default(true),
-
-//   image: z
-//     .string()
-//     .refine(isValidUrl, { message: "Debe ser una URL válida" })
-//     .optional()
-//     .default(""),
-// });
-
-// export type ProductFormData = z.infer<typeof productSchema>;
