@@ -37,3 +37,4 @@ export { useProfileUpdate } from "./user/useProfileUpdate";
 export { useUsers, useUserById, useUserByRole } from "./user/useUsers";
 export { useUsersTable } from "./user/useUsersTable";
 export { useAccountDeletion } from "./user/useAccountDeletion";
+export { useUsersFilter } from "./user/useUsersFilter";

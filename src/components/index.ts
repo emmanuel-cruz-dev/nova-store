@@ -41,6 +41,11 @@ export { default as ProductQuantitySelector } from "./product/ProductQuantitySel
 export { default as ProductNotFound } from "./product/ProductNotFound";
 export { default as ProductStockIndicator } from "./product/ProductStockIndicator";
 export { default as ProductFilters } from "./product/ProductFilters";
+export { default as ProductsTableInfo } from "./product/ProductsTableInfo";
+export { default as ProductRow } from "./product/ProductRow";
+export { default as ProductTableHeader } from "./product/ProductTableHeader";
+export { default as ProductTableWrapper } from "./product/ProductTableWrapper";
+export { default as PublicProductFilters } from "./product/PublicProductFilters";
 
 export { default as CreateAccountItem } from "./shared/CreateAccountItem";
 export { default as CustomTooltip } from "./shared/CustomTooltip";
@@ -71,3 +76,7 @@ export { default as UsersTable } from "./user/UsersTable";
 export { default as UsersTableRowSkeleton } from "./user/UsersTableRowSkeleton";
 export { default as OrdersSkeleton } from "./user/OrdersSkeleton";
 export { default as AccountDeletionSection } from "./user/AccountDeletionSection";
+export { default as UsersFilters } from "./user/UsersFilters";
+export { default as UserTableHeader } from "./user/UserTableHeader";
+export { default as UserTableWrapper } from "./user/UserTableWrapper";
+export { default as UserRow } from "./user/UserRow";
