@@ -151,13 +151,16 @@ function ProductForm({
         <Form.Group as={Col} md={4} controlId="formStatus">
           <Form.Label className="mb-1">Estado</Form.Label>
           <Form.Select
-            {...register("isActive")}
             value={watch("isActive") ? "true" : "false"}
             onChange={(e) => setValue("isActive", e.target.value === "true")}
+            isInvalid={!!errors.isActive}
           >
             <option value="true">Activo</option>
             <option value="false">Inactivo</option>
           </Form.Select>
+          <Form.Control.Feedback type="invalid">
+            {errors.isActive?.message}
+          </Form.Control.Feedback>
         </Form.Group>
       </Row>
 
