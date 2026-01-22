@@ -1,18 +1,20 @@
-import { Badge, Table, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
-import { Pencil, Trash2, Info, Package, PackagePlus } from "lucide-react";
+import { Package, PackagePlus } from "lucide-react";
 import { useProductsTable, useProductsFilter } from "../../hooks";
 import {
   DeleteConfirmationModal,
   PaginationItem,
   TableRowSkeleton,
   ProductSidebarForm,
-  ProductStockIndicator,
   SectionHeader,
   EmptySection,
   ProductFilters,
+  ProductsTableInfo,
+  ProductRow,
+  ProductTableHeader,
+  ProductTableWrapper,
 } from "..";
-import { formatPrice } from "../../utils";
 
 function ProductsTable() {
   const {
@@ -54,6 +56,49 @@ function ProductsTable() {
     totalPages,
   } = useProductsFilter(products, 10);
 
+  const renderTableContent = () => {
+    if (loading) {
+      return (
+        <tbody>
+          {Array.from({ length: 5 }).map((_, index) => (
+            <TableRowSkeleton key={`placeholder-${index}`} />
+          ))}
+        </tbody>
+      );
+    }
+
+    if (error) {
+      return (
+        <tbody>
+          <tr>
+            <td colSpan={6} className="text-center text-danger">
+              Error al cargar productos
+            </td>
+          </tr>
+        </tbody>
+      );
+    }
+
+    return (
+      <tbody>
+        {paginatedProducts.map((product) => (
+          <ProductRow
+            key={product.id}
+            product={product}
+            onEdit={handleEditProduct}
+            onDelete={handleDeleteProduct}
+          />
+        ))}
+      </tbody>
+    );
+  };
+
+  const showEmptyState = !loading && products.length === 0;
+  const showNoResults =
+    !loading && !error && products.length > 0 && filteredProducts.length === 0;
+  const showTable =
+    !loading && !error && products.length > 0 && filteredProducts.length > 0;
+
   return (
     <section>
       <div
@@ -89,86 +134,27 @@ function ProductsTable() {
           clearFilters={clearFilters}
         />
 
-        {!loading && (
+        {!loading && products.length > 0 && (
           <p className="mt-3 text-center text-muted mb-0">
             <small>
-              {filteredProducts.length === products.length ? (
-                <>Mostrando {filteredProducts.length} productos</>
-              ) : (
-                <>
-                  Mostrando {filteredProducts.length} de {products.length}{" "}
-                  productos
-                </>
-              )}
+              {filteredProducts.length === products.length
+                ? `Mostrando ${filteredProducts.length} productos`
+                : `Mostrando ${filteredProducts.length} de ${products.length} productos`}
             </small>
           </p>
         )}
       </div>
 
-      {loading ? (
-        <div className="card rounded-3 shadow-sm overflow-hidden">
-          <Table
-            className="mb-0"
-            striped
-            bordered
-            hover
-            responsive
-            style={{ minWidth: "680px" }}
-          >
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Categoria</th>
-                <th>Stock</th>
-                <th>Estado</th>
-                <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <TableRowSkeleton key={`placeholder-${index}`} />
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      ) : error ? (
-        <div className="card rounded-3 shadow-sm overflow-hidden">
-          <Table
-            className="mb-0"
-            striped
-            bordered
-            hover
-            responsive
-            style={{ minWidth: "680px" }}
-          >
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Categoria</th>
-                <th>Stock</th>
-                <th>Estado</th>
-                <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colSpan={6} className="text-center text-danger">
-                  Error al cargar productos
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-      ) : products.length === 0 ? (
+      {showEmptyState && (
         <EmptySection
           title="Tu catálogo está vacío"
           message="Agrega productos para empezar a vender y gestionar tu tienda desde el panel de control."
           icon={<Package size={56} className="text-white" />}
           showButton={false}
         />
-      ) : filteredProducts.length === 0 ? (
+      )}
+
+      {showNoResults && (
         <div className="text-center py-5 bg-light rounded">
           <h5 className="text-muted">No se encontraron productos</h5>
           <p className="text-muted">
@@ -182,96 +168,16 @@ function ProductsTable() {
             </Button>
           </p>
         </div>
-      ) : (
+      )}
+
+      {(loading || error || showTable) && (
         <>
-          <div className="card rounded-3 shadow-sm overflow-hidden">
-            <Table
-              className="mb-0"
-              striped
-              bordered
-              hover
-              responsive
-              style={{ minWidth: "680px" }}
-            >
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Precio</th>
-                  <th>Categoria</th>
-                  <th>Stock</th>
-                  <th>Estado</th>
-                  <th style={{ width: "200px", height: "100%" }}>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedProducts.map((product) => (
-                  <tr key={product.id}>
-                    <td>{product.name}</td>
-                    <td>${formatPrice(product.price)}</td>
-                    <td className="text-capitalize">{product.category}</td>
-                    <td>
-                      {product.stock.toString().padStart(2, "0")}
-                      <ProductStockIndicator stock={product.stock} />
-                    </td>
-                    <td>
-                      <Badge bg={product.isActive ? "success" : "secondary"}>
-                        {product.isActive ? "Activo" : "Inactivo"}
-                      </Badge>
-                    </td>
-                    <td
-                      className="d-flex gap-2"
-                      style={{
-                        width: "200px",
-                        height: "100%",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <button
-                        onClick={() => handleEditProduct(product.id)}
-                        className="btn btn-secondary btn-sm"
-                      >
-                        <Pencil size={18} className="me-2" />
-                        Editar
-                      </button>
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        onClick={() => handleDeleteProduct(product)}
-                      >
-                        <Trash2 size={18} className="me-2" />
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
+          <ProductTableWrapper>
+            <ProductTableHeader />
+            {renderTableContent()}
+          </ProductTableWrapper>
 
-          <div className="d-flex justify-content-between align-items-start mt-2">
-            <small
-              className="text-muted d-flex align-items-center gap-1"
-              style={{ lineHeight: 1 }}
-            >
-              <Info size={15} />
-              Los productos inactivos no se muestran a los clientes
-            </small>
-
-            <ul className="d-flex gap-1 mb-0 list-unstyled">
-              <li>
-                <Badge bg="danger">Crítico</Badge>
-              </li>
-              <li>
-                <Badge bg="warning">Bajo</Badge>
-              </li>
-              <li>
-                <Badge bg="success">OK</Badge>
-              </li>
-              <li>
-                <Badge bg="primary">Alto</Badge>
-              </li>
-            </ul>
-          </div>
+          {showTable && <ProductsTableInfo />}
         </>
       )}
 
@@ -303,6 +209,7 @@ function ProductsTable() {
           isLoading={loading}
         />
       )}
+
       <ToastContainer
         position="bottom-left"
         pauseOnHover={true}
