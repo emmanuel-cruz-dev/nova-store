@@ -22,8 +22,9 @@ export interface UserResponse {
   total?: number;
 }
 
-export interface UserData
-  extends Pick<User, "email" | "firstName" | "lastName" | "avatar"> {
+type UserDataKeys = "email" | "firstName" | "lastName" | "avatar";
+
+export interface UserData extends Pick<User, UserDataKeys> {
   id: number | null;
   password: string;
 }
@@ -75,4 +76,38 @@ export interface ProfileSidebarProps {
   menuItems: MenuItem[];
   activeSection: string;
   setActiveSection: (section: string) => void;
+}
+
+export type ActivityFilter = "all" | "active" | "inactive";
+
+export type DateFilter =
+  | "all"
+  | "last-week"
+  | "last-month"
+  | "last-3-months"
+  | "older";
+
+export interface BaseUsersFilters {
+  searchTerm: string;
+  activityFilter: ActivityFilter;
+  dateFilter: DateFilter;
+  hasActiveFilters: boolean;
+  setSearchTerm: (value: string) => void;
+  setActivityFilter: (value: ActivityFilter) => void;
+  setDateFilter: (value: DateFilter) => void;
+  clearFilters: () => void;
+}
+
+export interface UseUsersFilterReturn extends BaseUsersFilters {
+  filteredUsers: User[];
+  paginatedUsers: User[];
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
+}
+
+export interface UsersFiltersProps extends BaseUsersFilters {
+  usersCount: number;
+  filteredCount: number;
+  loading: boolean;
 }

@@ -146,4 +146,30 @@ export interface UseProductsFilterReturn extends ProductFiltersCommon {
   handlePageChange: (page: number) => void;
 }
 
+type StockStatusFilter =
+  | "statusFilter"
+  | "stockFilter"
+  | "setStatusFilter"
+  | "setStockFilter";
+
+export interface UseProductsPublicFilterReturn
+  extends Omit<ProductFiltersCommon, StockStatusFilter> {
+  filteredProducts: Product[];
+  paginatedProducts: Product[];
+  currentPage: number;
+  totalPages: number;
+  handlePageChange: (page: number) => void;
+  minPrice: string;
+  maxPrice: string;
+  setMinPrice: (value: string) => void;
+  setMaxPrice: (value: string) => void;
+}
+
 export interface ProductFiltersProps extends ProductFiltersCommon {}
+
+export interface PublicProductFiltersProps
+  extends Omit<ProductFiltersCommon, StockStatusFilter> {
+  productsCount: number;
+  filteredCount: number;
+  loading: boolean;
+}
