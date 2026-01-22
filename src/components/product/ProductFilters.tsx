@@ -19,7 +19,7 @@ const ProductFilters = ({
   return (
     <Row className="g-3 align-items-end">
       <Col md={6} lg={4}>
-        <Form.Label className="mb-1 small fw-semibold">
+        <Form.Label htmlFor="search" className="mb-1 small fw-semibold">
           Buscar producto
         </Form.Label>
         <InputGroup>
@@ -27,6 +27,7 @@ const ProductFilters = ({
             <Search size={18} />
           </InputGroup.Text>
           <Form.Control
+            id="search"
             type="text"
             placeholder="Nombre o marca..."
             value={searchTerm}
@@ -36,12 +37,15 @@ const ProductFilters = ({
       </Col>
 
       <Col md={6} lg={2}>
-        <Form.Label className="mb-1 small fw-semibold">Precio mín.</Form.Label>
+        <Form.Label htmlFor="minPrice" className="mb-1 small fw-semibold">
+          Precio mín.
+        </Form.Label>
         <InputGroup>
           <InputGroup.Text>
             <DollarSign size={18} />
           </InputGroup.Text>
           <Form.Control
+            id="minPrice"
             type="number"
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
@@ -50,7 +54,7 @@ const ProductFilters = ({
       </Col>
 
       <Col md={6} lg={2}>
-        <Form.Label className="mb-1 small fw-semibold" htmlFor="maxPrice">
+        <Form.Label htmlFor="maxPrice" className="mb-1 small fw-semibold">
           Precio máx.
         </Form.Label>
         <InputGroup>
@@ -69,7 +73,7 @@ const ProductFilters = ({
       </Col>
 
       <Col md={6} lg={2}>
-        <Form.Label className="mb-1 small fw-semibold" htmlFor="status">
+        <Form.Label htmlFor="status" className="mb-1 small fw-semibold">
           Estado
         </Form.Label>
         <Form.Select
@@ -84,7 +88,7 @@ const ProductFilters = ({
       </Col>
 
       <Col md={6} lg={2}>
-        <Form.Label className="mb-1 small fw-semibold" htmlFor="stock">
+        <Form.Label htmlFor="stock" className="mb-1 small fw-semibold">
           Nivel de stock
         </Form.Label>
         <Form.Select
