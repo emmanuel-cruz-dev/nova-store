@@ -1,22 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { Product } from "../../types";
+import { Product, UseProductsPublicFilterReturn } from "../../types";
 import { normalizeText } from "../../utils";
-
-interface UseProductsPublicFilterReturn {
-  filteredProducts: Product[];
-  paginatedProducts: Product[];
-  currentPage: number;
-  totalPages: number;
-  searchTerm: string;
-  minPrice: string;
-  maxPrice: string;
-  hasActiveFilters: boolean;
-  setSearchTerm: (value: string) => void;
-  setMinPrice: (value: string) => void;
-  setMaxPrice: (value: string) => void;
-  clearFilters: () => void;
-  handlePageChange: (page: number) => void;
-}
 
 export function useProductsPublicFilter(
   products: Product[],
