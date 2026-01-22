@@ -1,25 +1,19 @@
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  Button,
-  Form,
-  InputGroup,
-} from "react-bootstrap";
-import { DollarSign, Search, X } from "lucide-react";
+import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import {
   useQueryHandler,
   useProductsByCategory,
   useProductsPublicFilter,
 } from "../hooks";
-import { ProductsGallery, PaginationItem } from "../components";
+import {
+  ProductsGallery,
+  PaginationItem,
+  PublicProductFilters,
+} from "../components";
 import { categories } from "../data/categories";
 
 function Products() {
   const { selectedCategory, handleCategoryClick } = useQueryHandler();
   const { products, loading, error } = useProductsByCategory(selectedCategory);
-
   const {
     filteredProducts,
     paginatedProducts,
@@ -40,6 +34,10 @@ function Products() {
     handleCategoryClick(category);
     clearFilters();
   };
+
+  const showNoResults =
+    !loading && filteredProducts.length === 0 && hasActiveFilters;
+  const showPagination = filteredProducts.length;
 
   return (
     <Container fluid>
@@ -89,104 +87,21 @@ function Products() {
             </h1>
           </header>
 
-          <div className="bg-light p-3 rounded">
-            <Row className="g-3 align-items-end">
-              <Col md={5} lg={4}>
-                <Form.Label className="mb-1 small fw-semibold" htmlFor="search">
-                  Buscar producto
-                </Form.Label>
-                <InputGroup>
-                  <InputGroup.Text>
-                    <Search size={18} />
-                  </InputGroup.Text>
-                  <Form.Control
-                    id="search"
-                    name="search"
-                    type="text"
-                    placeholder="Nombre, marca o descripción..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </InputGroup>
-              </Col>
+          <PublicProductFilters
+            searchTerm={searchTerm}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            hasActiveFilters={hasActiveFilters}
+            productsCount={products.length}
+            filteredCount={filteredProducts.length}
+            loading={loading}
+            setSearchTerm={setSearchTerm}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+            clearFilters={clearFilters}
+          />
 
-              <Col md={3} lg={2}>
-                <Form.Label
-                  className="mb-1 small fw-semibold"
-                  htmlFor="minPrice"
-                >
-                  Precio mínimo
-                </Form.Label>
-                <InputGroup>
-                  <InputGroup.Text>
-                    <DollarSign size={18} />
-                  </InputGroup.Text>
-                  <Form.Control
-                    id="minPrice"
-                    name="minPrice"
-                    type="number"
-                    placeholder="0"
-                    min={0}
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                  />
-                </InputGroup>
-              </Col>
-
-              <Col md={3} lg={2}>
-                <Form.Label
-                  className="mb-1 small fw-semibold"
-                  htmlFor="maxPrice"
-                >
-                  Precio máximo
-                </Form.Label>
-                <InputGroup>
-                  <InputGroup.Text>
-                    <DollarSign size={18} />
-                  </InputGroup.Text>
-                  <Form.Control
-                    id="maxPrice"
-                    name="maxPrice"
-                    type="number"
-                    placeholder="∞"
-                    min={0}
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                  />
-                </InputGroup>
-              </Col>
-
-              {hasActiveFilters && (
-                <Col md={12} lg="auto">
-                  <Button
-                    variant="outline-secondary custom__text-muted"
-                    onClick={clearFilters}
-                    className="w-100 d-flex align-items-center justify-content-center gap-2"
-                  >
-                    <X size={16} />
-                    Limpiar filtros
-                  </Button>
-                </Col>
-              )}
-            </Row>
-
-            {!loading && (
-              <p className="mt-3 text-center custom__text-muted mb-0">
-                <small>
-                  {filteredProducts.length === products.length ? (
-                    <>Mostrando {products.length} productos</>
-                  ) : (
-                    <>
-                      Mostrando {filteredProducts.length} de {products.length}{" "}
-                      productos
-                    </>
-                  )}
-                </small>
-              </p>
-            )}
-          </div>
-
-          {!loading && filteredProducts.length === 0 && hasActiveFilters ? (
+          {showNoResults ? (
             <section className="text-center py-5">
               <h5 className="custom__text-muted">
                 No se encontraron productos
@@ -210,7 +125,7 @@ function Products() {
                 error={error}
               />
 
-              {filteredProducts.length > 6 && (
+              {showPagination && (
                 <PaginationItem
                   currentPage={currentPage}
                   totalPages={totalPages}
