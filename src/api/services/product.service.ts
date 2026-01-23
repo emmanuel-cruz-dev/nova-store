@@ -140,6 +140,135 @@ const createProduct = async (formData: CreateProductDTO) => {
   }
 };
 
+const bulkUpdateStatus = async (productIds: number[], isActive: boolean) => {
+  let successCount = 0;
+
+  for (const id of productIds) {
+    try {
+      await axios.put(`/products/${id}`, { isActive });
+      successCount++;
+    } catch (err) {
+      console.error(`Error updating product ${id}`, err);
+    }
+  }
+
+  return {
+    success: successCount === productIds.length,
+    count: successCount,
+  };
+};
+
+const bulkDelete = async (productIds: number[]) => {
+  let successCount = 0;
+
+  for (const id of productIds) {
+    try {
+      await axios.delete(`/products/${id}`);
+      successCount++;
+    } catch (error) {
+      console.error(`Error deleting product ${id}`, error);
+    }
+  }
+
+  return {
+    success: successCount === productIds.length,
+    count: successCount,
+  };
+};
+
+const bulkUpdateStock = async (
+  products: any[],
+  adjustmentData: { type: string; value: number }
+) => {
+  let successCount = 0;
+
+  for (const product of products) {
+    try {
+      let newStock = product.stock;
+
+      if (adjustmentData.type === "increase") {
+        newStock = product.stock + adjustmentData.value;
+      } else if (adjustmentData.type === "decrease") {
+        newStock = Math.max(0, product.stock - adjustmentData.value);
+      } else if (adjustmentData.type === "set") {
+        newStock = adjustmentData.value;
+      }
+
+      await axios.put(`/products/${product.id}`, { stock: newStock });
+      successCount++;
+    } catch (err) {
+      console.error(`Error updating stock for product ${product.id}`, err);
+    }
+  }
+
+  return {
+    success: successCount === products.length,
+    count: successCount,
+  };
+};
+
+const bulkApplyDiscount = async (
+  products: any[],
+  discountData: { type: string; value: number }
+) => {
+  let successCount = 0;
+
+  for (const product of products) {
+    try {
+      let newPrice = product.price;
+
+      if (discountData.type === "percentage") {
+        newPrice = product.price * (1 - discountData.value / 100);
+      } else if (discountData.type === "fixed") {
+        newPrice = Math.max(0, product.price - discountData.value);
+      }
+
+      await axios.put(`/products/${product.id}`, {
+        price: Number(newPrice.toFixed(2)),
+      });
+      successCount++;
+    } catch (err) {
+      console.error(`Error applying discount to product ${product.id}`, err);
+    }
+  }
+
+  return {
+    success: successCount === products.length,
+    count: successCount,
+  };
+};
+
+const bulkAdjustPrices = async (
+  products: any[],
+  adjustmentData: { type: string; percentage: number }
+) => {
+  let successCount = 0;
+
+  for (const product of products) {
+    try {
+      let newPrice = product.price;
+
+      if (adjustmentData.type === "increase") {
+        newPrice = product.price * (1 + adjustmentData.percentage / 100);
+      } else if (adjustmentData.type === "decrease") {
+        newPrice = product.price * (1 - adjustmentData.percentage / 100);
+      }
+
+      await axios.put(`/products/${product.id}`, {
+        price: Number(newPrice.toFixed(2)),
+      });
+      successCount++;
+    } catch (err) {
+      console.error(`Error adjusting price for product ${product.id}`, err);
+    }
+  }
+
+  return {
+    success: successCount === products.length,
+    count: successCount,
+  };
+};
+
 export const productService = {
   getAllProducts,
   getProducts,
@@ -149,4 +278,9 @@ export const productService = {
   deleteProduct,
   updateProduct,
   createProduct,
+  bulkUpdateStatus,
+  bulkDelete,
+  bulkUpdateStock,
+  bulkApplyDiscount,
+  bulkAdjustPrices,
 };
