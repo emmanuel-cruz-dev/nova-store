@@ -1,4 +1,11 @@
-import { Form, InputGroup, Row, Col, Button } from "react-bootstrap";
+import {
+  Form,
+  InputGroup,
+  Row,
+  Col,
+  Button,
+  Placeholder,
+} from "react-bootstrap";
 import { Search, X } from "lucide-react";
 import { ActivityFilter, DateFilter, UsersFiltersProps } from "../../types";
 
@@ -84,7 +91,16 @@ function UsersFilters({
         )}
       </Row>
 
-      {!loading && (
+      {loading ? (
+        <div className="d-flex justify-content-center mt-3">
+          <Placeholder animation="wave">
+            <Placeholder
+              style={{ width: 142, height: 16 }}
+              className="rounded"
+            />
+          </Placeholder>
+        </div>
+      ) : (
         <p className="mt-3 text-center text-muted mb-0">
           <small>
             {filteredCount === usersCount
