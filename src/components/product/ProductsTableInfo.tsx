@@ -9,7 +9,7 @@ function ProductsTableInfo() {
         style={{ lineHeight: 1 }}
       >
         <Info size={15} />
-        Los productos inactivos no se muestran a los clientes
+        Los productos <strong>inactivos</strong> no se muestran a los clientes
       </small>
 
       <ul className="d-flex gap-1 mb-0 list-unstyled">
