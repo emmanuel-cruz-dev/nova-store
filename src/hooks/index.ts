@@ -23,6 +23,8 @@ export {
 export { useProductsTable } from "./products/useProductsTable";
 export { useProductsFilter } from "./products/useProductsFilter";
 export { useProductsPublicFilter } from "./products/useProductsPublicFilter";
+export { useBulkSelection } from "./products/useBulkSelection";
+export { useBulkActions } from "./products/useBulkActions";
 
 export { useNavigation } from "./shared/useNavigation";
 export { usePagination } from "./shared/usePagination";
@@ -38,3 +40,4 @@ export { useUsers, useUserById, useUserByRole } from "./user/useUsers";
 export { useUsersTable } from "./user/useUsersTable";
 export { useAccountDeletion } from "./user/useAccountDeletion";
 export { useUsersFilter } from "./user/useUsersFilter";
+export { useBulkUserActions } from "./user/useBulkUserActions";
