@@ -97,6 +97,7 @@ export function useProductsTable(initialPage = 1, initialLimit = 10) {
 
     goToPage,
     refetch,
+    mutate: refetch,
     notify,
     handleModalShow,
     handleModalClose,
