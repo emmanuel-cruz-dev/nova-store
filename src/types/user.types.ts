@@ -29,7 +29,7 @@ export interface UserData extends Pick<User, UserDataKeys> {
   password: string;
 }
 
-type UserRole = "customer" | "admin";
+export type UserRole = "customer" | "admin";
 
 export interface AvatarUpdateModalProps {
   show: boolean;
@@ -110,4 +110,12 @@ export interface UsersFiltersProps extends BaseUsersFilters {
   usersCount: number;
   filteredCount: number;
   loading: boolean;
+}
+
+export interface RoleChangeModalProps {
+  show: boolean;
+  onHide: () => void;
+  onConfirm: (newRole: UserRole) => void;
+  selectedCount: number;
+  isProcessing: boolean;
 }
