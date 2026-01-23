@@ -2,7 +2,7 @@
 
 **Entrega Final - Curso React + Bootstrap – Talento Tech 2025**
 
-👨‍💻 **Autor:** Emmanuel Cruz
+👨‍💻 **Autor:** Emmanuel Cruz  
 🎓 **Comisión:** 25235
 
 ---
