@@ -16,6 +16,7 @@ export const useUsersTable = (
     currentPage,
     totalPages,
     goToPage,
+    refetch,
   } = useUserByRole(role, initialPage, pageSize);
 
   const [showDetails, setShowDetails] = useState(false);
@@ -96,5 +97,6 @@ export const useUsersTable = (
     handleCloseDeleteModal,
     handleConfirmDelete,
     handlePageChange,
+    mutate: refetch,
   };
 };
