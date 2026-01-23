@@ -1,4 +1,5 @@
 # 🛍️ Nova Store - E-Commerce
+
 **Entrega Final - Curso React + Bootstrap – Talento Tech 2025**
 
 👨‍💻 **Autor:** Emmanuel Cruz
@@ -7,11 +8,13 @@
 ---
 
 ## 🚀 Demo en vivo
+
 👉 **[Visitar la página](https://nova-store-shop.vercel.app/)**
 
 ---
 
 ## 📄 Descripción
+
 **Nova Store** es una tienda e-commerce moderna y completa construida con **React** y **TypeScript**, que incluye autenticación (registro/login), carrito de compras, proceso de checkout, gestión de órdenes y un completo panel administrativo con estadísticas en tiempo real.
 
 La aplicación consume una API generada con **MockAPI**, utilizada para la persistencia de productos, usuarios y órdenes, e implementa las mejores prácticas de desarrollo con validación de formularios, gestión de estado optimizada, arquitectura modular por features y una experiencia de usuario fluida.
@@ -21,26 +24,44 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 ## ✨ Funcionalidades principales
 
 ### 🔐 Autenticación y usuarios
+
 - Registro y login de usuarios con validación robusta.
 - Gestión de perfiles con actualización de datos personales.
 - Cambio de contraseña seguro.
+- **Eliminación de cuenta permanente** para usuarios con rol `customer`:
+  - Proceso de confirmación en dos pasos (palabra clave + contraseña)
+  - Validación de identidad antes de eliminar
+  - Advertencias claras sobre la irreversibilidad
+  - Cierre de sesión automático tras eliminación
 - Validación de formularios con **React Hook Form** y **Zod**.
 - Gestión de sesión con **Zustand** (authStore).
+- **Sistema de rutas protegidas por rol:**
+  - Rutas separadas para administradores (`/admin/*`) y clientes (`/account/*`)
+  - Redirección automática según el rol del usuario
 
 ### 🛒 Carrito de compras
+
 - Gestión completa de carrito: agregar productos, modificar cantidad, eliminar.
 - Persistencia del estado del carrito con **Zustand**.
 - Proceso de checkout con validación de datos de envío.
 - Resumen de orden y confirmación de compra.
 
 ### 📦 Productos
+
 - Búsqueda y filtrado avanzado por categorías.
+- **Filtros avanzados en el panel de administración:**
+  - Búsqueda por nombre o marca del producto
+  - Filtrado por rango de precios (mínimo y máximo)
+  - Filtrado por estado (activos/inactivos)
+  - Filtrado por nivel de stock (crítico, bajo, OK, alto)
+  - Botón para limpiar todos los filtros activos
 - Paginación optimizada de productos.
 - Vista detallada de producto individual con galería de imágenes.
 - Sistema de ratings y valoraciones.
 - Gestión de stock en tiempo real.
 
 ### 📊 Panel de administración (Dashboard)
+
 - **Estadísticas en tiempo real:**
   - Ingresos totales y valor promedio de órdenes
   - Total de productos, productos activos y alertas de stock bajo
@@ -50,19 +71,31 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
   - Gráficos de distribución de órdenes por estado
   - Tabla de productos más vendidos
   - Tarjetas de estadísticas con indicadores visuales
-- **Gestión completa:**
+- **Gestión completa de productos:**
   - CRUD de productos con formularios validados
-  - Gestión de órdenes (visualización, actualización de estados)
+  - Sistema de filtrado avanzado (búsqueda, precio, estado, stock)
+  - Indicadores visuales de stock y estado
+- **Gestión completa de usuarios:**
   - Listado y administración de usuarios
-  - Rutas protegidas según rol de usuario
+  - **Filtros avanzados:**
+    - Búsqueda por nombre o email
+    - Filtrado por actividad (usuarios con/sin órdenes)
+    - Filtrado por fecha de registro (última semana, mes, 3 meses, más antiguos)
+    - Contador de resultados filtrados vs total
+- **Gestión de órdenes:**
+  - Visualización y actualización de estados
+  - Detalles completos de cada orden
+- **Rutas protegidas exclusivas para administradores** (`/admin/*`)
 
 ### 📋 Gestión de órdenes
+
 - Visualización de historial de órdenes del usuario.
 - Estados de órdenes: Pendiente, En proceso, Completada, Cancelada.
 - Detalles completos de cada orden (productos, cantidades, precios, datos de envío).
 - Panel administrativo para gestionar todas las órdenes del sistema.
 
 ### 🎨 Interfaz de usuario
+
 - Diseño responsivo con **Bootstrap** y **Bootswatch**.
 - Carruseles interactivos con **Swiper**.
 - Notificaciones elegantes con **React Toastify**.
@@ -98,8 +131,14 @@ src/
 │   ├── home/                       # Componentes de la página principal
 │   ├── modals/                     # Modales reutilizables
 │   ├── product/                    # Componentes de productos
+│   │   ├── ProductFilters.tsx      # Filtros avanzados (admin)
+│   │   ├── PublicProductFilters.tsx # Filtros públicos
+│   │   └── ProductsTable.tsx       # Tabla de gestión de productos
 │   ├── shared/                     # Componentes compartidos
 │   └── user/                       # Componentes de usuario y perfil
+│       ├── AccountDeletionSection.tsx # Eliminación de cuenta
+│       ├── UsersFilters.tsx        # Filtros de usuarios (admin)
+│       └── UsersTable.tsx          # Tabla de gestión de usuarios
 ├── constants/                      # Constantes de la aplicación
 │   ├── features.ts                 # Features destacadas del e-commerce
 │   └── status.ts                   # Estados de órdenes
@@ -124,13 +163,16 @@ src/
 │   ├── Cart.tsx
 │   ├── Login.tsx
 │   ├── Register.tsx
-│   ├── Profile.tsx                 # Incluye dashboard y gestión de perfil
+│   ├── Account.tsx                 # Panel de cuenta (customers)
+│   ├── Admin.tsx                   # Panel administrativo (admins)
 │   └── NotFound.tsx
 ├── routes/                         # Configuración de rutas
 │   ├── AppRouter.tsx
-│   ├── PrivateRoute.tsx
-│   ├── PublicRoute.tsx
-│   └── config.tsx
+│   ├── AdminRoute.tsx              # Protección de rutas admin
+│   ├── PrivateRoute.tsx            # Protección de rutas privadas
+│   ├── PublicRoute.tsx             # Rutas solo para no autenticados
+│   ├── PublicOrCustomerRoute.tsx   # Rutas públicas/customer
+│   └── config.tsx                  # Configuración de rutas por rol
 ├── schemas/                        # Esquemas de validación con Zod
 ├── stores/                         # State management con Zustand
 │   ├── authStore.ts                # Store de autenticación
@@ -146,20 +188,24 @@ src/
 ## 🧰 Tecnologías utilizadas
 
 ### Core
+
 - **React 19** (Vite)
 - **React Router DOM** - Enrutamiento y navegación
 - **TypeScript** - Tipado estático (configuración disponible)
 
 ### Gestión de estado
+
 - **Zustand** - State management principal (auth y cart)
 - **SWR** - Data fetching, cache y sincronización
 
 ### Formularios y validación
+
 - **React Hook Form** - Gestión eficiente de formularios
 - **Zod** - Validación de esquemas type-safe
 - **@hookform/resolvers** - Integración entre React Hook Form y Zod
 
 ### UI/UX
+
 - **Bootstrap 5** + **React Bootstrap** - Framework CSS y componentes
 - **Bootswatch** - Temas de Bootstrap
 - **Swiper** - Carruseles y sliders táctiles
@@ -168,11 +214,13 @@ src/
 - **NProgress** - Barra de progreso para navegación
 
 ### HTTP y API
+
 - **Axios** - Cliente HTTP con interceptores
 
 ---
 
 ## 🔧 Requisitos
+
 - **Node.js** ≥ 16
 - **pnpm** ≥ 8 (recomendado) o **npm**
 
@@ -232,6 +280,7 @@ pnpm preview
 ### Estructura de datos recomendada
 
 **Productos:**
+
 ```json
 {
   "id": "1",
@@ -248,6 +297,7 @@ pnpm preview
 ```
 
 **Usuarios:**
+
 ```json
 {
   "id": "1",
@@ -276,22 +326,26 @@ pnpm preview
 ## 🛠️ Desarrollo y mejores prácticas
 
 ### Arquitectura
+
 - **Separación de responsabilidades:** Servicios HTTP abstraídos en `src/api/services/`.
 - **Componentes reutilizables:** Organización modular por dominio.
 - **Custom hooks:** Lógica compartida encapsulada en hooks reutilizables.
 
 ### Gestión de formularios
+
 - Todos los formularios utilizan **React Hook Form** para mejor rendimiento.
 - Validación robusta con esquemas **Zod** definidos en `src/schemas/`.
 - Mensajes de error consistentes y accesibles.
 
 ### Estado global
+
 - **Zustand stores:**
   - `authStore.ts` - Maneja autenticación, usuario actual y token
   - `cartStore.ts` - Gestión optimizada del estado del carrito
 - **SWR:** Cache inteligente y revalidación automática de datos
 
 ### Hooks personalizados
+
 - `useAuth` - Autenticación y gestión de sesión
 - `useCart` - Operaciones del carrito de compras
 - `useProducts` - Fetching y filtrado de productos
@@ -316,9 +370,41 @@ npm run lint
 
 ---
 
-## 🚀 Próximas mejoras
+## 🎯 Arquitectura de rutas
 
-- [ ] Implementar búsqueda avanzada con filtros múltiples
+El proyecto implementa un sistema de rutas protegidas basado en roles:
+
+### Rutas públicas y de clientes
+
+- `/` - Página principal
+- `/products` - Catálogo de productos
+- `/product/:id` - Detalle de producto
+- `/cart` - Carrito de compras (requiere autenticación)
+- `/account/:section?` - Panel de cuenta del cliente (requiere autenticación)
+  - `/account/profile` - Perfil y datos personales
+  - `/account/orders` - Historial de órdenes
+  - `/account/favorites` - Productos favoritos
+
+### Rutas administrativas
+
+- `/admin/:section?` - Panel administrativo (requiere rol admin)
+  - `/admin/dashboard` - Estadísticas y métricas
+  - `/admin/products` - Gestión de productos con filtros
+  - `/admin/users` - Gestión de usuarios con filtros
+  - `/admin/orders` - Gestión de órdenes
+  - `/admin/profile` - Perfil del administrador
+
+### Rutas de autenticación
+
+- `/login` - Inicio de sesión
+- `/register` - Registro de usuarios
+
+### Sistema de protección
+
+- **PublicRoute:** Solo accesible sin autenticación (login, register)
+- **PublicOrCustomerRoute:** Accesible para no autenticados y customers (redirige admins a `/admin`)
+- **PrivateRoute:** Requiere autenticación (rutas de customer)
+- **AdminRoute:** Requiere autenticación y rol admin (rutas de `/admin/*`)
 
 ---
 
