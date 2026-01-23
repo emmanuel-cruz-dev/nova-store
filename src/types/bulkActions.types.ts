@@ -45,9 +45,9 @@ export interface BulkUpdatePayload {
 
 export interface BaseBulkActionsToolbarProps {
   selectedCount: number;
+  isProcessing: boolean;
   onClearSelection: () => void;
   onDelete: () => void;
-  isProcessing: boolean;
 }
 
 export interface BulkUserActionsToolbarProps
@@ -61,4 +61,16 @@ export interface BulkActionsToolbarProps extends BaseBulkActionsToolbarProps {
   onAdjustStock: () => void;
   onApplyDiscount: () => void;
   onAdjustPrice: () => void;
+}
+
+export interface BulkDeleteConfirmationModalProps
+  extends Omit<BaseBulkActionsToolbarProps, "onClearSelection" | "onDelete"> {
+  show: boolean;
+  onHide: () => void;
+  onConfirm: () => void;
+}
+
+export interface DiscountModalProps
+  extends Omit<BulkDeleteConfirmationModalProps, "onConfirm"> {
+  onConfirm: (data: DiscountData) => void;
 }
