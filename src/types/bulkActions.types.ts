@@ -32,11 +32,33 @@ export interface DiscountData {
   value: number;
 }
 
+type BulkActionPayload = {
+  isActive: boolean;
+  stock: number;
+  price: number;
+};
+
 export interface BulkUpdatePayload {
   productIds: number[];
-  updates: Partial<{
-    isActive: boolean;
-    stock: number;
-    price: number;
-  }>;
+  updates: Partial<BulkActionPayload>;
+}
+
+export interface BaseBulkActionsToolbarProps {
+  selectedCount: number;
+  onClearSelection: () => void;
+  onDelete: () => void;
+  isProcessing: boolean;
+}
+
+export interface BulkUserActionsToolbarProps
+  extends BaseBulkActionsToolbarProps {
+  onChangeRole: () => void;
+}
+
+export interface BulkActionsToolbarProps extends BaseBulkActionsToolbarProps {
+  onActivate: () => void;
+  onDeactivate: () => void;
+  onAdjustStock: () => void;
+  onApplyDiscount: () => void;
+  onAdjustPrice: () => void;
 }
