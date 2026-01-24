@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import {
   useQueryHandler,
@@ -35,6 +36,7 @@ function Products() {
     clearFilters();
   };
 
+  const isEmptyStore = !loading && products.length === 0;
   const showNoResults =
     !loading && filteredProducts.length === 0 && hasActiveFilters;
   const showPagination = filteredProducts.length;
@@ -42,42 +44,49 @@ function Products() {
   return (
     <Container fluid>
       <Row>
-        <Col
-          md={3}
-          lg={2}
-          className="mb-md-0 py-4"
-          style={{ background: "#eee" }}
-        >
-          <nav
-            className="sticky-top"
-            style={{ top: "68px", zIndex: 1 }}
-            aria-label="Category navigation"
+        {!isEmptyStore && (
+          <Col
+            md={3}
+            lg={2}
+            className="mb-md-0 py-4"
+            style={{ background: "#eee" }}
           >
-            <h5
-              className="mb-3 custom__text-primary"
-              style={{ fontSize: "1.5rem" }}
+            <nav
+              className="sticky-top"
+              style={{ top: "68px", zIndex: 1 }}
+              aria-label="Category navigation"
             >
-              Categorías
-            </h5>
-            <ListGroup as="ul" className="list-unstyled">
-              {categories.map((category) => (
-                <ListGroup.Item
-                  as="li"
-                  key={category.id}
-                  action
-                  active={selectedCategory === category.id}
-                  onClick={() => handleCategoryChange(category.id)}
-                  className="border-0 rounded mb-2 custom__text-muted"
-                  style={{ cursor: "pointer" }}
-                >
-                  {category.name}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </nav>
-        </Col>
+              <h5
+                className="mb-3 custom__text-primary"
+                style={{ fontSize: "1.5rem" }}
+              >
+                Categorías
+              </h5>
+              <ListGroup as="ul" className="list-unstyled">
+                {categories.map((category) => (
+                  <ListGroup.Item
+                    as="li"
+                    key={category.id}
+                    action
+                    active={selectedCategory === category.id}
+                    onClick={() => handleCategoryChange(category.id)}
+                    className="border-0 rounded mb-2 custom__text-muted"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {category.name}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </nav>
+          </Col>
+        )}
 
-        <Col as="main" md={9} lg={10} className="mb-4">
+        <Col
+          as="main"
+          md={isEmptyStore ? 12 : 9}
+          lg={isEmptyStore ? 12 : 10}
+          className="mb-4"
+        >
           <header className="pt-4">
             <h1 className="display-6 fw-semibold custom__text-primary">
               {
@@ -87,21 +96,35 @@ function Products() {
             </h1>
           </header>
 
-          <PublicProductFilters
-            searchTerm={searchTerm}
-            minPrice={minPrice}
-            maxPrice={maxPrice}
-            hasActiveFilters={hasActiveFilters}
-            productsCount={products.length}
-            filteredCount={filteredProducts.length}
-            loading={loading}
-            setSearchTerm={setSearchTerm}
-            setMinPrice={setMinPrice}
-            setMaxPrice={setMaxPrice}
-            clearFilters={clearFilters}
-          />
+          {!isEmptyStore && (
+            <PublicProductFilters
+              searchTerm={searchTerm}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              hasActiveFilters={hasActiveFilters}
+              productsCount={products.length}
+              filteredCount={filteredProducts.length}
+              loading={loading}
+              setSearchTerm={setSearchTerm}
+              setMinPrice={setMinPrice}
+              setMaxPrice={setMaxPrice}
+              clearFilters={clearFilters}
+            />
+          )}
 
-          {showNoResults ? (
+          {isEmptyStore ? (
+            <section className="text-center py-5">
+              <h4 className="custom__text-muted mb-3">
+                No hay productos disponibles por el momento
+              </h4>
+              <p className="custom__text-muted">
+                Estamos trabajando para ofrecerte novedades muy pronto.
+              </p>
+              <Link to="/">
+                <Button variant="outline-primary px-4">Volver al inicio</Button>
+              </Link>
+            </section>
+          ) : showNoResults ? (
             <section className="text-center py-5">
               <h5 className="custom__text-muted">
                 No se encontraron productos
