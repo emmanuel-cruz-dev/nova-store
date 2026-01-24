@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export type BulkAction =
   | "activate"
   | "deactivate"
@@ -23,7 +25,7 @@ export interface StockAdjustmentData {
 }
 
 export interface PriceAdjustmentData {
-  type: "increase" | "decrease";
+  type: AdjustmentType;
   percentage: number;
 }
 
@@ -32,30 +34,59 @@ export interface DiscountData {
   value: number;
 }
 
-type BulkActionPayload = {
-  isActive: boolean;
-  stock: number;
-  price: number;
-};
-
 export interface BulkUpdatePayload {
   productIds: number[];
-  updates: Partial<BulkActionPayload>;
+  updates: Partial<{
+    isActive: boolean;
+    stock: number;
+    price: number;
+  }>;
 }
 
-export interface BaseBulkActionsToolbarProps {
+export interface ActionModalProps {
+  show: boolean;
+  onHide: () => void;
+  onSubmit: () => void;
+  title: string;
+  icon: LucideIcon;
+  selectedCount: number;
+  isProcessing: boolean;
+  confirmText?: string;
+  children: React.ReactNode;
+  isValid: boolean;
+}
+
+interface BaseActionModalProps {
+  show: boolean;
+  onHide: () => void;
+  selectedCount: number;
+  isProcessing: boolean;
+}
+
+export interface DiscountModalProps extends BaseActionModalProps {
+  onConfirm: (data: DiscountData) => void;
+}
+
+export interface PriceAdjustmentModalProps extends BaseActionModalProps {
+  onConfirm: (data: PriceAdjustmentData) => void;
+}
+
+export interface StockAdjustmentModalProps extends BaseActionModalProps {
+  onConfirm: (data: StockAdjustmentData) => void;
+}
+
+export interface BulkDeleteConfirmationModalProps extends BaseActionModalProps {
+  onConfirm: () => void;
+}
+
+interface BaseToolbarProps {
   selectedCount: number;
   isProcessing: boolean;
   onClearSelection: () => void;
   onDelete: () => void;
 }
 
-export interface BulkUserActionsToolbarProps
-  extends BaseBulkActionsToolbarProps {
-  onChangeRole: () => void;
-}
-
-export interface BulkActionsToolbarProps extends BaseBulkActionsToolbarProps {
+export interface BulkActionsToolbarProps extends BaseToolbarProps {
   onActivate: () => void;
   onDeactivate: () => void;
   onAdjustStock: () => void;
@@ -63,14 +94,6 @@ export interface BulkActionsToolbarProps extends BaseBulkActionsToolbarProps {
   onAdjustPrice: () => void;
 }
 
-export interface BulkDeleteConfirmationModalProps
-  extends Omit<BaseBulkActionsToolbarProps, "onClearSelection" | "onDelete"> {
-  show: boolean;
-  onHide: () => void;
-  onConfirm: () => void;
-}
-
-export interface DiscountModalProps
-  extends Omit<BulkDeleteConfirmationModalProps, "onConfirm"> {
-  onConfirm: (data: DiscountData) => void;
+export interface BulkUserActionsToolbarProps extends BaseToolbarProps {
+  onChangeRole: () => void;
 }
