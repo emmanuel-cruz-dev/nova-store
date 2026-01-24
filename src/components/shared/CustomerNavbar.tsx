@@ -29,7 +29,23 @@ function CustomerNavbar() {
         Nova<span className="text-white fw-normal">Store</span>
       </Navbar.Brand>
 
-      <Navbar.Toggle aria-controls="main-navbar" />
+      <div className="d-flex align-items-center gap-2">
+        {isAuthenticated && (
+          <Nav.Link
+            as={Link}
+            to="/cart"
+            className="cart__items-container text-light d-lg-none me-2"
+            aria-label="Carrito"
+          >
+            <ShoppingCart size={24} className="me-2" />
+            {getCartItemsCount() > 0 && (
+              <p className="cart__items-badge">{getCartItemsCount()}</p>
+            )}
+          </Nav.Link>
+        )}
+        <Navbar.Toggle aria-controls="main-navbar" />
+      </div>
+
       <Navbar.Collapse id="main-navbar">
         <Nav className="ms-auto align-items-center gap-2">
           <Nav.Link as={Link} to="/" aria-label="Inicio">
@@ -44,7 +60,7 @@ function CustomerNavbar() {
               <Nav.Link
                 as={Link}
                 to="/cart"
-                className="cart__items-container"
+                className="cart__items-container d-none d-lg-flex"
                 aria-label="Carrito"
               >
                 <ShoppingCart size={20} className="me-2" />
