@@ -3,7 +3,7 @@ import { features } from "../../constants/features";
 
 function FeaturesSection() {
   return (
-    <section className="py-5 bg-light" id="features">
+    <section className="py-5 bg-white" id="features">
       <Container className="py-0 py-lg-5">
         <Row className="g-4">
           {features.map((feature) => (
