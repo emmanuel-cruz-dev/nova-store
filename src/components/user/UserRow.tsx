@@ -1,3 +1,4 @@
+import { Form } from "react-bootstrap";
 import { Eye, Trash2 } from "lucide-react";
 import { User } from "../../types";
 import { formatDateShort } from "../../utils";
@@ -6,12 +7,31 @@ const UserRow = ({
   user,
   onShowDetails,
   onDelete,
+  isSelected,
+  onToggleSelect,
 }: {
   user: User;
   onShowDetails: (id: number) => void;
   onDelete: (user: User) => void;
+  isSelected: boolean;
+  onToggleSelect: (userId: number) => void;
 }) => (
-  <tr key={user.id}>
+  <tr
+    key={user.id}
+    className={isSelected ? "table-active" : ""}
+    style={{
+      backgroundColor: isSelected ? "rgba(13, 110, 253, 0.1)" : undefined,
+    }}
+  >
+    <td className="align-middle text-center">
+      <Form.Check
+        id={`select-user-${user.id}`}
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => onToggleSelect(user.id as number)}
+        aria-label={`Seleccionar ${user.firstName} ${user.lastName}`}
+      />
+    </td>
     <td className="text-nowrap">
       <img
         className="rounded-circle"
