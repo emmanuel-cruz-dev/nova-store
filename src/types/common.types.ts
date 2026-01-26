@@ -59,3 +59,5 @@ export interface CustomTooltipProps {
   placement?: Placement;
   delay?: { show: number; hide: number };
 }
+
+export type CheckboxState = "checked" | "unchecked" | "indeterminate";
