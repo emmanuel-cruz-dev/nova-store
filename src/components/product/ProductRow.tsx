@@ -1,4 +1,4 @@
-import { Badge } from "react-bootstrap";
+import { Badge, Form } from "react-bootstrap";
 import { Pencil, Trash2 } from "lucide-react";
 import { ProductStockIndicator } from "..";
 import { formatPrice } from "../../utils";
@@ -8,12 +8,31 @@ const ProductRow = ({
   product,
   onEdit,
   onDelete,
+  isSelected,
+  onToggleSelect,
 }: {
   product: Product;
   onEdit: (productId: number) => void;
   onDelete: (product: Product) => void;
+  isSelected: boolean;
+  onToggleSelect: (productId: number) => void;
 }) => (
-  <tr key={product.id}>
+  <tr
+    key={product.id}
+    className={isSelected ? "table-active" : ""}
+    style={{
+      backgroundColor: isSelected ? "rgba(13, 110, 253, 0.1)" : undefined,
+    }}
+  >
+    <td className="align-middle text-center">
+      <Form.Check
+        id={`select-product-${product.id}`}
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => onToggleSelect(product.id)}
+        aria-label={`Seleccionar ${product.name}`}
+      />
+    </td>
     <td className="align-middle">{product.name}</td>
     <td className="align-middle">${formatPrice(product.price)}</td>
     <td className="text-capitalize align-middle">{product.category}</td>
