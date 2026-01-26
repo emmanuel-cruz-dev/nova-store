@@ -1,11 +1,17 @@
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Placeholder } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { Package, PackagePlus } from "lucide-react";
-import { useProductsTable, useProductsFilter } from "../../hooks";
+import {
+  useProductsTable,
+  useProductsFilter,
+  useBulkSelection,
+  useBulkActions,
+} from "../../hooks";
 import {
   DeleteConfirmationModal,
   PaginationItem,
-  TableRowSkeleton,
+  ProductTableRowSkeleton,
   ProductSidebarForm,
   SectionHeader,
   EmptySection,
@@ -14,7 +20,18 @@ import {
   ProductRow,
   ProductTableHeader,
   ProductTableWrapper,
+  BulkActionsToolbar,
+  BulkDeleteConfirmationModal,
+  DiscountModal,
+  PriceAdjustmentModal,
+  StockAdjustmentModal,
 } from "..";
+import {
+  StockAdjustmentData,
+  PriceAdjustmentData,
+  DiscountData,
+  CheckboxState,
+} from "../../types";
 
 function ProductsTable() {
   const {
@@ -34,6 +51,7 @@ function ProductsTable() {
     handleDeleteProduct,
     handleCloseDeleteModal,
     handleConfirmDelete,
+    mutate,
   } = useProductsTable(1, 100);
 
   const {
@@ -56,12 +74,73 @@ function ProductsTable() {
     totalPages,
   } = useProductsFilter(products, 10);
 
+  const {
+    selectedIds,
+    selectedItems: selectedProducts,
+    selectedCount,
+    isSelected,
+    toggleSelection,
+    toggleSelectAll,
+    checkboxState,
+    deselectAll,
+  } = useBulkSelection(paginatedProducts);
+
+  const {
+    isProcessing,
+    bulkActivate,
+    bulkDeactivate,
+    bulkDelete,
+    bulkAdjustStock,
+    bulkApplyDiscount,
+    bulkAdjustPrice,
+  } = useBulkActions(() => {
+    mutate();
+    deselectAll();
+  });
+
+  const [showStockModal, setShowStockModal] = useState(false);
+  const [showPriceModal, setShowPriceModal] = useState(false);
+  const [showDiscountModal, setShowDiscountModal] = useState(false);
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
+
+  const handleBulkActivate = () => {
+    bulkActivate(selectedIds);
+  };
+
+  const handleBulkDeactivate = () => {
+    bulkDeactivate(selectedIds);
+  };
+
+  const handleBulkDelete = () => {
+    setShowBulkDeleteModal(true);
+  };
+
+  const confirmBulkDelete = () => {
+    bulkDelete(selectedIds);
+    setShowBulkDeleteModal(false);
+  };
+
+  const handleStockAdjustment = (data: StockAdjustmentData) => {
+    bulkAdjustStock(selectedProducts, data);
+    setShowStockModal(false);
+  };
+
+  const handlePriceAdjustment = (data: PriceAdjustmentData) => {
+    bulkAdjustPrice(selectedProducts, data);
+    setShowPriceModal(false);
+  };
+
+  const handleDiscountApplication = (data: DiscountData) => {
+    bulkApplyDiscount(selectedProducts, data);
+    setShowDiscountModal(false);
+  };
+
   const renderTableContent = () => {
     if (loading) {
       return (
         <tbody>
           {Array.from({ length: 5 }).map((_, index) => (
-            <TableRowSkeleton key={`placeholder-${index}`} />
+            <ProductTableRowSkeleton key={`placeholder-${index}`} />
           ))}
         </tbody>
       );
@@ -71,7 +150,7 @@ function ProductsTable() {
       return (
         <tbody>
           <tr>
-            <td colSpan={6} className="text-center text-danger">
+            <td colSpan={7} className="text-center text-danger">
               Error al cargar productos
             </td>
           </tr>
@@ -87,6 +166,8 @@ function ProductsTable() {
             product={product}
             onEdit={handleEditProduct}
             onDelete={handleDeleteProduct}
+            isSelected={isSelected(product.id)}
+            onToggleSelect={toggleSelection}
           />
         ))}
       </tbody>
@@ -118,32 +199,57 @@ function ProductsTable() {
         </button>
       </div>
 
-      <div className="bg-light py-3 rounded">
-        <ProductFilters
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          minPrice={minPrice}
-          setMinPrice={setMinPrice}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          stockFilter={stockFilter}
-          setStockFilter={setStockFilter}
-          hasActiveFilters={hasActiveFilters}
-          clearFilters={clearFilters}
-        />
+      {products.length > 0 && (
+        <div className="bg-light py-3 rounded">
+          <ProductFilters
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            stockFilter={stockFilter}
+            setStockFilter={setStockFilter}
+            hasActiveFilters={hasActiveFilters}
+            clearFilters={clearFilters}
+          />
 
-        {!loading && products.length > 0 && (
-          <p className="mt-3 text-center text-muted mb-0">
-            <small>
-              {filteredProducts.length === products.length
-                ? `Mostrando ${filteredProducts.length} productos`
-                : `Mostrando ${filteredProducts.length} de ${products.length} productos`}
-            </small>
-          </p>
-        )}
-      </div>
+          {loading ? (
+            <div className="d-flex justify-content-center mt-3">
+              <Placeholder animation="wave">
+                <Placeholder
+                  style={{ width: 160, height: 16 }}
+                  className="rounded"
+                />
+              </Placeholder>
+            </div>
+          ) : (
+            products.length > 0 && (
+              <p className="mt-3 text-center text-muted mb-0">
+                <small>
+                  {filteredProducts.length === products.length
+                    ? `Mostrando ${filteredProducts.length} productos`
+                    : `Mostrando ${filteredProducts.length} de ${products.length} productos`}
+                </small>
+              </p>
+            )
+          )}
+        </div>
+      )}
+
+      <BulkActionsToolbar
+        selectedCount={selectedCount}
+        onClearSelection={deselectAll}
+        onActivate={handleBulkActivate}
+        onDeactivate={handleBulkDeactivate}
+        onDelete={handleBulkDelete}
+        onAdjustStock={() => setShowStockModal(true)}
+        onApplyDiscount={() => setShowDiscountModal(true)}
+        onAdjustPrice={() => setShowPriceModal(true)}
+        isProcessing={isProcessing}
+      />
 
       {showEmptyState && (
         <EmptySection
@@ -173,7 +279,10 @@ function ProductsTable() {
       {(loading || error || showTable) && (
         <>
           <ProductTableWrapper>
-            <ProductTableHeader />
+            <ProductTableHeader
+              checkboxState={checkboxState as CheckboxState}
+              onToggleSelectAll={toggleSelectAll}
+            />
             {renderTableContent()}
           </ProductTableWrapper>
 
@@ -200,6 +309,38 @@ function ProductsTable() {
           loading={loadingDelete}
         />
       )}
+
+      <StockAdjustmentModal
+        show={showStockModal}
+        onHide={() => setShowStockModal(false)}
+        onConfirm={handleStockAdjustment}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
+      />
+
+      <PriceAdjustmentModal
+        show={showPriceModal}
+        onHide={() => setShowPriceModal(false)}
+        onConfirm={handlePriceAdjustment}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
+      />
+
+      <DiscountModal
+        show={showDiscountModal}
+        onHide={() => setShowDiscountModal(false)}
+        onConfirm={handleDiscountApplication}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
+      />
+
+      <BulkDeleteConfirmationModal
+        show={showBulkDeleteModal}
+        onHide={() => setShowBulkDeleteModal(false)}
+        onConfirm={confirmBulkDelete}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
+      />
 
       {totalPages > 1 && (
         <PaginationItem
