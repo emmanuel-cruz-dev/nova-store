@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
-import { Users } from "lucide-react";
-import { useUsersTable, useUsersFilter } from "../../hooks";
+import { Info, Users } from "lucide-react";
+import {
+  useUsersTable,
+  useUsersFilter,
+  useBulkSelection,
+  useBulkUserActions,
+} from "../../hooks";
 import {
   DeleteConfirmationModal,
   PaginationItem,
@@ -13,8 +19,11 @@ import {
   UserTableHeader,
   UserTableWrapper,
   UserRow,
+  BulkUserActionsToolbar,
+  RoleChangeModal,
+  BulkDeleteConfirmationModal,
 } from "..";
-import { User } from "../../types";
+import { CheckboxState, User, UserRole } from "../../types";
 
 function UsersTable() {
   const {
@@ -31,6 +40,7 @@ function UsersTable() {
     handleShowDeleteModal,
     handleCloseDeleteModal,
     handleConfirmDelete,
+    mutate,
   } = useUsersTable("customer", 1, 100);
 
   const {
@@ -49,11 +59,53 @@ function UsersTable() {
     handlePageChange,
   } = useUsersFilter(users);
 
+  const {
+    selectedIds,
+    selectedItems,
+    selectedCount,
+    isSelected,
+    toggleSelection,
+    toggleSelectAll,
+    checkboxState,
+    deselectAll,
+  } = useBulkSelection(paginatedUsers);
+
+  const { isProcessing, bulkDeleteUsers, bulkChangeRole } = useBulkUserActions(
+    () => {
+      mutate();
+      deselectAll();
+    }
+  );
+
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
+  const [showRoleChangeModal, setShowRoleChangeModal] = useState(false);
+
+  const handleBulkDelete = () => {
+    setShowBulkDeleteModal(true);
+  };
+
+  const confirmBulkDelete = () => {
+    bulkDeleteUsers(selectedIds);
+    setShowBulkDeleteModal(false);
+  };
+
+  const handleRoleChange = () => {
+    setShowRoleChangeModal(true);
+  };
+
+  const confirmRoleChange = (newRole: UserRole) => {
+    bulkChangeRole(selectedItems, newRole);
+    setShowRoleChangeModal(false);
+  };
+
   const renderTableContent = () => {
     if (loading) {
       return (
         <>
-          <UserTableHeader />
+          <UserTableHeader
+            checkboxState={checkboxState as CheckboxState}
+            onToggleSelectAll={toggleSelectAll}
+          />
           <tbody>
             {Array.from({ length: 5 }).map((_, index) => (
               <UsersTableRowSkeleton key={`placeholder-${index}`} />
@@ -66,10 +118,13 @@ function UsersTable() {
     if (error) {
       return (
         <>
-          <UserTableHeader />
+          <UserTableHeader
+            checkboxState={checkboxState as CheckboxState}
+            onToggleSelectAll={toggleSelectAll}
+          />
           <tbody>
             <tr>
-              <td colSpan={5} className="text-center text-danger">
+              <td colSpan={6} className="text-center text-danger">
                 Error al cargar usuarios
               </td>
             </tr>
@@ -80,7 +135,10 @@ function UsersTable() {
 
     return (
       <>
-        <UserTableHeader />
+        <UserTableHeader
+          checkboxState={checkboxState as CheckboxState}
+          onToggleSelectAll={toggleSelectAll}
+        />
         <tbody>
           {paginatedUsers.map((user: User) => (
             <UserRow
@@ -88,6 +146,8 @@ function UsersTable() {
               user={user}
               onShowDetails={handleShowDetails}
               onDelete={handleShowDeleteModal}
+              isSelected={isSelected(user.id as number)}
+              onToggleSelect={toggleSelection}
             />
           ))}
         </tbody>
@@ -122,6 +182,14 @@ function UsersTable() {
         clearFilters={clearFilters}
       />
 
+      <BulkUserActionsToolbar
+        selectedCount={selectedCount}
+        onClearSelection={deselectAll}
+        onDelete={handleBulkDelete}
+        onChangeRole={handleRoleChange}
+        isProcessing={isProcessing}
+      />
+
       {showEmptyState && (
         <EmptySection
           title="Aún no hay usuarios registrados"
@@ -147,7 +215,19 @@ function UsersTable() {
         </div>
       )}
 
-      {showTable && <UserTableWrapper>{renderTableContent()}</UserTableWrapper>}
+      {showTable && (
+        <>
+          <UserTableWrapper>{renderTableContent()}</UserTableWrapper>
+          <small
+            className="text-muted d-flex align-items-center gap-1 mt-3"
+            style={{ lineHeight: 1 }}
+          >
+            <Info size={15} />
+            Los usuarios con rol <strong>admin</strong> no se muestran en esta
+            tabla
+          </small>
+        </>
+      )}
 
       {showDetails && (
         <UserDetailsSidebar
@@ -167,6 +247,22 @@ function UsersTable() {
             : ""
         }
         loading={isDeleting}
+      />
+
+      <BulkDeleteConfirmationModal
+        show={showBulkDeleteModal}
+        onHide={() => setShowBulkDeleteModal(false)}
+        onConfirm={confirmBulkDelete}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
+      />
+
+      <RoleChangeModal
+        show={showRoleChangeModal}
+        onHide={() => setShowRoleChangeModal(false)}
+        onConfirm={confirmRoleChange}
+        selectedCount={selectedCount}
+        isProcessing={isProcessing}
       />
 
       {totalPages > 1 && (
