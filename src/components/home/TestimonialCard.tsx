@@ -11,7 +11,7 @@ function TestimonialCard({ image, name, role, text }: TestimonialCardProps) {
       }}
     >
       <Card.Body className="p-4">
-        <div className="d-flex align-items-center mb-4">
+        <div className="d-flex align-items-center mb-3">
           <img
             src={image}
             alt={name}
