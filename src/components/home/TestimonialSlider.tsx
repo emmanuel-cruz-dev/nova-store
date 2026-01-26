@@ -19,7 +19,7 @@ function TestimonialSlider() {
       id="testimonials"
       style={{ backgroundColor: "#e9ecef" }}
     >
-      <Container className="p-4 p-lg-5 bg-light rounded-3 position-relative">
+      <Container className="p-4 p-lg-5 pb-lg-4 bg-light rounded-3 position-relative">
         <header className="mb-4 d-flex justify-content-between align-items-center">
           <div>
             <h2 className="display-7 fw-bold mb-2 custom__text-primary">
