@@ -20,7 +20,7 @@ function ProductSlideList({
     <Container
       className="py-5"
       id="product-slide-list"
-      style={{ scrollMarginTop: "3.5rem" }}
+      style={{ backgroundColor: "#f8f9fa", scrollMarginTop: "3.5rem" }}
     >
       <header>
         <h2 className="display-6 text-center fw-bold mb-5 custom__text-primary">
