@@ -6,7 +6,7 @@ import {
   SalesStats,
   TopProduct,
   UserStats,
-} from "../types";
+} from "../../types";
 
 export const calculateSalesStats = (orders: Order[]): SalesStats => {
   const completedOrders = orders.filter(
@@ -35,7 +35,6 @@ export const calculateProductStats = (
   const inactiveProducts = products.filter((p) => !p.isActive).length;
   const lowStockProducts = products.filter((p) => p.stock < 10).length;
 
-  // Calculate top products by units sold
   const productSales = new Map<
     number,
     { product: Product; unitsSold: number; revenue: number }
@@ -129,10 +128,12 @@ export const calculateUserStats = (users: any[]): UserStats => {
   const totalUsers = users.length;
   const totalCustomers = users.filter((u) => u.role === "customer").length;
   const totalAdmins = users.filter((u) => u.role === "admin").length;
+  const totalSuperAdmins = users.filter((u) => u.role === "super_admin").length;
 
   return {
     totalUsers,
     totalCustomers,
     totalAdmins,
+    totalSuperAdmins,
   };
 };
