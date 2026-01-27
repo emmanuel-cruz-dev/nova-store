@@ -199,7 +199,7 @@ function ProductsTable() {
         </button>
       </div>
 
-      {products.length > 0 && (
+      {(loading || products.length > 0) && (
         <div className="bg-light py-3 rounded">
           <ProductFilters
             searchTerm={searchTerm}
