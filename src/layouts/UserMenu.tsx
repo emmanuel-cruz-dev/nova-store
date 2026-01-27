@@ -3,13 +3,14 @@ import { Dropdown, Image } from "react-bootstrap";
 import { User, ClipboardList, Heart, LogOut } from "lucide-react";
 import { useAuthStore } from "../stores";
 import { CustomTooltip } from "../components";
+import { hasAdminAccess } from "../utils";
 
 function UserMenu() {
   const { user, logout } = useAuthStore();
 
   if (!user) return null;
 
-  const isAdmin = user.role === "admin";
+  const isAdmin = hasAdminAccess(user.role);
   const baseRoute = isAdmin ? "/admin" : "/account";
 
   return (
