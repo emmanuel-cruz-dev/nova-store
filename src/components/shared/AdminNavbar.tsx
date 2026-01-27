@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import UserMenu from "../../layouts/UserMenu";
+import { useAuthStore } from "../../stores";
+import { formatRoleName } from "../../utils";
 
 function AdminNavbar() {
+  const { user } = useAuthStore();
+  const roleName = formatRoleName(user?.role);
+
   return (
     <>
       <Navbar.Brand
@@ -20,7 +25,7 @@ function AdminNavbar() {
           loading="lazy"
         />
         Nova<span className="text-white fw-normal">Store</span>
-        <span className="badge mt-1 fw-normal">| Admin</span>
+        <span className="badge mt-1 fw-normal">| {roleName}</span>
       </Navbar.Brand>
 
       <Navbar.Toggle aria-controls="admin-navbar" />
