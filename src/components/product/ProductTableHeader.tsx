@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { useEffect, useRef } from "react";
+import { useIndeterminateCheckbox } from "../../hooks";
 import { CheckboxState } from "../../types";
 
 function ProductTableHeader({
@@ -9,13 +9,7 @@ function ProductTableHeader({
   checkboxState: CheckboxState;
   onToggleSelectAll: () => void;
 }) {
-  const checkboxRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (checkboxRef.current) {
-      checkboxRef.current.indeterminate = checkboxState === "indeterminate";
-    }
-  }, [checkboxState]);
+  const checkboxRef = useIndeterminateCheckbox(checkboxState);
 
   return (
     <thead>
