@@ -16,12 +16,14 @@ export { default as TopProductsTable } from "./dashboard/TopProductsTable";
 export { default as DashboardError } from "./dashboard/DashboardError";
 
 export { default as BannerCarousel } from "./home/BannerCarousel";
+export { default as ComingSoon } from "./home/ComingSoon";
 export { default as Categories } from "./home/Categories";
 export { default as FeaturesSection } from "./home/FeaturesSection";
 export { default as HighlightedFeatures } from "./home/HighlightedFeatures";
 export { default as Newsletter } from "./home/Newsletter";
 export { default as TestimonialCard } from "./home/TestimonialCard";
 export { default as TestimonialSlider } from "./home/TestimonialSlider";
+export { default as FAQs } from "./home/FAQs";
 
 export { default as AvatarUpdateModal } from "./modals/AvatarUpdateModal";
 export { default as CheckoutModal } from "./modals/CheckoutModal";
