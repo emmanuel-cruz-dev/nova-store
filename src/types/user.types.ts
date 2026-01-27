@@ -29,7 +29,7 @@ export interface UserData extends Pick<User, UserDataKeys> {
   password: string;
 }
 
-export type UserRole = "customer" | "admin";
+export type UserRole = "customer" | "admin" | "super_admin";
 
 export interface AvatarUpdateModalProps {
   show: boolean;
