@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../stores";
 import { Loader } from "../components";
+import { hasAdminAccess } from "../utils";
 
 function AdminRoute({ children }: { children: ReactNode }) {
   const { user, loading, authLoading } = useAuthStore();
@@ -15,7 +16,7 @@ function AdminRoute({ children }: { children: ReactNode }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (user.role !== "admin") {
+  if (!hasAdminAccess(user.role)) {
     return <Navigate to="/account" replace />;
   }
 
