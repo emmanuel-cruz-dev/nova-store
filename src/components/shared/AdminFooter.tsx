@@ -1,6 +1,11 @@
 import { Container, Row, Col } from "react-bootstrap";
+import { useAuthStore } from "../../stores";
+import { formatRoleName } from "../../utils";
 
 function AdminFooter() {
+  const { user } = useAuthStore();
+  const roleName = formatRoleName(user?.role);
+
   return (
     <Container fluid className="py-3 px-4 py-md-4">
       <Row className="align-items-center">
@@ -25,7 +30,7 @@ function AdminFooter() {
                 className="badge footer__badge-item"
                 style={{ fontSize: ".9rem" }}
               >
-                | Admin Panel
+                | {roleName} Panel
               </span>
             </span>
           </div>
