@@ -1,7 +1,9 @@
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
+import { useAuthStore } from "../../stores";
 import { userService } from "../../api/services/user.service";
-import { User } from "../../types";
+import { canManageRole, getAssignableRoles, formatRoleName } from "../../utils";
+import { User, UserRole } from "../../types";
 
 export function useBulkUserActions(onSuccess: () => void) {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -40,11 +42,37 @@ export function useBulkUserActions(onSuccess: () => void) {
   );
 
   const bulkChangeRole = useCallback(
-    async (users: User[], newRole: "customer" | "admin") => {
+    async (users: User[], newRole: UserRole) => {
+      const currentUser = useAuthStore.getState().user;
+      const currentUserRole = currentUser?.role || "customer";
+
+      const assignableRoles = getAssignableRoles(currentUserRole);
+      if (!assignableRoles.includes(newRole)) {
+        toast.error(
+          `No tienes permisos para asignar el rol de ${formatRoleName(newRole)}`
+        );
+        return { success: false, count: 0 };
+      }
+
+      const manageableUsers = users.filter((user) =>
+        canManageRole(currentUserRole, user.role || "customer")
+      );
+
+      if (manageableUsers.length === 0) {
+        toast.error("No tienes permisos para cambiar el rol de estos usuarios");
+        return { success: false, count: 0 };
+      }
+
+      if (manageableUsers.length < users.length) {
+        toast.warning(
+          `Solo puedes cambiar ${manageableUsers.length} de ${users.length} usuarios seleccionados debido a permisos`
+        );
+      }
+
       setIsProcessing(true);
       let successCount = 0;
 
-      for (const user of users) {
+      for (const user of manageableUsers) {
         try {
           await userService.updateUser({ ...user, role: newRole });
           successCount++;
@@ -54,11 +82,11 @@ export function useBulkUserActions(onSuccess: () => void) {
       }
 
       const result = {
-        success: successCount === users.length,
+        success: successCount === manageableUsers.length,
         count: successCount,
       };
 
-      const roleText = newRole === "admin" ? "administradores" : "clientes";
+      const roleText = formatRoleName(newRole);
 
       if (result.success) {
         toast.success(
@@ -66,12 +94,13 @@ export function useBulkUserActions(onSuccess: () => void) {
         );
       } else {
         toast.warning(
-          `${result.count} de ${users.length} usuarios cambiados a ${roleText}. Algunos fallaron.`
+          `${result.count} de ${manageableUsers.length} usuarios cambiados a ${roleText}. Algunos fallaron.`
         );
       }
 
       setIsProcessing(false);
       onSuccess();
+      return result;
     },
     [onSuccess]
   );
