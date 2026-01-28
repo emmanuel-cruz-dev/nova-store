@@ -18,6 +18,7 @@ import {
   DashboardError,
 } from "..";
 import { formatCurrency } from "../../utils";
+import { orderSummaryItems } from "../../constants/dashboard";
 
 function Dashboard() {
   const { stats, isLoading, error, refresh } = useDashboard();
@@ -29,29 +30,6 @@ function Dashboard() {
   if (!stats) {
     return null;
   }
-
-  const orderSummaryItems = [
-    {
-      label: "Pendientes",
-      value: stats.orders.pendingOrders,
-      variant: "warning",
-    },
-    {
-      label: "En Proceso",
-      value: stats.orders.processingOrders,
-      variant: "info",
-    },
-    {
-      label: "Completadas",
-      value: stats.orders.completedOrders,
-      variant: "success",
-    },
-    {
-      label: "Canceladas",
-      value: stats.orders.cancelledOrders,
-      variant: "danger",
-    },
-  ];
 
   return (
     <section>
@@ -104,7 +82,7 @@ function Dashboard() {
             </Col>
             <Col xs={12} sm={6} lg={4} xl={3}>
               <StatCard
-                title="Total Usuarios"
+                title="Total Clientes"
                 value={stats.users.totalUsers}
                 icon={Users}
                 variant={stats.users.totalUsers <= 5 ? "danger" : "info"}
@@ -158,7 +136,7 @@ function Dashboard() {
                     Resumen de Órdenes
                   </Card.Title>
                   <Row className="g-3">
-                    {orderSummaryItems.map((item) => (
+                    {orderSummaryItems(stats).map((item) => (
                       <Col key={item.label} xs={6}>
                         <div
                           className={`p-3 bg-${item.variant} bg-opacity-10 rounded`}
