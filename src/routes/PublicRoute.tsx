@@ -12,9 +12,7 @@ function PublicRoute({ children }: { children: ReactNode }) {
   }
 
   if (user) {
-    const isAdmin = hasAdminAccess(user.role);
-
-    if (isAdmin) {
+    if (hasAdminAccess(user.role)) {
       return <Navigate to="/admin" replace />;
     }
     return <Navigate to="/" replace />;
