@@ -6,11 +6,19 @@ import {
   Button,
   Placeholder,
 } from "react-bootstrap";
-import { Search, X } from "lucide-react";
-import { ActivityFilter, DateFilter, UsersFiltersProps } from "../../types";
+import { Calendar, Search, User, X } from "lucide-react";
+import { useAuthStore } from "../../stores";
+import { isSuperAdmin } from "../../utils";
+import {
+  ActivityFilter,
+  DateFilter,
+  RoleFilter,
+  UsersFiltersProps,
+} from "../../types";
 
 function UsersFilters({
   searchTerm,
+  roleFilter,
   activityFilter,
   dateFilter,
   hasActiveFilters,
@@ -18,10 +26,14 @@ function UsersFilters({
   filteredCount,
   loading,
   setSearchTerm,
+  setRoleFilter,
   setActivityFilter,
   setDateFilter,
   clearFilters,
 }: UsersFiltersProps) {
+  const { user } = useAuthStore();
+  const isSuperAdminRole = isSuperAdmin(user?.role);
+
   return (
     <div className="bg-light py-3 rounded" style={{ marginTop: "-12px" }}>
       <Row className="g-3 align-items-end">
@@ -43,6 +55,50 @@ function UsersFilters({
           </InputGroup>
         </Col>
 
+        {isSuperAdminRole && (
+          <Col md={6} lg={3}>
+            <Form.Label className="mb-1 small fw-semibold" htmlFor="role">
+              Rol
+            </Form.Label>
+            <InputGroup>
+              <InputGroup.Text>
+                <User size={18} />
+              </InputGroup.Text>
+              <Form.Select
+                id="role"
+                value={roleFilter}
+                onChange={(e) => setRoleFilter(e.target.value as RoleFilter)}
+              >
+                <option value="all">Todos</option>
+                <option value="customer">Cliente</option>
+                <option value="admin">Administrador</option>
+              </Form.Select>
+            </InputGroup>
+          </Col>
+        )}
+
+        <Col md={6} lg={3}>
+          <Form.Label className="mb-1 small fw-semibold" htmlFor="date">
+            Fecha de registro
+          </Form.Label>
+          <InputGroup>
+            <InputGroup.Text>
+              <Calendar size={18} />
+            </InputGroup.Text>
+            <Form.Select
+              id="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value as DateFilter)}
+            >
+              <option value="all">Todas las fechas</option>
+              <option value="last-week">Última semana</option>
+              <option value="last-month">Último mes</option>
+              <option value="last-3-months">Últimos 3 meses</option>
+              <option value="older">Más antiguos</option>
+            </Form.Select>
+          </InputGroup>
+        </Col>
+
         <Col md={6} lg={3}>
           <Form.Label className="mb-1 small fw-semibold" htmlFor="activity">
             Actividad
@@ -57,23 +113,6 @@ function UsersFilters({
             <option value="all">Todos</option>
             <option value="active">Con órdenes</option>
             <option value="inactive">Sin órdenes</option>
-          </Form.Select>
-        </Col>
-
-        <Col md={6} lg={3}>
-          <Form.Label className="mb-1 small fw-semibold" htmlFor="date">
-            Fecha de registro
-          </Form.Label>
-          <Form.Select
-            id="date"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value as DateFilter)}
-          >
-            <option value="all">Todas las fechas</option>
-            <option value="last-week">Última semana</option>
-            <option value="last-month">Último mes</option>
-            <option value="last-3-months">Últimos 3 meses</option>
-            <option value="older">Más antiguos</option>
           </Form.Select>
         </Col>
 
