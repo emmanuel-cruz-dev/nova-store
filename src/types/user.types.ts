@@ -99,6 +99,8 @@ export interface BaseUsersFilters {
 }
 
 export interface UseUsersFilterReturn extends BaseUsersFilters {
+  roleFilter: RoleFilter;
+  setRoleFilter: (filter: RoleFilter) => void;
   filteredUsers: User[];
   paginatedUsers: User[];
   currentPage: number;
@@ -106,9 +108,13 @@ export interface UseUsersFilterReturn extends BaseUsersFilters {
   handlePageChange: (page: number) => void;
 }
 
+export type RoleFilter = "all" | "customer" | "admin";
+
 export interface UsersFiltersProps extends BaseUsersFilters {
   usersCount: number;
   filteredCount: number;
+  roleFilter: RoleFilter;
+  setRoleFilter: (filter: RoleFilter) => void;
   loading: boolean;
 }
 
