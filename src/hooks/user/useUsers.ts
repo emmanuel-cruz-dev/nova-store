@@ -55,14 +55,23 @@ export const useUserByRole = (
 } => {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
+  const shouldFetchAll = role === "all";
+
   const {
     data,
     error,
     isLoading,
     mutate: refetch,
   } = useSWR<UserResponse>(
-    role ? ["usersByRole", role, currentPage, initialLimit] : null,
-    () => userService.getUserByRole(role, currentPage, initialLimit),
+    shouldFetchAll
+      ? ["allUsers", currentPage, initialLimit]
+      : role
+      ? ["usersByRole", role, currentPage, initialLimit]
+      : null,
+    () =>
+      shouldFetchAll
+        ? userService.getUsers()
+        : userService.getUserByRole(role, currentPage, initialLimit),
     {
       revalidateOnFocus: false,
       keepPreviousData: true,
@@ -109,7 +118,9 @@ export const useUserByRole = (
 
   let users: User[] = [];
 
-  if (data?.data?.users && Array.isArray(data.data.users)) {
+  if (shouldFetchAll && Array.isArray(data)) {
+    users = data;
+  } else if (data?.data?.users && Array.isArray(data.data.users)) {
     users = data.data.users;
   } else if (Array.isArray(data?.data)) {
     users = data.data;
@@ -118,7 +129,11 @@ export const useUserByRole = (
   const totalPages =
     data?.data?.totalPages ||
     (data?.total ? Math.ceil(data.total / initialLimit) : 1);
-  const totalUsers = data?.total || 0;
+  const totalUsers = shouldFetchAll
+    ? Array.isArray(data)
+      ? data.length
+      : 0
+    : data?.total || 0;
 
   return {
     users,
