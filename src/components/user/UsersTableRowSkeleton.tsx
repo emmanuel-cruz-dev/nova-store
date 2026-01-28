@@ -1,6 +1,11 @@
 import { Placeholder } from "react-bootstrap";
+import { useAuthStore } from "../../stores";
+import { isSuperAdmin } from "../../utils";
 
 function UsersTableRowSkeleton() {
+  const { user } = useAuthStore();
+  const isSuperAdminRole = isSuperAdmin(user?.role);
+
   return (
     <tr>
       <td className="align-middle text-center">
@@ -26,6 +31,13 @@ function UsersTableRowSkeleton() {
           <Placeholder xs={10} className="rounded" />
         </Placeholder>
       </td>
+      {isSuperAdminRole && (
+        <td>
+          <Placeholder animation="wave">
+            <Placeholder xs={4} className="rounded" />
+          </Placeholder>
+        </td>
+      )}
       <td>
         <Placeholder animation="wave">
           <Placeholder xs={3} className="rounded" />
