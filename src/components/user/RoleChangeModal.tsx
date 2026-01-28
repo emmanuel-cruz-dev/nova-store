@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { UserCog } from "lucide-react";
+import { useAuthStore } from "../../stores";
+import { getAssignableRoles, formatRoleName } from "../../utils";
 import { RoleChangeModalProps, UserRole } from "../../types";
 
 export function RoleChangeModal({
@@ -10,7 +12,13 @@ export function RoleChangeModal({
   selectedCount,
   isProcessing,
 }: RoleChangeModalProps) {
-  const [newRole, setNewRole] = useState<UserRole>("customer");
+  const user = useAuthStore((state) => state.user);
+  const assignableRoles = getAssignableRoles(
+    user?.role || "customer"
+  ) as UserRole[];
+  const [newRole, setNewRole] = useState<UserRole>(
+    assignableRoles[0] || "customer"
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +49,16 @@ export function RoleChangeModal({
               value={newRole}
               onChange={(e) => setNewRole(e.target.value as UserRole)}
             >
-              <option value="customer">Cliente</option>
-              <option value="admin">Administrador</option>
+              {assignableRoles.map((role) => (
+                <option key={role} value={role}>
+                  {formatRoleName(role)}
+                </option>
+              ))}
             </Form.Select>
             <Form.Text className="text-muted">
-              {newRole === "admin"
+              {newRole === "super_admin"
+                ? "Los usuarios seleccionados tendrán control total sobre el sistema"
+                : newRole === "admin"
                 ? "Los usuarios seleccionados tendrán acceso al panel de administración"
                 : "Los usuarios seleccionados solo tendrán acceso como clientes"}
             </Form.Text>
