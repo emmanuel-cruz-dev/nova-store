@@ -1,5 +1,7 @@
 import { Form } from "react-bootstrap";
+import { useAuthStore } from "../../stores";
 import { useIndeterminateCheckbox } from "../../hooks";
+import { isSuperAdmin } from "../../utils";
 import { CheckboxState } from "../../types";
 
 function UserTableHeader({
@@ -9,6 +11,8 @@ function UserTableHeader({
   checkboxState: CheckboxState;
   onToggleSelectAll: () => void;
 }) {
+  const { user } = useAuthStore();
+  const isSuperAdminRole = isSuperAdmin(user?.role);
   const checkboxRef = useIndeterminateCheckbox(checkboxState);
 
   return (
@@ -26,6 +30,7 @@ function UserTableHeader({
         </th>
         <th>Nombre Completo</th>
         <th>Email</th>
+        {isSuperAdminRole && <th>Rol</th>}
         <th>Órdenes</th>
         <th>Registrado</th>
         <th>Acciones</th>
