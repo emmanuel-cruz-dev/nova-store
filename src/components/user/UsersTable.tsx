@@ -23,11 +23,16 @@ import {
   RoleChangeModal,
   BulkDeleteConfirmationModal,
 } from "..";
+import { useAuthStore } from "../../stores";
+import { formatRoleName } from "../../utils";
 import { CheckboxState, User, UserRole } from "../../types";
 
 function UsersTable() {
+  const { user } = useAuthStore();
+  const roleName = formatRoleName(user?.role);
+
   const {
-    users,
+    users: allUsers,
     loading,
     error,
     showDetails,
@@ -41,7 +46,19 @@ function UsersTable() {
     handleCloseDeleteModal,
     handleConfirmDelete,
     mutate,
-  } = useUsersTable("customer", 1, 100);
+  } = useUsersTable("all", 1, 100);
+
+  const filteredUsersByRole = allUsers.filter((u: User) => {
+    if (u.id === user?.id) return false;
+
+    if (user?.role === "super_admin") {
+      return u.role === "admin" || u.role === "customer";
+    }
+    if (user?.role === "admin") {
+      return u.role === "customer";
+    }
+    return false;
+  });
 
   const {
     paginatedUsers,
@@ -49,15 +66,17 @@ function UsersTable() {
     currentPage,
     totalPages,
     searchTerm,
+    roleFilter,
     activityFilter,
     dateFilter,
     hasActiveFilters,
     setSearchTerm,
+    setRoleFilter,
     setActivityFilter,
     setDateFilter,
     clearFilters,
     handlePageChange,
-  } = useUsersFilter(users);
+  } = useUsersFilter(filteredUsersByRole);
 
   const {
     selectedIds,
@@ -155,9 +174,12 @@ function UsersTable() {
     );
   };
 
-  const showEmptyState = !loading && users.length === 0;
+  const showEmptyState = !loading && filteredUsersByRole.length === 0;
   const showNoResults =
-    !loading && !error && users.length > 0 && filteredUsers.length === 0;
+    !loading &&
+    !error &&
+    filteredUsersByRole.length > 0 &&
+    filteredUsers.length === 0;
   const showTable =
     loading || error || (!loading && !error && filteredUsers.length > 0);
 
@@ -171,12 +193,14 @@ function UsersTable() {
       <UsersFilters
         searchTerm={searchTerm}
         activityFilter={activityFilter}
+        roleFilter={roleFilter}
         dateFilter={dateFilter}
         hasActiveFilters={hasActiveFilters}
-        usersCount={users.length}
+        usersCount={filteredUsersByRole.length}
         filteredCount={filteredUsers.length}
         loading={loading}
         setSearchTerm={setSearchTerm}
+        setRoleFilter={setRoleFilter}
         setActivityFilter={setActivityFilter}
         setDateFilter={setDateFilter}
         clearFilters={clearFilters}
@@ -223,8 +247,8 @@ function UsersTable() {
             style={{ lineHeight: 1 }}
           >
             <Info size={15} />
-            Los usuarios con rol <strong>admin</strong> no se muestran en esta
-            tabla
+            Los usuarios con rol <strong>{roleName}</strong> no se muestran en
+            esta tabla
           </small>
         </>
       )}
