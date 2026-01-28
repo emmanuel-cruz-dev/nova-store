@@ -5,6 +5,7 @@ import {
   UseUsersFilterReturn,
   ActivityFilter,
   DateFilter,
+  RoleFilter,
 } from "../../types";
 
 export function useUsersFilter(
@@ -12,13 +13,14 @@ export function useUsersFilter(
   itemsPerPage = 10
 ): UseUsersFilterReturn {
   const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>("all");
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, activityFilter, dateFilter]);
+  }, [searchTerm, roleFilter, activityFilter, dateFilter]);
 
   const filterByDate = (createdAt: string): boolean => {
     if (dateFilter === "all") return true;
@@ -51,6 +53,8 @@ export function useUsersFilter(
       );
       const normalizedEmail = normalizeText(user.email);
 
+      const matchesRole = roleFilter === "all" || user.role === roleFilter;
+
       const matchesSearch =
         searchTerm === "" ||
         normalizedFullName.includes(normalizedSearch) ||
@@ -66,9 +70,9 @@ export function useUsersFilter(
         ? filterByDate(user.createdAt as string)
         : true;
 
-      return matchesSearch && matchesActivity && matchesDate;
+      return matchesSearch && matchesRole && matchesActivity && matchesDate;
     });
-  }, [users, searchTerm, activityFilter, dateFilter]);
+  }, [users, searchTerm, roleFilter, activityFilter, dateFilter]);
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -76,10 +80,14 @@ export function useUsersFilter(
   const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   const hasActiveFilters =
-    searchTerm !== "" || activityFilter !== "all" || dateFilter !== "all";
+    searchTerm !== "" ||
+    roleFilter !== "all" ||
+    activityFilter !== "all" ||
+    dateFilter !== "all";
 
   const clearFilters = () => {
     setSearchTerm("");
+    setRoleFilter("all");
     setActivityFilter("all");
     setDateFilter("all");
   };
@@ -95,10 +103,12 @@ export function useUsersFilter(
     currentPage,
     totalPages,
     searchTerm,
+    roleFilter,
     activityFilter,
     dateFilter,
     hasActiveFilters,
     setSearchTerm,
+    setRoleFilter,
     setActivityFilter,
     setDateFilter,
     clearFilters,
