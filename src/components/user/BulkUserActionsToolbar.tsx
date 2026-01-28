@@ -1,5 +1,7 @@
 import { Button, Badge } from "react-bootstrap";
 import { X, Trash2, UserCog } from "lucide-react";
+import { useAuthStore } from "../../stores";
+import { isSuperAdmin } from "../../utils";
 import { BulkUserActionsToolbarProps } from "../../types";
 
 function BulkUserActionsToolbar({
@@ -9,6 +11,9 @@ function BulkUserActionsToolbar({
   onChangeRole,
   isProcessing,
 }: BulkUserActionsToolbarProps) {
+  const { user } = useAuthStore();
+  const isSuperAdminRole = isSuperAdmin(user?.role);
+
   if (selectedCount === 0) return null;
 
   return (
@@ -29,16 +34,18 @@ function BulkUserActionsToolbar({
         </div>
 
         <div className="d-flex gap-2 flex-wrap">
-          <Button
-            variant="light"
-            size="sm"
-            onClick={onChangeRole}
-            disabled={isProcessing}
-            className="d-flex align-items-center gap-1"
-          >
-            <UserCog size={16} />
-            Cambiar Rol
-          </Button>
+          {isSuperAdminRole && (
+            <Button
+              variant="light"
+              size="sm"
+              onClick={onChangeRole}
+              disabled={isProcessing}
+              className="d-flex align-items-center gap-1"
+            >
+              <UserCog size={16} />
+              Cambiar Rol
+            </Button>
+          )}
 
           <Button
             variant="danger"
