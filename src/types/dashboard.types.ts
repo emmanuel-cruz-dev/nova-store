@@ -1,6 +1,28 @@
-interface RevenueByMonth {
+interface Trend {
+  value: number;
+  isPositive: boolean;
+}
+
+type StatCardVariant = "primary" | "success" | "warning" | "danger" | "info";
+
+export interface RevenueByMonth {
   month: string;
   revenue: number;
+}
+
+export interface TopProduct {
+  id: number;
+  name: string;
+  category: string;
+  unitsSold: number;
+  revenue: number;
+  image: string;
+}
+
+export interface OrderStatus {
+  status: string;
+  count: number;
+  percentage: number;
 }
 
 export interface SalesStats {
@@ -18,21 +40,6 @@ export interface ProductStats {
   topProducts?: TopProduct[];
 }
 
-export interface TopProduct {
-  id: number;
-  name: string;
-  category: string;
-  unitsSold: number;
-  revenue: number;
-  image: string;
-}
-
-interface OrderStatus {
-  status: string;
-  count: number;
-  percentage: number;
-}
-
 export interface OrderStats {
   totalOrders: number;
   pendingOrders: number;
@@ -46,6 +53,7 @@ export interface UserStats {
   totalUsers: number;
   totalCustomers: number;
   totalAdmins: number;
+  totalSuperAdmins: number;
   newUsersThisMonth?: number;
 }
 
@@ -54,13 +62,6 @@ export interface DashboardStats {
   products: ProductStats;
   orders: OrderStats;
   users: UserStats;
-}
-
-type StatCardVariant = "primary" | "success" | "warning" | "danger" | "info";
-
-interface Trend {
-  value: number;
-  isPositive: boolean;
 }
 
 export interface StatCardProps {
