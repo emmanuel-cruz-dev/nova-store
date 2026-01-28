@@ -1,6 +1,6 @@
 import { Offcanvas, Button, ListGroup } from "react-bootstrap";
-import { CircleUser, Mail, CalendarDays, Trash2 } from "lucide-react";
-import { formatDateDetailed } from "../../utils";
+import { CircleUser, Mail, CalendarDays, Trash2, Shield } from "lucide-react";
+import { formatDateDetailed, formatRoleName } from "../../utils";
 import { UserDetailsSidebarProps } from "../../types";
 
 function UserDetailsSidebar({
@@ -17,7 +17,7 @@ function UserDetailsSidebar({
       </Offcanvas.Header>
 
       <Offcanvas.Body className="d-flex flex-column">
-        <div className="text-center mb-4">
+        <figure className="text-center mb-4">
           <img
             className="rounded-circle shadow"
             src={user.avatar}
@@ -28,7 +28,7 @@ function UserDetailsSidebar({
               objectFit: "cover",
             }}
           />
-        </div>
+        </figure>
 
         <ListGroup variant="flush" className="flex-grow-1">
           <ListGroup.Item className="d-flex align-items-center py-3 border-0 bg-light rounded mb-2">
@@ -38,9 +38,17 @@ function UserDetailsSidebar({
             />
             <div className="text-start">
               <small className="text-muted d-block">Nombre Completo</small>
-              <div className="fw-semibold">
+              <p className="fw-semibold m-0">
                 {user.firstName} {user.lastName}
-              </div>
+              </p>
+            </div>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="d-flex align-items-center py-3 border-0 bg-light rounded mb-2">
+            <Shield className="me-3 text-warning flex-shrink-0" size={22} />
+            <div className="text-start">
+              <small className="text-muted d-block">Rol</small>
+              <p className="fw-semibold m-0">{formatRoleName(user.role)}</p>
             </div>
           </ListGroup.Item>
 
@@ -48,18 +56,18 @@ function UserDetailsSidebar({
             <Mail className="me-3 text-success flex-shrink-0" size={22} />
             <div className="text-start">
               <small className="text-muted d-block">Correo Electrónico</small>
-              <div className="text-break">{user.email}</div>
+              <p className="text-break m-0">{user.email}</p>
             </div>
           </ListGroup.Item>
 
-          <ListGroup.Item className="d-flex align-items-center py-3 border-0 bg-light rounded">
+          <ListGroup.Item className="d-flex align-items-center py-3 border-0 bg-light rounded mb-3">
             <CalendarDays
               className="me-3 text-danger flex-shrink-0"
               size={22}
             />
             <div className="text-start">
               <small className="text-muted d-block">Registrado</small>
-              <div>{formatDateDetailed(user.createdAt!)}</div>
+              <p className="m-0">{formatDateDetailed(user.createdAt!)}</p>
             </div>
           </ListGroup.Item>
         </ListGroup>
