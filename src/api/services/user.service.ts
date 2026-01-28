@@ -1,9 +1,9 @@
-import axios from "../config/axiosConfig";
+import { axiosInstance } from "../index";
 import { User } from "../../types";
 
 const getUsers = async () => {
   try {
-    const response = await axios.get("/users");
+    const response = await axiosInstance.get("/users");
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -18,7 +18,7 @@ const getUsers = async () => {
 
 const getUserById = async (id: number) => {
   try {
-    const response = await axios.get(`/users/${id}`);
+    const response = await axiosInstance.get(`/users/${id}`);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -33,7 +33,7 @@ const getUserById = async (id: number) => {
 
 const getCustomerUsers = async () => {
   try {
-    const response = await axios.get("/users?role=customer");
+    const response = await axiosInstance.get("/users?role=customer");
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -48,7 +48,7 @@ const getCustomerUsers = async () => {
 
 const getUserByRole = async (role: string, page = 1, limit = 10) => {
   try {
-    const response = await axios.get(
+    const response = await axiosInstance.get(
       `/users?role=${role}&page=${page}&limit=${limit}`
     );
 
@@ -70,7 +70,7 @@ const getUserByRole = async (role: string, page = 1, limit = 10) => {
 
 const updateUser = async (userData: User) => {
   try {
-    const response = await axios.put(`/users/${userData.id}`, userData);
+    const response = await axiosInstance.put(`/users/${userData.id}`, userData);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -85,7 +85,7 @@ const updateUser = async (userData: User) => {
 
 const deleteUser = async (id: number) => {
   try {
-    const response = await axios.delete(`/users/${id}`);
+    const response = await axiosInstance.delete(`/users/${id}`);
 
     if (!response.data) {
       throw new Error("Empty response from server");

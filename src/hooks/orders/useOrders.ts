@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-import { orderService } from "../../api/services/order.service";
+import { orderService } from "../../api";
 import { Order, CreateOrderDTO, ErrorType } from "../../types";
 
 export const useOrders = (userId: number) => {

@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import axios from "../api/config/axiosConfig";
+import { axiosInstance } from "../api";
 import { AuthState, RegisterData, SafeUser, User } from "../types";
 
 export const useAuthStore = create<AuthState>()(
@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
           let existingUsers: User[] = [];
 
           try {
-            const response = await axios.get<User[]>(
+            const response = await axiosInstance.get<User[]>(
               `/users?email=${userData.email}`
             );
             existingUsers = response.data || [];
@@ -51,7 +51,10 @@ export const useAuthStore = create<AuthState>()(
                 : "https://i.imgur.com/p4HoTq6.jpeg",
           };
 
-          const response = await axios.post<User>("/users", newUserData);
+          const response = await axiosInstance.post<User>(
+            "/users",
+            newUserData
+          );
           const newUser = response.data;
 
           const { password, ...safeUser } = newUser;
@@ -77,7 +80,9 @@ export const useAuthStore = create<AuthState>()(
           let users: User[] = [];
 
           try {
-            const response = await axios.get<User[]>(`/users?email=${email}`);
+            const response = await axiosInstance.get<User[]>(
+              `/users?email=${email}`
+            );
             users = response.data || [];
           } catch (error) {
             const axiosError = error as AxiosError;

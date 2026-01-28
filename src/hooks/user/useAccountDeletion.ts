@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userService } from "../../api/services/user.service";
+import { userService } from "../../api";
 import {
   accountDeletionSchema,
   AccountDeletionFormData,

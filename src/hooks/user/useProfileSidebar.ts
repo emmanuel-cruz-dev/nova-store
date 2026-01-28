@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../stores";
 import { useUpdateUser } from "..";
 import { User } from "../../types";
 

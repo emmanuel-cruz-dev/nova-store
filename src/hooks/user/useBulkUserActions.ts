@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../stores";
-import { userService } from "../../api/services/user.service";
+import { userService } from "../../api";
 import { canManageRole, getAssignableRoles, formatRoleName } from "../../utils";
 import { User, UserRole } from "../../types";
 

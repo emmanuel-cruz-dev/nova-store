@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../stores";
 import { registerSchema, RegisterFormData } from "../../schemas/authSchemas";
 
 export function useRegisterForm() {

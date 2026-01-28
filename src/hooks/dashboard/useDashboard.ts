@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { dashboardService } from "../../api/services/dashboard.service";
+import { dashboardService } from "../../api";
 import { DashboardStats } from "../../types";
 
 export const useDashboard = () => {

@@ -1,5 +1,5 @@
-import axiosInstance from "../config/axiosConfig";
 import { Order, CreateOrderDTO, User } from "../../types";
+import { axiosInstance } from "../index";
 
 const getUserOrders = async (userId: number) => {
   try {

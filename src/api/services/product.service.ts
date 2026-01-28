@@ -1,10 +1,10 @@
 import { AxiosError } from "axios";
-import axios from "../config/axiosConfig";
+import { axiosInstance } from "../index";
 import { CreateProductDTO } from "../../types";
 
 const getAllProducts = async () => {
   try {
-    const response = await axios.get(`/products`);
+    const response = await axiosInstance.get(`/products`);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -21,7 +21,7 @@ const getProducts = async (page: number, limit: number, status = "true") => {
   try {
     const baseUrl = `/products?page=${page}&limit=${limit}`;
     const url = status === "all" ? baseUrl : `${baseUrl}&isActive=${status}`;
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -48,7 +48,7 @@ const getProducts = async (page: number, limit: number, status = "true") => {
 
 const getProductById = async (id: number) => {
   try {
-    const response = await axios.get(`/products/${id}`);
+    const response = await axiosInstance.get(`/products/${id}`);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -63,7 +63,7 @@ const getProductById = async (id: number) => {
 
 const getActiveProducts = async () => {
   try {
-    const response = await axios.get(`/products?isActive=true`);
+    const response = await axiosInstance.get(`/products?isActive=true`);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -82,7 +82,7 @@ const getProductsByCategory = async (category: string) => {
       category === "all"
         ? "/products?isActive=true"
         : `/products?category=${category}&isActive=true`;
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -97,7 +97,7 @@ const getProductsByCategory = async (category: string) => {
 
 const deleteProduct = async (id: number) => {
   try {
-    const response = await axios.delete(`/products/${id}`);
+    const response = await axiosInstance.delete(`/products/${id}`);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -112,7 +112,10 @@ const deleteProduct = async (id: number) => {
 
 const updateProduct = async (productId: number, formData: CreateProductDTO) => {
   try {
-    const response = await axios.put(`/products/${productId}`, formData);
+    const response = await axiosInstance.put(
+      `/products/${productId}`,
+      formData
+    );
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -127,7 +130,7 @@ const updateProduct = async (productId: number, formData: CreateProductDTO) => {
 
 const createProduct = async (formData: CreateProductDTO) => {
   try {
-    const response = await axios.post(`/products`, formData);
+    const response = await axiosInstance.post(`/products`, formData);
 
     if (!response.data) {
       throw new Error("Empty response from server");
@@ -145,7 +148,7 @@ const bulkUpdateStatus = async (productIds: number[], isActive: boolean) => {
 
   for (const id of productIds) {
     try {
-      await axios.put(`/products/${id}`, { isActive });
+      await axiosInstance.put(`/products/${id}`, { isActive });
       successCount++;
     } catch (err) {
       console.error(`Error updating product ${id}`, err);
@@ -163,7 +166,7 @@ const bulkDelete = async (productIds: number[]) => {
 
   for (const id of productIds) {
     try {
-      await axios.delete(`/products/${id}`);
+      await axiosInstance.delete(`/products/${id}`);
       successCount++;
     } catch (error) {
       console.error(`Error deleting product ${id}`, error);
@@ -194,7 +197,7 @@ const bulkUpdateStock = async (
         newStock = adjustmentData.value;
       }
 
-      await axios.put(`/products/${product.id}`, { stock: newStock });
+      await axiosInstance.put(`/products/${product.id}`, { stock: newStock });
       successCount++;
     } catch (err) {
       console.error(`Error updating stock for product ${product.id}`, err);
@@ -223,7 +226,7 @@ const bulkApplyDiscount = async (
         newPrice = Math.max(0, product.price - discountData.value);
       }
 
-      await axios.put(`/products/${product.id}`, {
+      await axiosInstance.put(`/products/${product.id}`, {
         price: Number(newPrice.toFixed(2)),
       });
       successCount++;
@@ -254,7 +257,7 @@ const bulkAdjustPrices = async (
         newPrice = product.price * (1 - adjustmentData.percentage / 100);
       }
 
-      await axios.put(`/products/${product.id}`, {
+      await axiosInstance.put(`/products/${product.id}`, {
         price: Number(newPrice.toFixed(2)),
       });
       successCount++;

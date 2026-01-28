@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { toast } from "react-toastify";
-import { orderService } from "../../api/services/order.service";
+import { orderService } from "../../api";
 import { Order } from "../../types";
 
 export const useAdminOrders = () => {

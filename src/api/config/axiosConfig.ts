@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL:
     import.meta.env.VITE_BASE_API_URL ||
     "https://[tu-id-de-mockapi].mockapi.io/api/v1",
@@ -9,5 +9,3 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-export default axiosInstance;

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { Product, UseProductsPublicFilterReturn } from "../../types";
 import { normalizeText } from "../../utils";
+import { Product, UseProductsPublicFilterReturn } from "../../types";
 
 export function useProductsPublicFilter(
   products: Product[],

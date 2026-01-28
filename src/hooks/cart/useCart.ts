@@ -1,4 +1,4 @@
-import { useCartStore } from "../../stores/cartStore";
+import { useCartStore } from "../../stores";
 
 export const useCart = () => {
   const cart = useCartStore((state) => state.cart);

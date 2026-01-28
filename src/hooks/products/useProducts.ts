@@ -2,7 +2,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-import { productService } from "../../api/services/product.service";
+import { productService } from "../../api";
 import {
   CreateProductDTO,
   Product,

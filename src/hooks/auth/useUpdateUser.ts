@@ -1,6 +1,6 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-import { userService } from "../../api/services/user.service";
+import { userService } from "../../api";
 import { User, UseUpdateUserReturn } from "../../types";
 
 export const useUpdateUser = (): UseUpdateUserReturn => {

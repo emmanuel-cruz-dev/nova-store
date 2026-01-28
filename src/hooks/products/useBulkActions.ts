@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
-import { productService } from "../../api/services/product.service";
+import { productService } from "../../api";
 import {
   Product,
   StockAdjustmentData,

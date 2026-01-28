@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-import { userService } from "../../api/services/user.service";
+import { userService } from "../../api";
 import { User, UserResponse } from "../../types";
 
 export const useUsers = () => {

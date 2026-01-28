@@ -1,6 +1,4 @@
-import { productService } from "./product.service";
-import { orderService } from "./order.service";
-import { userService } from "./user.service";
+import { productService, orderService, userService } from "../../api";
 import {
   calculateSalesStats,
   calculateProductStats,

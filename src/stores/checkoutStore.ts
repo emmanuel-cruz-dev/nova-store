@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { toast } from "react-toastify";
 import { mutate } from "swr";
-import { orderService } from "../api/services/order.service";
+import { orderService } from "../api";
 import { CheckoutState, CreateOrderDTO, OrderItem } from "../types";
 
 export const useCheckoutStore = create<CheckoutState>((set, get) => ({
