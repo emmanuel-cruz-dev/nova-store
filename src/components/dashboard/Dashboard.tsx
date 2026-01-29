@@ -18,7 +18,7 @@ import {
   DashboardError,
 } from "..";
 import { formatCurrency } from "../../utils";
-import { orderSummaryItems } from "../../constants/dashboard";
+import { orderSummaryItems } from "../../constants";
 
 function Dashboard() {
   const { stats, isLoading, error, refresh } = useDashboard();

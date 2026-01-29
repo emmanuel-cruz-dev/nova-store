@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import { statusConfig } from "../../constants/status";
+import { statusConfig } from "../../constants";
 
 export const getStatusBadge = (status: string) => {
   const config = statusConfig[status as keyof typeof statusConfig];

@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { features } from "../../constants/features";
+import { features } from "../../constants";
 
 function FeaturesSection() {
   return (
