@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Placeholder } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { ToastContainer, Bounce } from "react-toastify";
 import { Package, PackagePlus } from "lucide-react";
 import {
@@ -25,6 +25,7 @@ import {
   DiscountModal,
   PriceAdjustmentModal,
   StockAdjustmentModal,
+  ProductsResultsLoader,
 } from "..";
 import {
   StockAdjustmentData,
@@ -217,14 +218,7 @@ function ProductsTable() {
           />
 
           {loading ? (
-            <div className="d-flex justify-content-center mt-3">
-              <Placeholder animation="wave">
-                <Placeholder
-                  style={{ width: 160, height: 16 }}
-                  className="rounded"
-                />
-              </Placeholder>
-            </div>
+            <ProductsResultsLoader />
           ) : (
             products.length > 0 && (
               <p className="mt-3 text-center text-muted mb-0">
