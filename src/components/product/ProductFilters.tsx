@@ -1,6 +1,6 @@
 import { Form, InputGroup, Row, Col, Button } from "react-bootstrap";
 import { Search, DollarSign, X } from "lucide-react";
-import { ProductStatus, StockLevel, ProductFiltersProps } from "../../types";
+import { ProductStatus, StockLevel, ProductFiltersCommon } from "../../types";
 
 const ProductFilters = ({
   searchTerm,
@@ -15,7 +15,7 @@ const ProductFilters = ({
   setStockFilter,
   hasActiveFilters,
   clearFilters,
-}: ProductFiltersProps) => {
+}: ProductFiltersCommon) => {
   return (
     <Row className="g-3 align-items-end">
       <Col md={6} lg={4}>

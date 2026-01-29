@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { Heart, ShoppingCart, LogIn } from "lucide-react";
@@ -32,7 +33,7 @@ function ProductCard(props: ProductCardProps) {
 
   if (props.isLoading) return <ProductCardSkeleton />;
 
-  const handleAddToFavorites = (e: React.MouseEvent) => {
+  const handleAddToFavorites = (e: MouseEvent) => {
     e.stopPropagation();
     toggleFavorite(props as Product);
   };

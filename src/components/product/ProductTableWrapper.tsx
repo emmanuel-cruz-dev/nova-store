@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { Table } from "react-bootstrap";
 
-const ProductTableWrapper = ({ children }: { children: React.ReactNode }) => (
+const ProductTableWrapper = ({ children }: { children: ReactNode }) => (
   <div className="card rounded-3 shadow-sm overflow-hidden">
     <Table
       className="mb-0"

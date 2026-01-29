@@ -1,3 +1,4 @@
+import { FormEvent } from "react";
 import { Offcanvas, Button, Spinner } from "react-bootstrap";
 import { useProductForm } from "../../hooks";
 import ProductForm from "./ProductForm";
@@ -34,7 +35,7 @@ function ProductSidebarForm({
     onHide();
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     handleSubmit();
   };
