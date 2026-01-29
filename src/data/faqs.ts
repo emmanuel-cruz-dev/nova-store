@@ -15,11 +15,6 @@ export const faqs = [
       "Sí. Desde tu cuenta podés acceder al historial de órdenes y ver el estado actualizado de cada compra.",
   },
   {
-    question: "¿Mis datos están seguros?",
-    answer:
-      "Tu seguridad es nuestra prioridad. Implementamos validaciones, control de acceso y las mejores prácticas de seguridad para proteger tu información personal.",
-  },
-  {
     question: "¿Qué hago si tengo un problema con mi cuenta?",
     answer:
       "Podés actualizar tus datos, cambiar tu contraseña o gestionar tu cuenta desde el panel de usuario. Si el problema persiste, nuestro equipo de soporte está disponible para ayudarte.",
