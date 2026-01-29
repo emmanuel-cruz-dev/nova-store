@@ -89,10 +89,8 @@ function Products() {
         >
           <header className="pt-4">
             <h1 className="display-6 fw-semibold custom__text-primary">
-              {
-                categories.find((category) => category.id === selectedCategory)
-                  ?.name!
-              }
+              {categories.find((category) => category.id === selectedCategory)
+                ?.name || "Productos"}
             </h1>
           </header>
 

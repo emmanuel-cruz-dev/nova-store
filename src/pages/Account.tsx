@@ -28,7 +28,7 @@ function Account() {
       case "favorites":
         return <FavoritesSection />;
       case "orders":
-        return <OrdersSection userId={user?.id!} />;
+        return <OrdersSection userId={user?.id || 0} />;
       default:
         return <ProfileMainContent />;
     }
