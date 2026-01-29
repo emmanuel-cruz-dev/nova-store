@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 interface Trend {
   value: number;
   isPositive: boolean;
@@ -67,7 +69,7 @@ export interface DashboardStats {
 export interface StatCardProps {
   title: string;
   value: string | number;
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
   trend?: Trend;
   variant?: StatCardVariant;
   isLoading?: boolean;

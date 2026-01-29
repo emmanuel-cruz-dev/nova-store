@@ -1,7 +1,8 @@
-import { FormEvent } from "react";
+import { ChangeEvent, FormEvent } from "react";
 import { FieldErrors, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { ValidationErrors } from "./common.types";
 import { ProductFormData } from "../schemas/productSchema";
+import { ApiError } from "./user.types";
 
 export interface Product {
   id: number;
@@ -48,7 +49,7 @@ export interface ProductQuantitySelectorProps {
   isAddingToCart: boolean;
   onIncrement: () => void;
   onDecrement: () => void;
-  onQuantityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onQuantityChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onAddToCart: () => void;
 }
 
@@ -56,7 +57,7 @@ export interface ProductsListProps {
   title?: string;
   products: Product[];
   loading: boolean;
-  error: any;
+  error: ApiError;
 }
 
 export interface ProductResponse {
@@ -64,7 +65,7 @@ export interface ProductResponse {
   total: number;
 }
 
-export type ErrorType = any;
+export type ErrorType = ApiError;
 
 export interface ProductDetailsCardProps {
   product: Product | null;
@@ -102,9 +103,7 @@ export interface UseProductFormReturn {
   errorUpdate: Error | null;
   isEditMode: boolean;
   handleChange: (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   handleIsActiveChange: (value: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -114,7 +113,7 @@ export interface UseProductFormReturn {
 export interface ProductFormProps {
   register: UseFormRegister<ProductFormData>;
   errors: FieldErrors<ProductFormData>;
-  watch: (field: keyof ProductFormData) => any;
+  watch: <K extends keyof ProductFormData>(field: K) => ProductFormData[K];
   setValue: UseFormSetValue<ProductFormData>;
   error?: Error | null;
   errorUpdate?: Error | null;
@@ -164,8 +163,6 @@ export interface UseProductsPublicFilterReturn
   setMinPrice: (value: string) => void;
   setMaxPrice: (value: string) => void;
 }
-
-export interface ProductFiltersProps extends ProductFiltersCommon {}
 
 export interface PublicProductFiltersProps
   extends Omit<ProductFiltersCommon, StockStatusFilter> {

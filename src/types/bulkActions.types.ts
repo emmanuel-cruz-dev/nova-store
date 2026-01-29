@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
 
 export type BulkAction =
@@ -52,7 +53,7 @@ export interface ActionModalProps {
   selectedCount: number;
   isProcessing: boolean;
   confirmText?: string;
-  children: React.ReactNode;
+  children: ReactNode;
   isValid: boolean;
 }
 

@@ -1,6 +1,4 @@
-import { User } from "./user.types";
-
-export type SafeUser = Omit<User, "password">;
+import { SafeUser } from "./user.types";
 
 export interface AuthState {
   isAuthenticated: boolean;

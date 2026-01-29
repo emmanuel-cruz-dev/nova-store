@@ -1,4 +1,5 @@
-import { ReactElement } from "react";
+import { LucideIcon } from "lucide-react";
+import { FC, SVGProps, ReactElement, ReactNode } from "react";
 import { Placement } from "react-bootstrap/esm/types";
 
 export interface PaginationItemProps {
@@ -33,14 +34,14 @@ export interface ValidationErrors {
 
 export interface FeatureProps {
   id: number;
-  icon: any;
+  icon: LucideIcon;
   title: string;
   subtitle: string;
 }
 
 export interface MenuItem {
   id: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  icon: FC<SVGProps<SVGSVGElement>>;
   label: string;
 }
 
