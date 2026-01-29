@@ -1,3 +1,4 @@
+import { FormEvent } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { ActionModalProps } from "../../types";
 
@@ -13,7 +14,7 @@ function ActionModal({
   children,
   isValid,
 }: ActionModalProps) {
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSubmit();
   };

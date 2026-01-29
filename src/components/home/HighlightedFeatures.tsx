@@ -1,9 +1,10 @@
+import { LucideIcon } from "lucide-react";
 import { Card, Row, Col } from "react-bootstrap";
 
 const HighlightedFeatures = ({
   features,
 }: {
-  features: { title: string; icon: any }[];
+  features: { title: string; icon: LucideIcon }[];
 }) => {
   return (
     <Card className="shadow-sm border-0 py-2">

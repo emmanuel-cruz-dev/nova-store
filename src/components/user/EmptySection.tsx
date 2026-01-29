@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 
@@ -9,7 +10,7 @@ function EmptySection({
 }: {
   title: string;
   message: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   showButton?: boolean;
 }) {
   return (

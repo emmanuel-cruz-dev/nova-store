@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { UserCog } from "lucide-react";
 import { useAuthStore } from "../../stores";
@@ -20,7 +20,7 @@ export function RoleChangeModal({
     assignableRoles[0] || "customer"
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onConfirm(newRole);
   };
