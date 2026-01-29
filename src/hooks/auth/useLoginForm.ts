@@ -8,7 +8,8 @@ import { loginSchema, LoginFormData } from "../../schemas/authSchemas";
 
 export function useLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const { login, authLoading } = useAuthStore();
+  const [authLoading, setAuthLoading] = useState(false);
+  const { login } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,6 +33,8 @@ export function useLoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     if (authLoading) return;
 
+    setAuthLoading(true);
+
     try {
       const loggedUser = await login(data.email, data.password);
 
@@ -43,6 +46,7 @@ export function useLoginForm() {
         navigate("/", { replace: true });
       }
     } catch (error: unknown) {
+      setAuthLoading(false);
       if (
         error instanceof Error &&
         error.message.includes("El correo electrónico")
