@@ -1,21 +1,21 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { userService } from "../../api";
-import { User, UseUpdateUserReturn } from "../../types";
+import { SafeUser, UseUpdateUserReturn } from "../../types";
 
 export const useUpdateUser = (): UseUpdateUserReturn => {
   const { trigger, isMutating, error } = useSWRMutation<
-    User,
+    SafeUser,
     Error,
     string,
-    User
+    SafeUser
   >(
     "updateUser",
-    async (_, { arg: userData }: { arg: User }) => {
+    async (_, { arg: userData }: { arg: SafeUser }) => {
       return await userService.updateUser(userData);
     },
     {
-      onSuccess: (updatedUser: User) => {
+      onSuccess: (updatedUser: SafeUser) => {
         if (updatedUser?.id) {
           mutate(["user", updatedUser.id]);
         }

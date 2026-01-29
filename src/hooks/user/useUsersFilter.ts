@@ -22,30 +22,30 @@ export function useUsersFilter(
     setCurrentPage(1);
   }, [searchTerm, roleFilter, activityFilter, dateFilter]);
 
-  const filterByDate = (createdAt: string): boolean => {
-    if (dateFilter === "all") return true;
-
-    const userDate = new Date(createdAt);
-    const now = new Date();
-    const daysDiff = Math.floor(
-      (now.getTime() - userDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
-
-    switch (dateFilter) {
-      case "last-week":
-        return daysDiff <= 7;
-      case "last-month":
-        return daysDiff <= 30;
-      case "last-3-months":
-        return daysDiff <= 90;
-      case "older":
-        return daysDiff > 90;
-      default:
-        return true;
-    }
-  };
-
   const filteredUsers = useMemo(() => {
+    const filterByDate = (createdAt: string): boolean => {
+      if (dateFilter === "all") return true;
+
+      const userDate = new Date(createdAt);
+      const now = new Date();
+      const daysDiff = Math.floor(
+        (now.getTime() - userDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      switch (dateFilter) {
+        case "last-week":
+          return daysDiff <= 7;
+        case "last-month":
+          return daysDiff <= 30;
+        case "last-3-months":
+          return daysDiff <= 90;
+        case "older":
+          return daysDiff > 90;
+        default:
+          return true;
+      }
+    };
+
     return users.filter((user: User) => {
       const normalizedSearch = normalizeText(searchTerm);
       const normalizedFullName = normalizeText(

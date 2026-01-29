@@ -31,7 +31,7 @@ export function useRegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     if (authLoading) return;
 
-    const { confirmPassword, avatar, ...dataToSend } = data;
+    const { confirmPassword: _, avatar, ...dataToSend } = data;
 
     const finalData =
       avatar && avatar.trim() !== "" ? { ...dataToSend, avatar } : dataToSend;

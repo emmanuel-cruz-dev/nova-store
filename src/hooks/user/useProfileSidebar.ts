@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../stores";
 import { useUpdateUser } from "..";
-import { User } from "../../types";
+import { SafeUser } from "../../types";
 
 export const useProfileSidebar = () => {
   const { user, logout, updateUserProfile } = useAuthStore();
@@ -11,7 +11,6 @@ export const useProfileSidebar = () => {
   const [profileData, setProfileData] = useState({
     id: user?.id || null,
     email: user?.email || "",
-    password: user?.password || "",
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     avatar: user?.avatar || "",
@@ -39,7 +38,7 @@ export const useProfileSidebar = () => {
         avatar: newAvatarUrl,
       });
 
-      updateUserProfile(updatedUser as User);
+      updateUserProfile(updatedUser as SafeUser);
       setShowAvatarModal(false);
       toast.success("Avatar actualizado correctamente");
     } catch (error) {

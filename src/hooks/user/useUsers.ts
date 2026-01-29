@@ -2,7 +2,7 @@ import { useState } from "react";
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { userService } from "../../api";
-import { User, UserResponse } from "../../types";
+import { User, UserResponse, ApiError, UseUserByRoleReturn } from "../../types";
 
 export const useUsers = () => {
   const {
@@ -10,7 +10,7 @@ export const useUsers = () => {
     error,
     isLoading,
     mutate: refetch,
-  } = useSWR("users", userService.getUsers, {
+  } = useSWR<User[], ApiError>("users", userService.getUsers, {
     revalidateOnFocus: false,
   });
 
@@ -23,7 +23,7 @@ export const useUsers = () => {
 };
 
 export const useUserById = (id: number) => {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR<User | null, ApiError>(
     id ? ["user", id] : null,
     () => userService.getUserById(id),
     {
@@ -42,17 +42,7 @@ export const useUserByRole = (
   role: string,
   initialPage = 1,
   initialLimit = 10
-): {
-  users: User[];
-  loading: boolean;
-  error: any;
-  deleteUser: (userId: number) => Promise<{ success: boolean }>;
-  refetch: () => Promise<any>;
-  currentPage: number;
-  totalPages: number;
-  totalUsers: number;
-  goToPage: (page: number) => void;
-} => {
+): UseUserByRoleReturn => {
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   const shouldFetchAll = role === "all";
@@ -62,7 +52,7 @@ export const useUserByRole = (
     error,
     isLoading,
     mutate: refetch,
-  } = useSWR<UserResponse>(
+  } = useSWR<UserResponse | User[], ApiError>(
     shouldFetchAll
       ? ["allUsers", currentPage, initialLimit]
       : role
@@ -78,13 +68,22 @@ export const useUserByRole = (
     }
   );
 
-  const { trigger: triggerDelete, isMutating: isDeleting } = useSWRMutation(
+  const { trigger: triggerDelete, isMutating: isDeleting } = useSWRMutation<
+    { success: boolean },
+    ApiError,
+    ["deleteUser", string],
+    number
+  >(
     ["deleteUser", role],
     async (_key, { arg }: { arg: number }) => {
       await userService.deleteUser(arg);
 
-      const currentData = data || {};
-      const currentUsers = currentData.data?.users || currentData.data || [];
+      const currentData = data || ({} as UserResponse);
+      const currentUsers = Array.isArray(currentData)
+        ? currentData
+        : (currentData as UserResponse).data?.users ||
+          (currentData as UserResponse).data ||
+          [];
       const usersArray = Array.isArray(currentUsers) ? currentUsers : [];
       const remainingUsers = usersArray.length - 1;
 
@@ -101,15 +100,19 @@ export const useUserByRole = (
     {
       onError: (error) => {
         console.error("Error deleting user:", error);
-        return { success: false, error };
       },
     }
   );
 
   const goToPage = (page: number) => {
+    const responseData = data as UserResponse | undefined;
     const totalPages =
-      data?.data?.totalPages ||
-      (data?.total ? Math.ceil(data.total / initialLimit) : 1);
+      responseData && !Array.isArray(responseData)
+        ? responseData.data?.totalPages ||
+          (responseData.total
+            ? Math.ceil(responseData.total / initialLimit)
+            : 1)
+        : 1;
 
     if (page >= 1 && page <= totalPages && page !== currentPage) {
       setCurrentPage(page);
@@ -120,20 +123,27 @@ export const useUserByRole = (
 
   if (shouldFetchAll && Array.isArray(data)) {
     users = data;
-  } else if (data?.data?.users && Array.isArray(data.data.users)) {
-    users = data.data.users;
-  } else if (Array.isArray(data?.data)) {
-    users = data.data;
+  } else if (!Array.isArray(data)) {
+    const responseData = data as UserResponse | undefined;
+    if (responseData?.data?.users && Array.isArray(responseData.data.users)) {
+      users = responseData.data.users;
+    } else if (Array.isArray(responseData?.data)) {
+      users = responseData.data;
+    }
   }
 
+  const responseData = data as UserResponse | undefined;
   const totalPages =
-    data?.data?.totalPages ||
-    (data?.total ? Math.ceil(data.total / initialLimit) : 1);
+    responseData && !Array.isArray(responseData)
+      ? responseData.data?.totalPages ||
+        (responseData.total ? Math.ceil(responseData.total / initialLimit) : 1)
+      : 1;
+
   const totalUsers = shouldFetchAll
     ? Array.isArray(data)
       ? data.length
       : 0
-    : data?.total || 0;
+    : responseData?.total || 0;
 
   return {
     users,

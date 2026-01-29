@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import { toast } from "react-toastify";
 import { useOrders, useDeleteOrder } from "./useOrders";
 import { Order } from "../../types";
@@ -8,7 +8,7 @@ export const useOrdersTable = (userId: number) => {
   const { deleteOrder, loading: deletingOrder } = useDeleteOrder();
   const [deletingOrderId, setDeletingOrderId] = useState<string | null>(null);
 
-  const handleDeleteOrder = async (order: Order, e: React.MouseEvent) => {
+  const handleDeleteOrder = async (order: Order, e: MouseEvent) => {
     e.stopPropagation();
 
     if (deletingOrder) return;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { toast } from "react-toastify";
 
 export const useNewsletterSubscription = () => {
@@ -6,7 +6,7 @@ export const useNewsletterSubscription = () => {
   const notify = (name: string) =>
     toast.info(`¡Gracias por suscribirte ${name}!`);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     notify(email);
     setEmail("");

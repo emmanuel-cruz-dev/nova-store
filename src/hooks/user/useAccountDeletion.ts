@@ -7,6 +7,7 @@ import {
   accountDeletionSchema,
   AccountDeletionFormData,
 } from "../../schemas/accountDeletionSchema";
+import { ApiError } from "../../types";
 
 export const useAccountDeletion = ({
   userId,
@@ -36,22 +37,16 @@ export const useAccountDeletion = ({
   });
 
   const deleteAccount = async (password: string) => {
-    try {
-      const user = await userService.getUserById(userId);
+    const user = await userService.getUserById(userId);
 
-      if (user.password !== password) {
-        setIsDeleting(false);
-        throw new Error("La contraseña es incorrecta");
-      }
-
-      await userService.deleteUser(userId);
-
-      onLogout();
-
-      navigate("/", { replace: true });
-    } catch (error: any) {
-      throw error;
+    if (user.password !== password) {
+      setIsDeleting(false);
+      throw new Error("La contraseña es incorrecta");
     }
+
+    await userService.deleteUser(userId);
+    onLogout();
+    navigate("/", { replace: true });
   };
 
   const onSubmit = async (data: AccountDeletionFormData) => {
@@ -60,8 +55,10 @@ export const useAccountDeletion = ({
     try {
       setIsDeleting(true);
       await deleteAccount(data.password);
-    } catch (err: any) {
-      if (err.message === "La contraseña es incorrecta") {
+    } catch (err) {
+      const error = err as ApiError;
+
+      if (error.message === "La contraseña es incorrecta") {
         setError("password", {
           type: "manual",
           message: "La contraseña es incorrecta",
@@ -69,7 +66,8 @@ export const useAccountDeletion = ({
       } else {
         setError("root", {
           type: "server",
-          message: err.response?.data?.message || "Error al eliminar la cuenta",
+          message:
+            error.response?.data?.message || "Error al eliminar la cuenta",
         });
       }
 
