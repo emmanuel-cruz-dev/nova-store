@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { ProductCard, ErrorMessage } from "../index";
+import { ProductCard, ErrorMessage, ProductsResultsLoader } from "../index";
 import { handleRetry } from "../../utils";
 import { ProductsListProps } from "../../types";
 
@@ -8,11 +8,14 @@ function ProductsGallery({ products, loading, error }: ProductsListProps) {
     <Container>
       <Row className="g-3 align-items-center justify-content-center">
         {loading ? (
-          Array.from({ length: 6 }).map((_, index) => (
-            <Col key={`placeholder-${index}`} xs={12} md={6} lg={4} xl={4}>
-              <ProductCard isLoading={true} />
-            </Col>
-          ))
+          <>
+            <ProductsResultsLoader />
+            {Array.from({ length: 6 }).map((_, index) => (
+              <Col key={`placeholder-${index}`} xs={12} md={6} lg={4} xl={4}>
+                <ProductCard isLoading={true} />
+              </Col>
+            ))}
+          </>
         ) : error ? (
           <ErrorMessage
             message="Error al cargar productos"
