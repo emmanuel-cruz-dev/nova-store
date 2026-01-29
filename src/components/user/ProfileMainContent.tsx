@@ -143,7 +143,7 @@ function ProfileMainContent() {
         />
       )}
 
-      {user?.role === "customer" && (
+      {user?.role !== "super_admin" && (
         <AccountDeletionSection userId={user?.id || 0} onLogout={logout} />
       )}
     </section>
