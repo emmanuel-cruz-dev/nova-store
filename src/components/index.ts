@@ -54,6 +54,7 @@ export { default as ProductTableWrapper } from "./product/ProductTableWrapper";
 export { default as PublicProductFilters } from "./product/PublicProductFilters";
 export { default as BulkActionsToolbar } from "./product/BulkActionsToolbar";
 export { default as ProductTableRowSkeleton } from "./product/ProductTableRowSkeleton";
+export { default as ProductsResultsLoader } from "./product/ProductsResultsLoader";
 
 export { default as CreateAccountItem } from "./shared/CreateAccountItem";
 export { default as CustomTooltip } from "./shared/CustomTooltip";
