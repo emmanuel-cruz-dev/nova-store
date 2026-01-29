@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { axiosInstance } from "../index";
-import { CreateProductDTO } from "../../types";
+import { CreateProductDTO, Product } from "../../types";
 
 const getAllProducts = async () => {
   try {
@@ -180,7 +180,7 @@ const bulkDelete = async (productIds: number[]) => {
 };
 
 const bulkUpdateStock = async (
-  products: any[],
+  products: Product[],
   adjustmentData: { type: string; value: number }
 ) => {
   let successCount = 0;
@@ -211,7 +211,7 @@ const bulkUpdateStock = async (
 };
 
 const bulkApplyDiscount = async (
-  products: any[],
+  products: Product[],
   discountData: { type: string; value: number }
 ) => {
   let successCount = 0;
@@ -242,7 +242,7 @@ const bulkApplyDiscount = async (
 };
 
 const bulkAdjustPrices = async (
-  products: any[],
+  products: Product[],
   adjustmentData: { type: string; percentage: number }
 ) => {
   let successCount = 0;

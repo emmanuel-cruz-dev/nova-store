@@ -114,7 +114,7 @@ const getAllOrders = async (): Promise<Order[]> => {
             ...order,
             userName: `${user.firstName} ${user.lastName}`,
             userEmail: user.email,
-          } as any);
+          } as Order);
         });
       }
     });

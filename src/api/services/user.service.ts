@@ -1,7 +1,7 @@
 import { axiosInstance } from "../index";
-import { User } from "../../types";
+import { User, SafeUser } from "../../types";
 
-const getUsers = async () => {
+const getUsers = async (): Promise<User[]> => {
   try {
     const response = await axiosInstance.get("/users");
 
@@ -16,7 +16,7 @@ const getUsers = async () => {
   }
 };
 
-const getUserById = async (id: number) => {
+const getUserById = async (id: number): Promise<User> => {
   try {
     const response = await axiosInstance.get(`/users/${id}`);
 
@@ -31,7 +31,7 @@ const getUserById = async (id: number) => {
   }
 };
 
-const getCustomerUsers = async () => {
+const getCustomerUsers = async (): Promise<User[]> => {
   try {
     const response = await axiosInstance.get("/users?role=customer");
 
@@ -68,7 +68,7 @@ const getUserByRole = async (role: string, page = 1, limit = 10) => {
   }
 };
 
-const updateUser = async (userData: User) => {
+const updateUser = async (userData: SafeUser): Promise<SafeUser> => {
   try {
     const response = await axiosInstance.put(`/users/${userData.id}`, userData);
 
@@ -76,14 +76,15 @@ const updateUser = async (userData: User) => {
       throw new Error("Empty response from server");
     }
 
-    return response.data;
+    const { password: _, ...safeUser } = response.data;
+    return safeUser as SafeUser;
   } catch (error) {
     console.error("Error updating user", error);
     throw error;
   }
 };
 
-const deleteUser = async (id: number) => {
+const deleteUser = async (id: number): Promise<User> => {
   try {
     const response = await axiosInstance.delete(`/users/${id}`);
 
