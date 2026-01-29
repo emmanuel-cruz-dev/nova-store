@@ -4,10 +4,10 @@ import { useAuthStore } from "../stores";
 import { Loader } from "../components";
 
 function PrivateRoute({ children }: { children: ReactNode }) {
-  const { user, loading, authLoading } = useAuthStore();
+  const { user, loading } = useAuthStore();
   const location = useLocation();
 
-  if (loading || authLoading) {
+  if (loading) {
     return <Loader />;
   }
 

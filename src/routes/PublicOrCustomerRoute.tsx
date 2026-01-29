@@ -5,9 +5,9 @@ import { Loader } from "../components";
 import { hasAdminAccess } from "../utils";
 
 function PublicOrCustomerRoute({ children }: { children: ReactNode }) {
-  const { user, loading, authLoading } = useAuthStore();
+  const { user, loading } = useAuthStore();
 
-  if (loading || authLoading) {
+  if (loading) {
     return <Loader />;
   }
 

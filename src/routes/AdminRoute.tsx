@@ -5,10 +5,10 @@ import { Loader } from "../components";
 import { hasAdminAccess } from "../utils";
 
 function AdminRoute({ children }: { children: ReactNode }) {
-  const { user, loading, authLoading } = useAuthStore();
+  const { user, loading } = useAuthStore();
   const location = useLocation();
 
-  if (loading || authLoading) {
+  if (loading) {
     return <Loader />;
   }
 
