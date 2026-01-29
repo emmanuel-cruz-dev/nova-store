@@ -57,7 +57,7 @@ export const useAuthStore = create<AuthState>()(
           );
           const newUser = response.data;
 
-          const { password, ...safeUser } = newUser;
+          const { password: _, ...safeUser } = newUser;
           set({
             user: safeUser,
             isAuthenticated: true,

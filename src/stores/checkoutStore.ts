@@ -4,7 +4,7 @@ import { mutate } from "swr";
 import { orderService } from "../api";
 import { CheckoutState, CreateOrderDTO, OrderItem } from "../types";
 
-export const useCheckoutStore = create<CheckoutState>((set, get) => ({
+export const useCheckoutStore = create<CheckoutState>((set) => ({
   showModal: false,
   orderData: null,
   isProcessing: false,
