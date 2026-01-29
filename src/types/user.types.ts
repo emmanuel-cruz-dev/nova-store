@@ -13,6 +13,8 @@ export interface User {
   orders?: Order[];
 }
 
+export type SafeUser = Omit<User, "password">;
+
 export interface UserResponse {
   data?: {
     users?: User[];
@@ -61,7 +63,7 @@ export type ShowPasswordState = {
 export type PasswordDataKeys = `${PasswordFieldType}Password`;
 
 export interface UseUpdateUserReturn {
-  updateUser: (userData: User) => Promise<User | undefined>;
+  updateUser: (userData: SafeUser) => Promise<SafeUser | undefined>;
   loading: boolean;
   error: Error | undefined;
 }
@@ -124,4 +126,24 @@ export interface RoleChangeModalProps {
   onConfirm: (newRole: UserRole) => void;
   selectedCount: number;
   isProcessing: boolean;
+}
+
+export type ApiError = Error & {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+};
+
+export interface UseUserByRoleReturn {
+  users: User[];
+  loading: boolean;
+  error: ApiError | undefined;
+  deleteUser: (userId: number) => Promise<{ success: boolean }>;
+  refetch: () => Promise<UserResponse | User[] | undefined>;
+  currentPage: number;
+  totalPages: number;
+  totalUsers: number;
+  goToPage: (page: number) => void;
 }
