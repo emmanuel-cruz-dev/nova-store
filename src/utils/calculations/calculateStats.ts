@@ -5,6 +5,7 @@ import {
   ProductStats,
   SalesStats,
   TopProduct,
+  User,
   UserStats,
 } from "../../types";
 
@@ -124,7 +125,7 @@ export const calculateOrderStats = (orders: Order[]): OrderStats => {
   };
 };
 
-export const calculateUserStats = (users: any[]): UserStats => {
+export const calculateUserStats = (users: User[]): UserStats => {
   const totalUsers = users.length;
   const totalCustomers = users.filter((u) => u.role === "customer").length;
   const totalAdmins = users.filter((u) => u.role === "admin").length;
