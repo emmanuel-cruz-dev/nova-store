@@ -10,12 +10,14 @@ const ProductRow = ({
   onDelete,
   isSelected,
   onToggleSelect,
+  isProcessing,
 }: {
   product: Product;
   onEdit: (productId: number) => void;
   onDelete: (product: Product) => void;
   isSelected: boolean;
   onToggleSelect: (productId: number) => void;
+  isProcessing: boolean;
 }) => (
   <tr
     key={product.id}
@@ -25,13 +27,20 @@ const ProductRow = ({
     }}
   >
     <td className="align-middle text-center">
-      <Form.Check
-        id={`select-product-${product.id}`}
-        type="checkbox"
-        checked={isSelected}
-        onChange={() => onToggleSelect(product.id)}
-        aria-label={`Seleccionar ${product.name}`}
-      />
+      {isProcessing ? (
+        <div
+          className="spinner-border spinner-border-sm text-primary"
+          role="status"
+        />
+      ) : (
+        <Form.Check
+          id={`select-product-${product.id}`}
+          type="checkbox"
+          checked={isSelected}
+          onChange={() => onToggleSelect(product.id)}
+          aria-label={`Seleccionar ${product.name}`}
+        />
+      )}
     </td>
     <td className="align-middle">{product.name}</td>
     <td className="align-middle">${formatPrice(product.price)}</td>
@@ -65,3 +74,91 @@ const ProductRow = ({
 );
 
 export default ProductRow;
+// import { Badge, Form } from "react-bootstrap";
+// import { Pencil, Trash2 } from "lucide-react";
+// import { ProductStockIndicator } from "..";
+// import { formatPrice } from "../../utils";
+// import { Product } from "../../types";
+
+// const ProductRow = ({
+//   product,
+//   onEdit,
+//   onDelete,
+//   isSelected,
+//   onToggleSelect,
+//   isProcessing,
+// }: {
+//   product: Product;
+//   onEdit: (productId: number) => void;
+//   onDelete: (product: Product) => void;
+//   isSelected: boolean;
+//   onToggleSelect: (productId: number) => void;
+//   isProcessing: boolean;
+// }) => (
+//   <tr
+//     key={product.id}
+//     className={`
+//       ${isSelected ? "table-active" : ""}
+//       ${isProcessing ? "processing-row-animation" : ""}
+//     `}
+//     style={{
+//       backgroundColor:
+//         !isProcessing && isSelected ? "rgba(13, 110, 253, 0.1)" : undefined,
+//       transition: !isProcessing ? "background-color 0.3s ease" : undefined,
+//     }}
+//   >
+//     <td className="align-middle text-center">
+//       {isProcessing ? (
+//         <div
+//           className="spinner-border spinner-border-sm text-primary"
+//           role="status"
+//         />
+//       ) : (
+//         <Form.Check
+//           id={`select-product-${product.id}`}
+//           type="checkbox"
+//           checked={isSelected}
+//           onChange={() => onToggleSelect(product.id)}
+//           aria-label={`Seleccionar ${product.name}`}
+//         />
+//       )}
+//       {/* <Form.Check
+//         id={`select-product-${product.id}`}
+//         type="checkbox"
+//         checked={isSelected}
+//         onChange={() => onToggleSelect(product.id)}
+//         aria-label={`Seleccionar ${product.name}`}
+//       /> */}
+//     </td>
+//     <td className="align-middle">{product.name}</td>
+//     <td className="align-middle">${formatPrice(product.price)}</td>
+//     <td className="text-capitalize align-middle">{product.category}</td>
+//     <td className="text-nowrap align-middle">
+//       {product.stock.toString().padStart(2, "0")}
+//       <ProductStockIndicator stock={product.stock} />
+//     </td>
+//     <td className="align-middle">
+//       <Badge bg={product.isActive ? "success" : "secondary"}>
+//         {product.isActive ? "Activo" : "Inactivo"}
+//       </Badge>
+//     </td>
+//     <td className="text-nowrap align-middle">
+//       <button
+//         onClick={() => onEdit(product.id)}
+//         className="btn btn-secondary btn-sm me-2"
+//       >
+//         <Pencil size={18} className="me-2" />
+//         Editar
+//       </button>
+//       <button
+//         className="btn btn-secondary btn-sm"
+//         onClick={() => onDelete(product)}
+//       >
+//         <Trash2 size={18} className="me-2" />
+//         Eliminar
+//       </button>
+//     </td>
+//   </tr>
+// );
+
+// export default ProductRow;
