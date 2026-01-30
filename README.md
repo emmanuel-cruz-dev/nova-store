@@ -1,15 +1,18 @@
 # 🛍️ Nova Store - E-Commerce Platform
 
+<div align="center">
+  
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
 ![Zustand](https://img.shields.io/badge/Zustand-State%20Management-orange)
 ![SWR](https://img.shields.io/badge/SWR-Data%20Fetching-black)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+</div>
 
-👨‍💻 #Autor
+## 👨‍💻 Autor
 
-**Emmanuel Cruz**</br>
-**Frontend Developer**
+- **Emmanuel Cruz**</br>
+- **Frontend Developer**
 
 > Proyecto desarrollado de forma individual como parte de una formación avanzada en React y frontend moderno.
 
