@@ -167,6 +167,7 @@ function UsersTable() {
               onDelete={handleShowDeleteModal}
               isSelected={isSelected(user.id as number)}
               onToggleSelect={toggleSelection}
+              isProcessing={isProcessing && isSelected(user.id as number)}
             />
           ))}
         </tbody>
