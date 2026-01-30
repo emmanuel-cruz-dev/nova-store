@@ -1,9 +1,17 @@
-# 🛍️ Nova Store - E-Commerce
+# 🛍️ Nova Store - E-Commerce Platform
 
-**Entrega Final - Curso React + Bootstrap – Talento Tech 2025**
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
+![Zustand](https://img.shields.io/badge/Zustand-State%20Management-orange)
+![SWR](https://img.shields.io/badge/SWR-Data%20Fetching-black)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
-👨‍💻 **Autor:** Emmanuel Cruz  
-🎓 **Comisión:** 25235
+👨‍💻 #Autor
+
+**Emmanuel Cruz**</br>
+**Frontend Developer**
+
+> Proyecto desarrollado de forma individual como parte de una formación avanzada en React y frontend moderno.
 
 ---
 
@@ -26,18 +34,89 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 ### 🔐 Autenticación y usuarios
 
 - Registro y login de usuarios con validación robusta.
+- **Sistema de roles jerárquico de tres niveles:** `customer`, `admin` y `super_admin`.
 - Gestión de perfiles con actualización de datos personales.
-- Cambio de contraseña seguro.
-- **Eliminación de cuenta permanente** para usuarios con rol `customer`:
+- Cambio de contraseña seguro (sin almacenar contraseñas en localStorage).
+- **Eliminación de cuenta permanente** para usuarios con roles `customer` y `admin`:
   - Proceso de confirmación en dos pasos (palabra clave + contraseña)
   - Validación de identidad antes de eliminar
   - Advertencias claras sobre la irreversibilidad
   - Cierre de sesión automático tras eliminación
+  - **Nota:** Las cuentas `super_admin` no pueden ser eliminadas (medida de seguridad)
 - Validación de formularios con **React Hook Form** y **Zod**.
-- Gestión de sesión con **Zustand** (authStore).
+- Gestión de sesión con **Zustand** (authStore) sin almacenar información sensible.
 - **Sistema de rutas protegidas por rol:**
   - Rutas separadas para administradores (`/admin/*`) y clientes (`/account/*`)
   - Redirección automática según el rol del usuario
+  - Control de acceso basado en jerarquía de roles
+
+### 👥 Sistema de roles y permisos
+
+La aplicación implementa un **sistema jerárquico de tres niveles** para controlar el acceso y las capacidades de los usuarios:
+
+#### Jerarquía de roles
+
+| Rol           | Nivel | Descripción                                             |
+| ------------- | ----- | ------------------------------------------------------- |
+| `customer`    | 1     | Usuario estándar con acceso a funcionalidades de compra |
+| `admin`       | 2     | Administrador con capacidades de gestión limitadas      |
+| `super_admin` | 3     | Administrador principal con control total del sistema   |
+
+#### Matriz de permisos
+
+| Capacidad                        | Customer | Admin | Super Admin |
+| -------------------------------- | -------- | ----- | ----------- |
+| **Compras y órdenes**            |
+| Ver catálogo de productos        | ✅       | ❌    | ❌          |
+| Agregar productos al carrito     | ✅       | ❌    | ❌          |
+| Realizar compras                 | ✅       | ❌    | ❌          |
+| Ver historial de órdenes propias | ✅       | ❌    | ❌          |
+| **Gestión de perfil**            |
+| Editar perfil propio             | ✅       | ✅    | ✅          |
+| Cambiar contraseña propia        | ✅       | ✅    | ✅          |
+| Eliminar cuenta propia           | ✅       | ✅    | ❌          |
+| **Panel administrativo**         |
+| Acceso al dashboard              | ❌       | ✅    | ✅          |
+| Ver estadísticas del sistema     | ❌       | ✅    | ✅          |
+| **Gestión de productos**         |
+| Crear/editar/eliminar productos  | ❌       | ✅    | ✅          |
+| Gestionar stock y precios        | ❌       | ✅    | ✅          |
+| Activar/desactivar productos     | ❌       | ✅    | ✅          |
+| **Gestión de usuarios**          |
+| Ver usuarios `customer`          | ❌       | ✅    | ✅          |
+| Editar usuarios `customer`       | ❌       | ✅    | ✅          |
+| Eliminar usuarios `customer`     | ❌       | ✅    | ✅          |
+| Ver usuarios `admin`             | ❌       | ❌    | ✅          |
+| Editar usuarios `admin`          | ❌       | ❌    | ✅          |
+| Eliminar usuarios `admin`        | ❌       | ❌    | ✅          |
+| **Gestión de roles**             |
+| Cambiar rol a `customer`         | ❌       | ❌    | ✅          |
+| Cambiar rol a `admin`            | ❌       | ❌    | ✅          |
+| Cambiar rol a `super_admin`      | ❌       | ❌    | ✅          |
+| **Gestión de órdenes**           |
+| Ver todas las órdenes            | ❌       | ✅    | ✅          |
+| Actualizar estado de órdenes     | ❌       | ✅    | ✅          |
+
+#### Reglas de gestión de usuarios
+
+- **Principio de jerarquía:** Un usuario solo puede gestionar (ver, editar, eliminar, cambiar rol) a usuarios de nivel inferior.
+- **Admin (`nivel 2`):**
+  - Puede gestionar únicamente usuarios `customer` (`nivel 1`)
+  - No puede ver ni modificar otros `admin` o `super_admin`
+  - Puede asignar el rol `customer` pero no `admin` ni `super_admin`
+- **Super Admin (`nivel 3`):**
+  - Puede gestionar todos los usuarios (`customer` y `admin`)
+  - Puede asignar cualquier rol (`customer`, `admin`, `super_admin`)
+  - Tiene control total sobre el sistema
+- **Acciones masivas:** Disponibles en el panel de usuarios para cambios de rol y eliminación en lote, respetando las restricciones de jerarquía.
+
+#### Restricciones especiales
+
+- Las cuentas `super_admin` **no pueden ser eliminadas** como medida de seguridad del sistema.
+- Los usuarios no pueden cambiar su propio rol.
+- Las contraseñas nunca se almacenan en `localStorage`, solo en la base de datos.
+
+---
 
 ### 🛒 Carrito de compras
 
@@ -62,11 +141,13 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
 
 ### 📊 Panel de administración (Dashboard)
 
+**Acceso:** Disponible para usuarios con roles `admin` y `super_admin`.
+
 - **Estadísticas en tiempo real:**
   - Ingresos totales y valor promedio de órdenes
   - Total de productos, productos activos y alertas de stock bajo
   - Total de órdenes y distribución por estados
-  - Total de usuarios (clientes y administradores)
+  - Total de usuarios por rol (customers, admins, super_admins)
 - **Visualizaciones:**
   - Gráficos de distribución de órdenes por estado
   - Tabla de productos más vendidos
@@ -75,16 +156,25 @@ La aplicación consume una API generada con **MockAPI**, utilizada para la persi
   - CRUD de productos con formularios validados
   - Sistema de filtrado avanzado (búsqueda, precio, estado, stock)
   - Indicadores visuales de stock y estado
-- **Gestión completa de usuarios:**
-  - Listado y administración de usuarios
+  - **Disponible para:** `admin` y `super_admin` por igual
+- **Gestión de usuarios con control basado en roles:**
+  - Listado y administración de usuarios según jerarquía
+  - **Admin:** Solo puede ver y gestionar usuarios `customer`
+  - **Super Admin:** Puede ver y gestionar usuarios `customer` y `admin`
   - **Filtros avanzados:**
     - Búsqueda por nombre o email
+    - Filtrado por rol (customer, admin, todos)
     - Filtrado por actividad (usuarios con/sin órdenes)
     - Filtrado por fecha de registro (última semana, mes, 3 meses, más antiguos)
     - Contador de resultados filtrados vs total
+  - **Acciones masivas (bulk actions):**
+    - Cambio de roles en lote (respetando jerarquía)
+    - Eliminación múltiple de usuarios
+    - Validación de permisos antes de cada acción
 - **Gestión de órdenes:**
   - Visualización y actualización de estados
   - Detalles completos de cada orden
+  - **Disponible para:** `admin` y `super_admin` por igual
 - **Rutas protegidas exclusivas para administradores** (`/admin/*`)
 
 ### 📋 Gestión de órdenes
@@ -274,8 +364,12 @@ pnpm preview
 - El proyecto está diseñado para trabajar con **MockAPI** (https://mockapi.io).
 - Endpoints esperados:
   - `/products` — Campos: id, title, price, category, isActive, images, etc.
-  - `/users` — Campos: id, email, name, password, role (`customer` | `admin`).
-- Para acceder al panel administrativo, es necesario crear un usuario con `role: "admin"` en MockAPI.
+  - `/users` — Campos: id, email, name, password, role (`customer` | `admin` | `super_admin`).
+  - `/orders` — Campos: id, userId, products, status, total, etc.
+- **Sistema de roles:**
+  - Para acceso básico al panel administrativo: crear usuario con `role: "admin"`
+  - Para control total del sistema: crear usuario con `role: "super_admin"`
+  - Usuarios registrados desde la app tienen automáticamente `role: "customer"`
 
 ### Estructura de datos recomendada
 
@@ -306,10 +400,18 @@ pnpm preview
   "lastName": "Apellido",
   "password": "password1234",
   "avatar": "url",
-  "createdAt": "fecha",
+  "createdAt": "2026-01-29T10:00:00.000Z",
   "role": "customer"
 }
 ```
+
+**Roles disponibles:** `"customer"` | `"admin"` | `"super_admin"`
+
+**Jerarquía de roles:**
+
+- `customer` (nivel 1): Usuario estándar
+- `admin` (nivel 2): Administrador con permisos limitados
+- `super_admin` (nivel 3): Administrador con control total
 
 ---
 
@@ -317,9 +419,12 @@ pnpm preview
 
 - No hay usuarios preconfigurados en el repositorio.
 - Se puede crear usuarios mediante:
-  1. El formulario de registro de la aplicación.
-  2. Directamente desde MockAPI.
-- Para obtener permisos de administrador, modificar el campo `role` a `"admin"` en MockAPI.
+  1. El formulario de registro de la aplicación (crea usuarios con `role: "customer"`).
+  2. Directamente desde MockAPI (permite asignar cualquier rol).
+- **Para obtener permisos administrativos:**
+  - **Admin:** Modificar el campo `role` a `"admin"` en MockAPI
+  - **Super Admin:** Modificar el campo `role` a `"super_admin"` en MockAPI
+- **Recomendación:** Crear al menos un usuario `super_admin` para tener control total del sistema.
 
 ---
 
@@ -387,11 +492,13 @@ El proyecto implementa un sistema de rutas protegidas basado en roles:
 
 ### Rutas administrativas
 
-- `/admin/:section?` - Panel administrativo (requiere rol admin)
-  - `/admin/dashboard` - Estadísticas y métricas
-  - `/admin/products` - Gestión de productos con filtros
-  - `/admin/users` - Gestión de usuarios con filtros
-  - `/admin/orders` - Gestión de órdenes
+- `/admin/:section?` - Panel administrativo (requiere rol `admin` o `super_admin`)
+  - `/admin/dashboard` - Estadísticas y métricas del sistema
+  - `/admin/products` - Gestión completa de productos (CRUD, filtros, stock)
+  - `/admin/users` - Gestión de usuarios con restricciones por jerarquía:
+    - **Admin:** Solo puede gestionar usuarios `customer`
+    - **Super Admin:** Puede gestionar usuarios `customer` y `admin`
+  - `/admin/orders` - Gestión y actualización de estados de órdenes
   - `/admin/profile` - Perfil del administrador
 
 ### Rutas de autenticación
@@ -403,8 +510,12 @@ El proyecto implementa un sistema de rutas protegidas basado en roles:
 
 - **PublicRoute:** Solo accesible sin autenticación (login, register)
 - **PublicOrCustomerRoute:** Accesible para no autenticados y customers (redirige admins a `/admin`)
-- **PrivateRoute:** Requiere autenticación (rutas de customer)
-- **AdminRoute:** Requiere autenticación y rol admin (rutas de `/admin/*`)
+- **PrivateRoute:** Requiere autenticación (rutas de customer como `/account/*`)
+- **AdminRoute:** Requiere autenticación y rol administrativo (acepta `admin` o `super_admin`)
+  - Implementa la función `hasAdminAccess()` que valida ambos roles
+  - Protege todas las rutas bajo `/admin/*`
+  - Redirige a `/account` si el usuario es `customer`
+  - Redirige a `/login` si no hay autenticación
 
 ---
 
