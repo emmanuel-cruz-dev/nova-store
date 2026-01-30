@@ -4,7 +4,6 @@ import { User, Mail } from "lucide-react";
 import { useAuthStore } from "../../stores";
 import { useProfileUpdate } from "../../hooks";
 import { SectionHeader, PasswordChangeForm, AccountDeletionSection } from "..";
-import { User as UserType } from "../../types";
 
 function ProfileMainContent() {
   const {
@@ -137,10 +136,7 @@ function ProfileMainContent() {
       />
 
       {showPasswordChange && (
-        <PasswordChangeForm
-          profileData={user as UserType}
-          onPasswordChanged={handlePasswordChange}
-        />
+        <PasswordChangeForm onPasswordChanged={handlePasswordChange} />
       )}
 
       {user?.role !== "super_admin" && (
