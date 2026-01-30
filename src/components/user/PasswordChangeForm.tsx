@@ -4,10 +4,7 @@ import { usePasswordChange } from "../../hooks";
 import { PasswordChangeFormProps } from "../../types";
 import { passwordFields } from "../../data/passwordFields";
 
-function PasswordChangeForm({
-  profileData,
-  onPasswordChanged,
-}: PasswordChangeFormProps) {
+function PasswordChangeForm({ onPasswordChanged }: PasswordChangeFormProps) {
   const {
     showPasswords,
     togglePasswordVisibility,
@@ -16,7 +13,7 @@ function PasswordChangeForm({
     onSubmit,
     errors,
     isSubmitting,
-  } = usePasswordChange({ profileData, onPasswordChanged });
+  } = usePasswordChange({ onPasswordChanged });
 
   return (
     <Card className="border-0 shadow-sm mb-2">
