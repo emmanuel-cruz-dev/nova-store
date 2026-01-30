@@ -15,12 +15,14 @@ const UserRow = ({
   onDelete,
   isSelected,
   onToggleSelect,
+  isProcessing,
 }: {
   user: User;
   onShowDetails: (id: number) => void;
   onDelete: (user: User) => void;
   isSelected: boolean;
   onToggleSelect: (userId: number) => void;
+  isProcessing: boolean;
 }) => {
   const { user: currentUser } = useAuthStore();
   const isSuperAdminRole = isSuperAdmin(currentUser?.role);
@@ -34,13 +36,20 @@ const UserRow = ({
       }}
     >
       <td className="align-middle text-center">
-        <Form.Check
-          id={`select-user-${user.id}`}
-          type="checkbox"
-          checked={isSelected}
-          onChange={() => onToggleSelect(user.id as number)}
-          aria-label={`Seleccionar ${user.firstName} ${user.lastName}`}
-        />
+        {isProcessing ? (
+          <div
+            className="spinner-border spinner-border-sm text-primary"
+            role="status"
+          />
+        ) : (
+          <Form.Check
+            id={`select-user-${user.id}`}
+            type="checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect(user.id as number)}
+            aria-label={`Seleccionar ${user.firstName} ${user.lastName}`}
+          />
+        )}
       </td>
       <td className="text-nowrap">
         <img
