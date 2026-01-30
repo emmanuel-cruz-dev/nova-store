@@ -39,7 +39,12 @@ function Admin() {
   };
 
   return (
-    <Container fluid className="bg-light min-vh-100 py-4" id="admin">
+    <Container
+      fluid
+      className="bg-light py-4"
+      id="admin"
+      style={{ maxWidth: "1280px" }}
+    >
       <Row>
         <Col lg={3} className="mb-4">
           <ProfileSidebar
