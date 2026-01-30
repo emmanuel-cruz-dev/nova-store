@@ -4,19 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../stores";
 import { userService } from "../../api";
-import { useUpdateUser } from "../auth/useUpdateUser";
 import { PasswordFormData, passwordSchema } from "../../schemas/authSchemas";
-import { User } from "../../types";
 
 export function usePasswordChange({
-  profileData,
   onPasswordChanged,
 }: {
-  profileData: User;
   onPasswordChanged: () => void;
 }) {
   const { user, updateUserProfile } = useAuthStore();
-  const { updateUser } = useUpdateUser();
 
   const [showPasswords, setShowPasswords] = useState({
     old: false,
@@ -66,12 +61,12 @@ export function usePasswordChange({
     }
 
     try {
-      const updatedUser = await updateUser({
-        ...profileData,
-        password: data.newPassword,
-      });
+      const updatedUser = await userService.updateUserPassword(
+        user?.id as number,
+        data.newPassword
+      );
 
-      await updateUserProfile(updatedUser as User);
+      await updateUserProfile(updatedUser);
 
       onPasswordChanged();
       toast.success("Contraseña actualizada correctamente");
