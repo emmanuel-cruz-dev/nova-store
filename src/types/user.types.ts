@@ -44,7 +44,6 @@ export interface AvatarUpdateModalProps {
 }
 
 export interface PasswordChangeFormProps {
-  profileData: User;
   onPasswordChanged: () => void;
 }
 
