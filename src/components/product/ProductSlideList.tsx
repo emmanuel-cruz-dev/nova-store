@@ -9,6 +9,7 @@ import { ProductsListProps } from "../../types";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { ArrowRight } from "lucide-react";
 
 function ProductSlideList({
   title,
@@ -85,8 +86,12 @@ function ProductSlideList({
       {!error && (
         <footer className="d-flex justify-content-center">
           <Link to="/products">
-            <Button variant="primary" className="mt-4 px-4">
+            <Button
+              variant="primary"
+              className="mt-4 px-4 d-inline-flex align-items-center gap-2"
+            >
               Ver más productos
+              <ArrowRight size={20} />
             </Button>
           </Link>
         </footer>

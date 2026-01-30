@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Carousel, Button, Container, Row, Col, Image } from "react-bootstrap";
+import { ArrowRight } from "lucide-react";
 import { BannerSlide } from "../../types";
 
 export default function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
@@ -59,9 +60,10 @@ export default function BannerCarousel({ slides }: { slides: BannerSlide[] }) {
                   <Button
                     variant="primary"
                     onClick={() => navigate(slide.buttonLink)}
-                    className="mb-4 mb-md-0 px-4"
+                    className="px-4 mb-4 mb-md-0 d-inline-flex align-items-center gap-2"
                   >
                     {slide.buttonText}
+                    <ArrowRight size={20} />
                   </Button>
                 </Col>
               </Row>
