@@ -42,7 +42,7 @@ function Products() {
   const showPagination = filteredProducts.length;
 
   return (
-    <Container fluid>
+    <Container fluid style={{ maxWidth: "1280px" }}>
       <Row>
         {!isEmptyStore && (
           <Col
