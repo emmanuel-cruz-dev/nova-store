@@ -73,7 +73,6 @@ function OrderSummary() {
 
             <Button
               variant="primary"
-              size="lg"
               className="w-100 mb-3"
               onClick={onCheckout}
               disabled={cart.length === 0 || isProcessing}

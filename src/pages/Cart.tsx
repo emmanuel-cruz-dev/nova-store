@@ -39,12 +39,8 @@ function Cart() {
                 ))}
               </Card.Body>
 
-              <Card.Footer className="bg-white border-top py-4">
-                <Button
-                  className="d-flex align-items-center justify-content-center gap-2 w-100"
-                  size="sm"
-                  onClick={handleClearCart}
-                >
+              <Card.Footer className="bg-white border-top py-4 d-grid d-md-flex justify-content-md-end">
+                <Button className="px-5" onClick={handleClearCart}>
                   Vaciar carrito
                 </Button>
               </Card.Footer>
