@@ -19,6 +19,7 @@ export function useBulkUserActions(onSuccess: () => void) {
           successCount++;
         } catch (error) {
           console.error(`Error deleting user ${id}`, error);
+          toast.error(`Error eliminando usuario ${id}`);
         }
       }
 
@@ -31,14 +32,14 @@ export function useBulkUserActions(onSuccess: () => void) {
         toast.success(`${result.count} usuarios eliminados correctamente`);
       } else {
         toast.warning(
-          `${result.count} de ${userIds.length} usuarios eliminados. Algunos fallaron.`
+          `${result.count} de ${userIds.length} usuarios eliminados. Algunos fallaron.`,
         );
       }
 
       setIsProcessing(false);
       onSuccess();
     },
-    [onSuccess]
+    [onSuccess],
   );
 
   const bulkChangeRole = useCallback(
@@ -49,13 +50,13 @@ export function useBulkUserActions(onSuccess: () => void) {
       const assignableRoles = getAssignableRoles(currentUserRole);
       if (!assignableRoles.includes(newRole)) {
         toast.error(
-          `No tienes permisos para asignar el rol de ${formatRoleName(newRole)}`
+          `No tienes permisos para asignar el rol de ${formatRoleName(newRole)}`,
         );
         return { success: false, count: 0 };
       }
 
       const manageableUsers = users.filter((user) =>
-        canManageRole(currentUserRole, user.role || "customer")
+        canManageRole(currentUserRole, user.role || "customer"),
       );
 
       if (manageableUsers.length === 0) {
@@ -65,7 +66,7 @@ export function useBulkUserActions(onSuccess: () => void) {
 
       if (manageableUsers.length < users.length) {
         toast.warning(
-          `Solo puedes cambiar ${manageableUsers.length} de ${users.length} usuarios seleccionados debido a permisos`
+          `Solo puedes cambiar ${manageableUsers.length} de ${users.length} usuarios seleccionados debido a permisos`,
         );
       }
 
@@ -78,6 +79,7 @@ export function useBulkUserActions(onSuccess: () => void) {
           successCount++;
         } catch (error) {
           console.error(`Error changing role for user ${user.id}`, error);
+          toast.error(`Error cambiando rol para usuario ${user.id}`);
         }
       }
 
@@ -90,11 +92,11 @@ export function useBulkUserActions(onSuccess: () => void) {
 
       if (result.success) {
         toast.success(
-          `${result.count} usuarios cambiados a ${roleText} correctamente`
+          `${result.count} usuarios cambiados a ${roleText} correctamente`,
         );
       } else {
         toast.warning(
-          `${result.count} de ${manageableUsers.length} usuarios cambiados a ${roleText}. Algunos fallaron.`
+          `${result.count} de ${manageableUsers.length} usuarios cambiados a ${roleText}. Algunos fallaron.`,
         );
       }
 
@@ -102,7 +104,7 @@ export function useBulkUserActions(onSuccess: () => void) {
       onSuccess();
       return result;
     },
-    [onSuccess]
+    [onSuccess],
   );
 
   return {
