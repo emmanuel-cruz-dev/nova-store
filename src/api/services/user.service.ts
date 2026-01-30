@@ -84,6 +84,35 @@ const updateUser = async (userData: SafeUser): Promise<SafeUser> => {
   }
 };
 
+const updateUserPassword = async (
+  userId: number,
+  newPassword: string
+): Promise<SafeUser> => {
+  try {
+    const currentUser = await getUserById(userId);
+
+    const updatedUserData: User = {
+      ...currentUser,
+      password: newPassword,
+    };
+
+    const response = await axiosInstance.put(
+      `/users/${userId}`,
+      updatedUserData
+    );
+
+    if (!response.data) {
+      throw new Error("Empty response from server");
+    }
+
+    const { password: _, ...safeUser } = response.data;
+    return safeUser as SafeUser;
+  } catch (error) {
+    console.error("Error updating user password", error);
+    throw error;
+  }
+};
+
 const deleteUser = async (id: number): Promise<User> => {
   try {
     const response = await axiosInstance.delete(`/users/${id}`);
@@ -105,5 +134,6 @@ export const userService = {
   getCustomerUsers,
   getUserByRole,
   updateUser,
+  updateUserPassword,
   deleteUser,
 };
