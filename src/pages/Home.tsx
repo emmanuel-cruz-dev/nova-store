@@ -28,7 +28,7 @@ function Home() {
             title="Productos destacados"
             products={products}
             loading={loading}
-            error={error}
+            error={error as Error}
           />
         </>
       )}
