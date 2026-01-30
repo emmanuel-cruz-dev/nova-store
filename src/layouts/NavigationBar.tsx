@@ -8,7 +8,14 @@ function NavigationBar() {
   const isAdmin = hasAdminAccess(user?.role);
 
   return (
-    <Navbar bg="black" variant="dark" expand="lg" fixed="top">
+    <Navbar
+      variant="dark"
+      expand="lg"
+      fixed="top"
+      style={{
+        background: "linear-gradient(180deg, #000000 20%, #002244 100%)",
+      }}
+    >
       <Container>{isAdmin ? <AdminNavbar /> : <CustomerNavbar />}</Container>
     </Navbar>
   );

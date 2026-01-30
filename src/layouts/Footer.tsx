@@ -8,7 +8,13 @@ function Footer() {
   const isAdmin = hasAdminAccess(user?.role);
 
   return (
-    <footer className="footer bg-black text-white py-md-2" id="footer">
+    <footer
+      className="footer text-white py-md-2"
+      id="footer"
+      style={{
+        background: "linear-gradient(360deg, #000000 20%, #001122 100%)",
+      }}
+    >
       {isAdmin ? <AdminFooter /> : <CustomerFooter />}
     </footer>
   );
