@@ -169,6 +169,7 @@ function ProductsTable() {
             onDelete={handleDeleteProduct}
             isSelected={isSelected(product.id)}
             onToggleSelect={toggleSelection}
+            isProcessing={isProcessing && isSelected(product.id)}
           />
         ))}
       </tbody>
