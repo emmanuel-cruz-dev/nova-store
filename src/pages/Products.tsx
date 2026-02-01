@@ -27,6 +27,7 @@ function Products() {
     setSearchTerm,
     setMinPrice,
     setMaxPrice,
+    setCurrentPage,
     clearFilters,
     handlePageChange,
   } = useProductsPublicFilter(products, 6);
@@ -34,6 +35,7 @@ function Products() {
   const handleCategoryChange = (category: string) => {
     handleCategoryClick(category);
     clearFilters();
+    setCurrentPage(1);
   };
 
   const isEmptyStore = !loading && products.length === 0;
