@@ -31,6 +31,7 @@ export { usePagination } from "./shared/usePagination";
 export { useQueryHandler } from "./shared/useQueryHandler";
 export { useScroll } from "./shared/useScroll";
 export { useIndeterminateCheckbox } from "./shared/useIndeterminateCheckbox";
+export { useVisibleFeatures } from "./shared/useVisibleFeatures";
 
 export { useCategorySelect } from "./user/useCategorySelect";
 export { useNewsletterSubscription } from "./user/useNewsletterSubscription";
