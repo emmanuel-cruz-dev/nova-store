@@ -4,7 +4,7 @@ import { Product, UseProductsPublicFilterReturn } from "../../types";
 
 export function useProductsPublicFilter(
   products: Product[],
-  itemsPerPage = 6
+  itemsPerPage = 6,
 ): UseProductsPublicFilterReturn {
   const [searchTerm, setSearchTerm] = useState("");
   const [minPrice, setMinPrice] = useState("");
@@ -66,6 +66,7 @@ export function useProductsPublicFilter(
     setSearchTerm,
     setMinPrice,
     setMaxPrice,
+    setCurrentPage,
     clearFilters,
     handlePageChange,
   };
