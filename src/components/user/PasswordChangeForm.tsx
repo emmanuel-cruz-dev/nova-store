@@ -63,7 +63,7 @@ function PasswordChangeForm({ onPasswordChanged }: PasswordChangeFormProps) {
               </Col>
             ))}
           </Row>
-          <div className="d-flex justify-content-end mt-3">
+          <div className="d-grid d-sm-flex justify-content-sm-end mt-4">
             <Button
               type="submit"
               variant="primary"

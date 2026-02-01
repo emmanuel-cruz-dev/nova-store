@@ -42,26 +42,26 @@ function AccountDeletionSection({
       <Card className="border-danger shadow-sm mb-4">
         <Card.Body>
           <div className="d-flex align-items-start gap-3">
-            <div className="text-danger mt-1">
+            <figure className="text-danger mt-1">
               <AlertTriangle size={24} />
-            </div>
+            </figure>
             <div className="flex-grow-1">
               <h5 className="text-danger mb-2">Zona de Peligro</h5>
               <p className="custom__text-muted">
                 Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor
                 asegúrate de estar completamente seguro antes de proceder.
               </p>
-              <div className="d-flex justify-content-end mt-3">
-                <Button
-                  variant="outline-danger"
-                  onClick={handleOpenModal}
-                  className="d-flex align-items-center gap-2 px-4 py-2"
-                >
-                  <Trash2 size={18} />
-                  Eliminar mi cuenta
-                </Button>
-              </div>
             </div>
+          </div>
+          <div className="d-grid d-sm-flex justify-content-sm-end">
+            <Button
+              variant="outline-danger"
+              onClick={handleOpenModal}
+              className="d-flex align-items-center justify-content-center gap-2 px-4 py-2"
+            >
+              <Trash2 size={18} />
+              Eliminar mi cuenta
+            </Button>
           </div>
         </Card.Body>
       </Card>

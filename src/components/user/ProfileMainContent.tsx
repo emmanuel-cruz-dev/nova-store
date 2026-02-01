@@ -105,7 +105,7 @@ function ProfileMainContent() {
               </Col>
             </Row>
 
-            <div className="d-flex justify-content-end gap-3 mt-3">
+            <div className="d-flex flex-column flex-sm-row justify-content-end gap-3 mt-4">
               <Button
                 type="submit"
                 variant="primary"
