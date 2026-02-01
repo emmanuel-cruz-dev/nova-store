@@ -1,12 +1,15 @@
 import { Container, Row, Col } from "react-bootstrap";
+import { useVisibleFeatures } from "../../hooks";
 import { features } from "../../constants";
 
 function FeaturesSection() {
+  const visibleFeatures = useVisibleFeatures(features);
+
   return (
     <section className="py-5 bg-white" id="features">
       <Container className="py-0 py-lg-5">
         <Row className="g-4">
-          {features.map((feature) => (
+          {visibleFeatures.map((feature) => (
             <Col
               key={feature.id}
               xs={12}
