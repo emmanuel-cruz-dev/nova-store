@@ -32,7 +32,7 @@ const ProductDetailsCard = ({
           style={{ width: "fit-content" }}
         >
           <ArrowLeft size={20} />
-          Volver a la tienda
+          Ir a la tienda
         </Link>
       </header>
 
