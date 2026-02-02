@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import TestimonialCard from "./TestimonialCard";
+import { TestimonialCard, HomeSectionHeader } from "../index";
 import { testimonials } from "../../data/testimonials";
 
 import "swiper/css";
@@ -19,40 +19,29 @@ function TestimonialSlider() {
       id="testimonials"
       style={{ backgroundColor: "#e9ecef" }}
     >
-      <Container className="p-4 p-lg-5 pb-lg-4 bg-light rounded-3 position-relative">
-        <header className="mb-4 d-flex justify-content-between align-items-center">
-          <div>
-            <h2 className="display-7 fw-bold mb-2 custom__text-primary">
-              Lo que dicen nuestros clientes
-            </h2>
-            <div
-              style={{
-                width: "80px",
-                height: "4px",
-                backgroundColor: "#007bff",
-              }}
-            ></div>
-          </div>
-
-          <aside className="d-flex gap-3">
-            <button
-              ref={prevRef}
-              className="swiper-button-prev-custom border-0"
-              style={{ touchAction: "manipulation" }}
-              aria-label="Anterior"
-            >
-              ❮
-            </button>
-            <button
-              ref={nextRef}
-              className="swiper-button-next-custom border-0"
-              style={{ touchAction: "manipulation" }}
-              aria-label="Siguiente"
-            >
-              ❯
-            </button>
-          </aside>
-        </header>
+      <HomeSectionHeader
+        eyebrow="Opiniones reales"
+        heading="Lo que dicen nuestros clientes"
+      />
+      <Container className="p-4 p-lg-5 py-lg-4 bg-light rounded-3 position-relative">
+        <div className="d-flex justify-content-end gap-3 mb-3">
+          <button
+            ref={prevRef}
+            className="swiper-button-prev-custom border-0"
+            style={{ touchAction: "manipulation" }}
+            aria-label="Anterior"
+          >
+            ❮
+          </button>
+          <button
+            ref={nextRef}
+            className="swiper-button-next-custom border-0"
+            style={{ touchAction: "manipulation" }}
+            aria-label="Siguiente"
+          >
+            ❯
+          </button>
+        </div>
 
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}

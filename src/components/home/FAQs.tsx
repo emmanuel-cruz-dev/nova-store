@@ -1,14 +1,16 @@
 import { Accordion, Container, Row, Col } from "react-bootstrap";
 import Logo from "../../assets/logos/nova-store-logo.avif";
+import HomeSectionHeader from "./HomeSectionHeader";
 import { faqs } from "../../data/faqs";
 import "./FAQs.css";
 
 function FAQs() {
   return (
     <Container className="py-5" id="faq">
-      <h2 className="display-6 text-center fw-bold mb-5 custom__text-primary">
-        Preguntas frecuentes
-      </h2>
+      <HomeSectionHeader
+        eyebrow="Todo lo que necesitás saber"
+        heading="Respondemos tus preguntas"
+      />
       <Row className="justify-content-center align-items-center">
         <Col lg={7} md={12} className="mb-4 mb-lg-0">
           <Accordion defaultActiveKey="0" flush>

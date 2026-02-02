@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { ProductCard, ErrorMessage } from "../index";
+import { ProductCard, ErrorMessage, HomeSectionHeader } from "../index";
 import { handleRetry } from "../../utils";
 import { ProductsListProps } from "../../types";
 
@@ -11,24 +11,17 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowRight } from "lucide-react";
 
-function ProductSlideList({
-  title,
-  products,
-  loading,
-  error,
-}: ProductsListProps) {
+function ProductSlideList({ products, loading, error }: ProductsListProps) {
   return (
     <Container
       className="py-5"
       id="product-slide-list"
       style={{ backgroundColor: "#f8f9fa", scrollMarginTop: "3.5rem" }}
     >
-      <header>
-        <h2 className="display-6 text-center fw-bold mb-5 custom__text-primary">
-          {title}
-        </h2>
-      </header>
-
+      <HomeSectionHeader
+        eyebrow="Selección especial"
+        heading="Productos destacados"
+      />
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={26}

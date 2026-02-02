@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { useVisibleFeatures } from "../../hooks";
+import HomeSectionHeader from "./HomeSectionHeader";
 import { features } from "../../constants";
 
 function FeaturesSection() {
@@ -7,6 +8,10 @@ function FeaturesSection() {
 
   return (
     <section className="py-5 bg-white" id="features">
+      <HomeSectionHeader
+        eyebrow="Beneficios que marcan la diferencia"
+        heading="Comprá fácil, rápido y seguro"
+      />
       <Container className="py-0 py-lg-5">
         <Row className="g-4">
           {visibleFeatures.map((feature) => (

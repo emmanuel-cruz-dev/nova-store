@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import HomeSectionHeader from "./HomeSectionHeader";
 import { categoryData } from "../../data/categoryData";
-import { CategoriesProps } from "../../types";
 import { getColSize } from "../../utils/helpers/common";
+import { CategoriesProps } from "../../types";
 
-function Categories({ categories, maxCategories = null }: CategoriesProps) {
+function Categories({
+  eyebrow,
+  heading,
+  categories,
+  maxCategories = null,
+}: CategoriesProps) {
   const displayCategories = categories
     .map((catId) => categoryData[catId])
     .filter(Boolean)
@@ -13,7 +19,11 @@ function Categories({ categories, maxCategories = null }: CategoriesProps) {
   return (
     <section className="py-5 bg-white p-4 p-md-0 p-md-5" id="categories">
       <Container>
-        <Row>
+        <HomeSectionHeader
+          eyebrow={eyebrow}
+          heading={heading || "Categorías"}
+        />
+        <Row style={{ marginTop: "-2.75rem" }}>
           {displayCategories.map((category) => (
             <Col
               key={category.id}
