@@ -19,7 +19,8 @@ function Product() {
       {productCategory && (
         <article>
           <ProductSlideList
-            title="Productos Relacionados"
+            eyebrow="También te puede interesar"
+            heading="Productos Relacionados"
             products={products}
             loading={isProductsLoading}
             error={error}
