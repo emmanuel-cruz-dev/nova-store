@@ -29,6 +29,8 @@ export interface ProductCardProps extends Partial<Product> {
 export type CreateProductDTO = Omit<Product, "id">;
 
 export interface CategoriesProps {
+  eyebrow: string;
+  heading?: string;
   categories: string[];
   maxCategories?: number | null;
 }
@@ -54,7 +56,6 @@ export interface ProductQuantitySelectorProps {
 }
 
 export interface ProductsListProps {
-  title?: string;
   products: Product[];
   loading: boolean;
   error: ApiError;
@@ -74,7 +75,7 @@ export interface ProductDetailsCardProps {
 
 export type OnUpdate = (
   message: string,
-  type: "success" | "error" | string,
+  type: "success" | "error" | string
 ) => void;
 
 export interface ProductSidebarFormProps {
@@ -103,7 +104,7 @@ export interface UseProductFormReturn {
   errorUpdate: Error | null;
   isEditMode: boolean;
   handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => void;
   handleIsActiveChange: (value: string) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
@@ -151,10 +152,8 @@ type StockStatusFilter =
   | "setStatusFilter"
   | "setStockFilter";
 
-export interface UseProductsPublicFilterReturn extends Omit<
-  ProductFiltersCommon,
-  StockStatusFilter
-> {
+export interface UseProductsPublicFilterReturn
+  extends Omit<ProductFiltersCommon, StockStatusFilter> {
   filteredProducts: Product[];
   paginatedProducts: Product[];
   currentPage: number;
@@ -167,10 +166,8 @@ export interface UseProductsPublicFilterReturn extends Omit<
   setCurrentPage: (value: number) => void;
 }
 
-export interface PublicProductFiltersProps extends Omit<
-  ProductFiltersCommon,
-  StockStatusFilter
-> {
+export interface PublicProductFiltersProps
+  extends Omit<ProductFiltersCommon, StockStatusFilter> {
   productsCount: number;
   filteredCount: number;
   loading: boolean;
