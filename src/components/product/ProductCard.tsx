@@ -39,7 +39,7 @@ function ProductCard(props: ProductCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden custom__card-hover">
+    <Card className="overflow-hidden custom__product-card">
       {isAuthenticated && (
         <CustomTooltip
           text={favorite ? "Eliminar de favoritos" : "Añadir a favoritos"}
@@ -47,7 +47,7 @@ function ProductCard(props: ProductCardProps) {
           <Button
             variant="light"
             onClick={handleAddToFavorites}
-            className="position-absolute top-0 end-0 m-2 d-flex align-items-center justify-content-center rounded-circle "
+            className="favorite-btn-float position-absolute top-1 end-0 m-2 d-flex align-items-center justify-content-center rounded-circle"
             style={{ width: "42px", height: "42px", zIndex: 1, padding: 0 }}
             aria-label="Añadir a favoritos"
           >
