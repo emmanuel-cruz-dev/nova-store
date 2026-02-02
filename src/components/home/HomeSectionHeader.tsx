@@ -13,7 +13,9 @@ function HomeSectionHeader({
       >
         {eyebrow}
       </span>
-      <h2 className="display-5 fw-bold text-black">{heading}</h2>
+      <h2 className="display-5 fw-bold text-black home__section-heading">
+        {heading}
+      </h2>
     </div>
   );
 }
