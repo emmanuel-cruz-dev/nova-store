@@ -1,9 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { ProductCard, ErrorMessage, ProductsResultsLoader } from "../index";
 import { handleRetry } from "../../utils";
-import { ProductsListProps } from "../../types";
+import { ProductsGalleryProps } from "../../types";
 
-function ProductsGallery({ products, loading, error }: ProductsListProps) {
+function ProductsGallery({ products, loading, error }: ProductsGalleryProps) {
   return (
     <Container>
       <Row className="g-3 align-items-center justify-content-center">
