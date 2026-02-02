@@ -11,7 +11,13 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { ArrowRight } from "lucide-react";
 
-function ProductSlideList({ products, loading, error }: ProductsListProps) {
+function ProductSlideList({
+  eyebrow,
+  heading,
+  products,
+  loading,
+  error,
+}: ProductsListProps) {
   return (
     <Container
       className="py-5"
@@ -19,8 +25,8 @@ function ProductSlideList({ products, loading, error }: ProductsListProps) {
       style={{ backgroundColor: "#f8f9fa", scrollMarginTop: "3.5rem" }}
     >
       <HomeSectionHeader
-        eyebrow="Selección especial"
-        heading="Productos destacados"
+        eyebrow={eyebrow || "Selección especial"}
+        heading={heading}
       />
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}

@@ -29,6 +29,8 @@ function Home() {
             categories={["mujeres", "tecnologia", "gaming"]}
           />
           <ProductSlideList
+            eyebrow="Selección especial"
+            heading="Productos destacados"
             products={products}
             loading={loading}
             error={error as Error}

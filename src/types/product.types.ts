@@ -56,6 +56,8 @@ export interface ProductQuantitySelectorProps {
 }
 
 export interface ProductsListProps {
+  eyebrow?: string;
+  heading: string;
   products: Product[];
   loading: boolean;
   error: ApiError;
