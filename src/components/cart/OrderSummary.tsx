@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, Button, Col, Spinner } from "react-bootstrap";
+import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useAuthStore, useCheckoutStore } from "../../stores";
 import { useCart } from "../../hooks";
@@ -25,87 +26,94 @@ function OrderSummary() {
   return (
     <>
       <Col lg={4}>
-        <Card
-          className="shadow-sm border-0"
-          style={{ top: "100px", position: "sticky" }}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+          style={{ width: "100%" }}
         >
-          <Card.Body>
-            <h2
-              className="mb-4 custom__text-primary"
-              style={{ fontSize: "1.5rem" }}
-            >
-              Resumen del pedido
-            </h2>
-
-            <ul className="d-flex justify-content-between mb-2 list-unstyled">
-              <li className="custom__text-muted">Subtotal</li>
-              <li className="fw-semibold">${formatPrice(getCartTotal())}</li>
-            </ul>
-
-            <ul className="d-flex justify-content-between mb-2 list-unstyled">
-              <li className="custom__text-muted">Envío</li>
-              <li className="fw-semibold">
-                {getCartTotal() > 100000 ? (
-                  <span className="custom__text-success">Gratis</span>
-                ) : (
-                  "$5,000"
-                )}
-              </li>
-            </ul>
-
-            {getCartTotal() > 0 && getCartTotal() < 100000 && (
-              <small
-                className="custom__text-muted"
-                style={{ fontSize: "0.8rem" }}
+          <Card
+            className="shadow-sm border-0"
+            style={{ top: "100px", position: "sticky" }}
+          >
+            <Card.Body>
+              <h2
+                className="mb-4 custom__text-primary"
+                style={{ fontSize: "1.5rem" }}
               >
-                Envío gratis a partir de $100,000
-              </small>
-            )}
+                Resumen del pedido
+              </h2>
 
-            <hr />
+              <ul className="d-flex justify-content-between mb-2 list-unstyled">
+                <li className="custom__text-muted">Subtotal</li>
+                <li className="fw-semibold">${formatPrice(getCartTotal())}</li>
+              </ul>
 
-            <ul className="d-flex justify-content-between mb-4 list-unstyled">
-              <li className="fw-bold fs-5">Total</li>
-              <li className="fw-bold fs-5 custom__text-primary">
-                {formatPrice(calculateTotal(getCartTotal()))}
-              </li>
-            </ul>
+              <ul className="d-flex justify-content-between mb-2 list-unstyled">
+                <li className="custom__text-muted">Envío</li>
+                <li className="fw-semibold">
+                  {getCartTotal() > 100000 ? (
+                    <span className="custom__text-success">Gratis</span>
+                  ) : (
+                    "$5,000"
+                  )}
+                </li>
+              </ul>
 
-            <Button
-              variant="primary"
-              className="w-100 mb-3"
-              onClick={onCheckout}
-              disabled={cart.length === 0 || isProcessing}
-            >
-              {isProcessing ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="me-2"
-                  />
-                  Procesando...
-                </>
-              ) : (
-                "Finalizar compra"
+              {getCartTotal() > 0 && getCartTotal() < 100000 && (
+                <small
+                  className="custom__text-muted"
+                  style={{ fontSize: "0.8rem" }}
+                >
+                  Envío gratis a partir de $100,000
+                </small>
               )}
-            </Button>
 
-            <Link to="/products" className="text-decoration-none">
+              <hr />
+
+              <ul className="d-flex justify-content-between mb-4 list-unstyled">
+                <li className="fw-bold fs-5">Total</li>
+                <li className="fw-bold fs-5 custom__text-primary">
+                  {formatPrice(calculateTotal(getCartTotal()))}
+                </li>
+              </ul>
+
               <Button
-                variant="outline-secondary py-2"
-                size="sm"
-                className="w-100"
+                variant="primary"
+                className="w-100 mb-3"
+                onClick={onCheckout}
+                disabled={cart.length === 0 || isProcessing}
               >
-                <ArrowLeft size={16} className="me-2" />
-                Seguir comprando
+                {isProcessing ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    Procesando...
+                  </>
+                ) : (
+                  "Finalizar compra"
+                )}
               </Button>
-            </Link>
-          </Card.Body>
-        </Card>
+
+              <Link to="/products" className="text-decoration-none">
+                <Button
+                  variant="outline-secondary py-2"
+                  size="sm"
+                  className="w-100"
+                >
+                  <ArrowLeft size={16} className="me-2" />
+                  Seguir comprando
+                </Button>
+              </Link>
+            </Card.Body>
+          </Card>
+        </motion.div>
       </Col>
 
       <CheckoutModal />
