@@ -23,9 +23,12 @@ function Home() {
 
       {hasProducts && (
         <>
-          <Categories categories={["mujeres", "tecnologia", "gaming"]} />
+          <Categories
+            eyebrow="Explorá por categoría"
+            heading="Encontrá lo que estás buscando"
+            categories={["mujeres", "tecnologia", "gaming"]}
+          />
           <ProductSlideList
-            title="Productos destacados"
             products={products}
             loading={loading}
             error={error as Error}
@@ -37,7 +40,11 @@ function Home() {
       <TestimonialSlider />
 
       {hasProducts && (
-        <Categories categories={["gaming", "hombres", "tecnologia"]} />
+        <Categories
+          eyebrow="Para cada estilo"
+          heading="Productos para todos los gustos"
+          categories={["gaming", "hombres", "tecnologia"]}
+        />
       )}
 
       <FAQs />
