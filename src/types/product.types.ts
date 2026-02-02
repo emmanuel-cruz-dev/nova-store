@@ -55,12 +55,15 @@ export interface ProductQuantitySelectorProps {
   onAddToCart: () => void;
 }
 
-export interface ProductsListProps {
-  eyebrow?: string;
-  heading: string;
+export interface ProductsGalleryProps {
   products: Product[];
   loading: boolean;
   error: ApiError;
+}
+
+export interface ProductsSlideListProps extends ProductsGalleryProps {
+  eyebrow: string;
+  heading: string;
 }
 
 export interface ProductResponse {
