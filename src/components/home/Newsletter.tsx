@@ -1,5 +1,6 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Bounce, ToastContainer } from "react-toastify";
+import { motion } from "motion/react";
 import { useNewsletterSubscription } from "../../hooks";
 
 function Newsletter() {
@@ -17,7 +18,13 @@ function Newsletter() {
       <Container className="py-lg-4">
         <Row className="justify-content-center align-items-center">
           <Col xs={12} className="text-center">
-            <div className="d-flex justify-content-center align-items-center mb-4">
+            <motion.div
+              className="d-flex justify-content-center align-items-center mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <h2
                 className="mb-0"
                 style={{
@@ -31,13 +38,17 @@ function Newsletter() {
                   ¡Recibí nuestras novedades en tu email!
                 </span>
               </h2>
-            </div>
+            </motion.div>
 
             <Form
               onSubmit={handleSubmit}
               className="d-flex justify-content-center"
             >
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
                 style={{
                   display: "flex",
                   maxWidth: "600px",
@@ -77,7 +88,7 @@ function Newsletter() {
                 >
                   Suscribirse
                 </Button>
-              </div>
+              </motion.div>
             </Form>
           </Col>
         </Row>
