@@ -17,6 +17,7 @@ export { default as DashboardError } from "./dashboard/DashboardError";
 
 export { default as BannerCarousel } from "./home/BannerCarousel";
 export { default as ComingSoon } from "./home/ComingSoon";
+export { default as HomeSectionHeader } from "./home/HomeSectionHeader";
 export { default as Categories } from "./home/Categories";
 export { default as FeaturesSection } from "./home/FeaturesSection";
 export { default as HighlightedFeatures } from "./home/HighlightedFeatures";
