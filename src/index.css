@@ -239,12 +239,40 @@
   }
 }
 
-.custom__card-hover {
+.custom__product-card {
   transition: box-shadow 0.2s ease-in-out;
+  position: relative;
 }
 
-.custom__card-hover:hover {
+.custom__product-card:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.175) !important;
+}
+
+.favorite-btn-float {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  pointer-events: auto;
+}
+
+.custom__product-card:hover .favorite-btn-float {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .favorite-btn-float {
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+  }
+
+  .custom__card-hover:hover .favorite-btn-float {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
 }
 
 .home__section-heading {
