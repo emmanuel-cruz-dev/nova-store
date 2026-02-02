@@ -16,6 +16,7 @@
     "bootstrap": "^5.3.8",
     "bootswatch": "^5.3.8",
     "lucide-react": "^0.547.0",
+    "motion": "^12.29.3",
     "nprogress": "^0.2.0",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
