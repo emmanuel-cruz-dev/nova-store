@@ -1,3 +1,9 @@
+import {
+  UseFormRegister,
+  UseFormHandleSubmit,
+  FieldErrors,
+} from "react-hook-form";
+import { AccountDeletionFormData } from "../schemas/accountDeletionSchema";
 import { MenuItem } from "./common.types";
 import { Order } from "./order.types";
 
@@ -15,14 +21,7 @@ export interface User {
 
 export type SafeUser = Omit<User, "password">;
 
-export interface UserResponse {
-  data?: {
-    users?: User[];
-    total?: number;
-    totalPages?: number;
-  };
-  total?: number;
-}
+export type UserRole = "customer" | "admin" | "super_admin";
 
 type UserDataKeys = "email" | "firstName" | "lastName" | "avatar";
 
@@ -31,16 +30,13 @@ export interface UserData extends Pick<User, UserDataKeys> {
   password: string;
 }
 
-export type UserRole = "customer" | "admin" | "super_admin";
-
-export interface AvatarUpdateModalProps {
-  show: boolean;
-  onClose: () => void;
-  newAvatarUrl: string;
-  setNewAvatarUrl: (url: string) => void;
-  onSave: () => void;
-  loading: boolean;
-  currentAvatar: string;
+export interface UserResponse {
+  data?: {
+    users?: User[];
+    total?: number;
+    totalPages?: number;
+  };
+  total?: number;
 }
 
 export interface PasswordChangeFormProps {
@@ -61,6 +57,14 @@ export type ShowPasswordState = {
 
 export type PasswordDataKeys = `${PasswordFieldType}Password`;
 
+export type ApiError = Error & {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+};
+
 export interface UseUpdateUserReturn {
   updateUser: (userData: SafeUser) => Promise<SafeUser | undefined>;
   loading: boolean;
@@ -80,6 +84,8 @@ export interface ProfileSidebarProps {
 }
 
 export type ActivityFilter = "all" | "active" | "inactive";
+
+export type RoleFilter = "all" | "customer" | "admin";
 
 export type DateFilter =
   | "all"
@@ -109,8 +115,6 @@ export interface UseUsersFilterReturn extends BaseUsersFilters {
   handlePageChange: (page: number) => void;
 }
 
-export type RoleFilter = "all" | "customer" | "admin";
-
 export interface UsersFiltersProps extends BaseUsersFilters {
   usersCount: number;
   filteredCount: number;
@@ -119,21 +123,25 @@ export interface UsersFiltersProps extends BaseUsersFilters {
   loading: boolean;
 }
 
-export interface RoleChangeModalProps {
+interface BaseModalProps {
   show: boolean;
+  onClose: () => void;
+}
+
+export interface AvatarUpdateModalProps extends BaseModalProps {
+  newAvatarUrl: string;
+  setNewAvatarUrl: (url: string) => void;
+  onSave: () => void;
+  loading: boolean;
+  currentAvatar: string;
+}
+
+export interface RoleChangeModalProps extends Omit<BaseModalProps, "onClose"> {
   onHide: () => void;
   onConfirm: (newRole: UserRole) => void;
   selectedCount: number;
   isProcessing: boolean;
 }
-
-export type ApiError = Error & {
-  response?: {
-    data?: {
-      message?: string;
-    };
-  };
-};
 
 export interface UseUserByRoleReturn {
   users: User[];
@@ -145,4 +153,14 @@ export interface UseUserByRoleReturn {
   totalPages: number;
   totalUsers: number;
   goToPage: (page: number) => void;
+}
+
+export interface AccountDeletionModalProps extends BaseModalProps {
+  showPassword: boolean;
+  setShowPassword: (show: boolean) => void;
+  register: UseFormRegister<AccountDeletionFormData>;
+  handleSubmit: UseFormHandleSubmit<AccountDeletionFormData>;
+  onSubmit: (data: AccountDeletionFormData) => Promise<void>;
+  errors: FieldErrors<AccountDeletionFormData>;
+  isDeleting: boolean;
 }
