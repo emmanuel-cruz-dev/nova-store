@@ -1,4 +1,6 @@
-# 🛍️ Nova Store - E-Commerce Platform
+# 🛍️ Nova Store - Frontend
+
+> **Nota:** Este es el módulo frontend del proyecto. Para la documentación general del proyecto completo, ver [README principal](../README.md).
 
 <div align="center">
   
