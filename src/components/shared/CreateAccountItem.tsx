@@ -5,7 +5,7 @@ function CreateAccountItem() {
   return (
     <Card className="shadow-sm border-0 h-100">
       <Card.Body className="p-4">
-        <h2 className="h4 mb-3">Crear cuenta</h2>
+        <h2 className="h4 mb-3 custom__text-primary">Crear cuenta</h2>
         <p className="text-muted mb-3">Crea una y aprovecha los beneficios:</p>
 
         <ul className="list-unstyled">
