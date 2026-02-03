@@ -1,175 +1,151 @@
-# 🛍️ Nova Store - Full Stack E-Commerce Platform
+# 🛍️ Nova Store - E-Commerce Platform
 
 <div align="center">
-
+  
 ![React](https://img.shields.io/badge/React-19-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-Python-green)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Zustand](https://img.shields.io/badge/Zustand-State%20Management-orange)
+![SWR](https://img.shields.io/badge/SWR-Data%20Fetching-black)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
 </div>
 
 ## 👨‍💻 Autor
 
 - **Emmanuel Cruz**
-- **Full Stack Developer**
+- **Frontend Developer**
 
-> Plataforma e-commerce full stack con sistema de autenticación, gestión de productos, carrito de compras y panel administrativo completo.
-
----
-
-## 📋 Descripción general
-
-**Nova Store** es una aplicación e-commerce completa que incluye:
-
-- **Frontend moderno** en React 19 + TypeScript con diseño responsivo
-- **Backend robusto** en FastAPI (Python) con autenticación JWT
-- **Sistema de roles** jerárquico (customer, admin, super_admin)
-- **Gestión completa** de productos, usuarios y órdenes
-- **Panel administrativo** con estadísticas en tiempo real
+> Plataforma e-commerce moderna construida con React y TypeScript. Actualmente en proceso de migración de MockAPI a backend propio con FastAPI.
 
 ---
 
-## 🚀 Demo
+## 🚀 Demo en vivo
 
-👉 **[Ver aplicación en vivo](https://nova-store-shop.vercel.app/)**
+👉 **[Visitar la página](https://nova-store-shop.vercel.app/)**
 
 ---
 
-## 🗂 Estructura del proyecto
+## 📋 Estado actual del proyecto
 
+### ✅ Completado
+- **Frontend completo** en React 19 + TypeScript
+- Sistema de autenticación con roles (customer, admin, super_admin)
+- Carrito de compras y proceso de checkout
+- Panel administrativo con estadísticas
+- Gestión de productos, usuarios y órdenes
+- Diseño responsivo y UX optimizada
+
+### 🚧 En desarrollo
+- **Backend con FastAPI** (próximamente)
+- Migración desde MockAPI a base de datos propia
+- API REST documentada con endpoints propios
+
+---
+
+## 🗂 Estructura actual
 ```
 nova-store/
-├── frontend/          # Aplicación React + TypeScript
-│   ├── src/
-│   ├── public/
-│   └── README.md     # Documentación del frontend
-│
-└── backend/          # API FastAPI + Python
-    ├── app/
-    ├── tests/
-    └── README.md     # Documentación del backend
+├── README.md          # Este archivo
+└── frontend/          # Aplicación React + TypeScript (funcional)
+    ├── src/
+    ├── public/
+    └── README.md     # Documentación detallada del frontend
 ```
 
 ---
 
 ## 🚀 Inicio rápido
 
-### Requisitos previos
-
-- **Node.js** ≥ 16
-- **Python** ≥ 3.9
-- **pnpm** ≥ 8 (recomendado para frontend)
-- **PostgreSQL** ≥ 14 (o base de datos de tu elección)
-
-### Configuración
-
-#### 1. Frontend
-
+### Frontend (actualmente funcional)
 ```bash
 cd frontend
 pnpm install
 cp .env.example .env
-# Configurar VITE_API_URL en .env
+# Configurar VITE_BASE_API_URL con tu MockAPI
 pnpm dev
 ```
 
-📖 **Documentación completa:** [frontend/README.md](./frontend/README.md)
-
-#### 2. Backend
-
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env
-# Configurar variables de entorno
-uvicorn app.main:app --reload
-```
-
-📖 **Documentación completa:** [backend/README.md](./backend/README.md)
+📖 **Documentación completa del frontend:** [frontend/README.md](./frontend/README.md)
 
 ---
 
 ## ✨ Funcionalidades principales
 
 ### Para usuarios (customers)
-
 - ✅ Registro y autenticación segura
 - ✅ Búsqueda y filtrado avanzado de productos
 - ✅ Carrito de compras con persistencia
 - ✅ Proceso de checkout completo
 - ✅ Historial de órdenes
-- ✅ Gestión de perfil
+- ✅ Gestión de perfil y eliminación de cuenta
 
 ### Para administradores
-
 - ✅ Dashboard con estadísticas en tiempo real
-- ✅ Gestión completa de productos (CRUD)
-- ✅ Gestión de usuarios con control por roles
+- ✅ Gestión completa de productos (CRUD con filtros avanzados)
+- ✅ Gestión de usuarios con control jerárquico por roles
 - ✅ Administración de órdenes
-- ✅ Filtros y búsquedas avanzadas
+- ✅ Acciones masivas (bulk actions)
 
-### Sistema de roles
-
-- **Customer:** Compras y gestión de cuenta
-- **Admin:** Gestión de productos, customers y órdenes
-- **Super Admin:** Control total del sistema incluyendo gestión de admins
+### Sistema de roles jerárquico
+- **Customer (nivel 1):** Compras y gestión de cuenta
+- **Admin (nivel 2):** Gestión de productos, customers y órdenes
+- **Super Admin (nivel 3):** Control total del sistema
 
 ---
 
 ## 🧰 Stack tecnológico
 
 ### Frontend
-
-- React 19 + TypeScript
+- React 19 + TypeScript + Vite
 - Zustand (state management)
-- SWR (data fetching)
-- React Hook Form + Zod
+- SWR (data fetching y cache)
+- React Hook Form + Zod (validación)
 - Bootstrap 5 + React Bootstrap
 - Motion (animaciones)
+- Swiper, React Toastify, Lucide React
 
-### Backend
-
+### Backend (próximamente)
 - FastAPI (Python)
-- SQLAlchemy (ORM)
-- PostgreSQL
+- PostgreSQL / SQLAlchemy
 - JWT Authentication
-- Pydantic (validación)
-
----
-
-## 📚 Documentación detallada
-
-Cada módulo tiene su propia documentación completa:
-
-- **[Frontend](./frontend/README.md)** - Arquitectura, componentes, hooks, rutas
-- **[Backend](./backend/README.md)** - API endpoints, modelos, autenticación, base de datos
-
----
-
-## 🔐 Credenciales de prueba
-
-_(Se agregarán después de configurar la base de datos)_
-
----
-
-## 🛠️ Estado del proyecto
-
-- ✅ Frontend completamente funcional
-- 🚧 Backend en desarrollo (migración desde MockAPI)
-- ⏳ Integración frontend-backend pendiente
+- Pydantic
 
 ---
 
 ## 📝 Roadmap
 
-- [x] Frontend con MockAPI
-- [ ] Backend con FastAPI
-- [ ] Integración completa
+- [x] Frontend completo con MockAPI
+- [x] Sistema de roles y permisos
+- [x] Panel administrativo funcional
+- [x] Deploy en Vercel
+- [ ] **Backend con FastAPI** ⬅️ En progreso
+- [ ] Migración a base de datos propia
+- [ ] Integración frontend-backend
 - [ ] Sistema de pagos
 - [ ] Notificaciones por email
-- [ ] Panel de analytics avanzado
 
 ---
+
+## 📚 Documentación
+
+- **[Frontend](./frontend/README.md)** - Documentación completa del cliente React
+
+_(La documentación del backend se agregará cuando esté disponible)_
+
+---
+
+## 🔐 Configuración actual
+
+El proyecto actualmente usa **MockAPI** como backend temporal. Para configurar:
+
+1. Crear cuenta en [mockapi.io](https://mockapi.io)
+2. Configurar endpoints para `products`, `users`, `orders`
+3. Agregar `VITE_BASE_API_URL` en `.env`
+
+Ver detalles completos en [frontend/README.md](./frontend/README.md)
+
+---
+
+## 🤝 Contribuciones
+
+Este es un proyecto personal en desarrollo activo. Sugerencias y feedback son bienvenidos.
