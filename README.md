@@ -195,6 +195,7 @@ La aplicación implementa un **sistema jerárquico de tres niveles** para contro
 - Indicadores de carga con **NProgress**.
 - Iconografía moderna con **Lucide React**.
 - Skeletons de carga para mejor UX.
+- Animaciones fluidas y transiciones de página con **Motion**
 
 ---
 
@@ -300,6 +301,7 @@ src/
 ### UI/UX
 
 - **Bootstrap 5** + **React Bootstrap** - Framework CSS y componentes
+- **Motion** - Biblioteca de animaciones para React
 - **Bootswatch** - Temas de Bootstrap
 - **Swiper** - Carruseles y sliders táctiles
 - **Lucide React** - Iconos modernos y consistentes
