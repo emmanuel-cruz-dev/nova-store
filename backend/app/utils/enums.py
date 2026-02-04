@@ -10,8 +10,10 @@ class UserRole(str, Enum):
 class OrderStatus(str, Enum):
     PENDING = "pending"
     PROCESSING = "processing"
+    SHIPPED = "shipped"
     COMPLETED = "completed"
     CANCELLED = "cancelled"
+    REFUNDED = "refunded"
 
 
 class ProductCategory(str, Enum):
@@ -30,3 +32,10 @@ class StockLevel(str, Enum):
     LOW = "low"
     OK = "ok"
     HIGH = "high"
+
+
+class PaymentMethod(str, Enum):
+    CREDIT_CARD = "credit_card"
+    DEBIT_CARD = "debit_card"
+    PAYPAL = "paypal"
+    CASH_ON_DELIVERY = "cash_on_delivery"
