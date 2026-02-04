@@ -71,3 +71,24 @@ alembic/versions/__pycache__/
 # Build / cache tools
 # ==============================
 .cache/
+
+# ==============================
+# Distribution / Build
+# ==============================
+dist/
+build/
+*.egg-info/
+nosetests.xml
+pip-wheel-metadata/
+
+# ==============================
+# Jupyter Notebooks
+# ==============================
+.ipynb_checkpoints/
+
+# ==============================
+# Linters and Formatters
+# ==============================
+.ruff_cache/
+.tox/
+.nox/
