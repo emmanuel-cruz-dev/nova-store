@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 from typing import List
 
 
@@ -7,9 +7,6 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Nova Store API"
     VERSION: str = "1.0.0"
     DEBUG: bool = False
-
-    # Database
-    DATABASE_URL: str
 
     # JWT
     SECRET_KEY: str
