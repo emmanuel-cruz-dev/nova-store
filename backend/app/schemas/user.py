@@ -1,31 +1,52 @@
-from pydantic import BaseModel, EmailStr
-from datetime import datetime
+from pydantic import BaseModel, EmailStr, Field, ConfigDict
 from typing import Optional
-from enum import Enum
+from datetime import datetime
 
-class RoleEnum(str, Enum):
-    customer = "customer"
-    admin = "admin"
-    super_admin = "super_admin"
+from app.utils.enums import UserRole
+
 
 class UserBase(BaseModel):
     email: EmailStr
-    first_name: str
-    last_name: str
+    first_name: str = Field(..., min_length=1, max_length=50)
+    last_name: str = Field(..., min_length=1, max_length=50)
+    avatar: Optional[str] = None
+
 
 class UserCreate(UserBase):
-    password: str
+    password: str = Field(..., min_length=8, max_length=128)
+    role: UserRole = UserRole.CUSTOMER
+
 
 class UserUpdate(BaseModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    first_name: Optional[str] = Field(None, min_length=1, max_length=50)
+    last_name: Optional[str] = Field(None, min_length=1, max_length=50)
     avatar: Optional[str] = None
+
+
+class UserUpdateRole(BaseModel):
+    role: UserRole
+
+
+class UserChangePassword(BaseModel):
+    current_password: str = Field(..., min_length=6)
+    new_password: str = Field(..., min_length=6, max_length=100)
+
+
+class UserDeleteAccount(BaseModel):
+    confirmation_word: str = Field(..., pattern="^DELETE$")
+    password: str
+
 
 class UserResponse(UserBase):
     id: int
-    role: RoleEnum
-    avatar: Optional[str]
+    role: UserRole
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UserWithOrderCount(UserResponse):
+    """User with additional order count information"""
+    order_count: int = 0
+
+    model_config = ConfigDict(from_attributes=True)
