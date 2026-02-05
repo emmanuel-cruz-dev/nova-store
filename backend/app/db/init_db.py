@@ -51,7 +51,6 @@ def init_db(db: Session) -> None:
         )
         db.add(customer)
 
-        # Create more test customers
         for i in range(1, 4):
             customer = User(
                 email=f"customer{i}@example.com",
