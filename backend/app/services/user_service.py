@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from typing import Dict, Any
 
 from app.repositories.user_repository import UserRepository
-from app.schemas.user import UserUpdate, UserResponse
+from app.core.security import verify_password, get_password_hash
+from app.schemas.user import UserUpdate, UserResponse, UserChangePassword
 from app.models.user import User
 
 
@@ -29,3 +31,19 @@ class UserService:
 
         updated_user = self.user_repo.update(user, update_dict)
         return UserResponse.model_validate(updated_user)
+
+    def change_password(self, user: User, password_data: UserChangePassword) -> Dict[str, Any]:
+        """Change current user password"""
+        if not verify_password(password_data.current_password, user.password):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Current password is incorrect"
+            )
+
+        hashed_password = get_password_hash(password_data.new_password)
+        updated_user = self.user_repo.update_password(user, hashed_password)
+
+        return {
+            "message": "Password changed successfully",
+            "user": UserResponse.model_validate(updated_user)
+        }
