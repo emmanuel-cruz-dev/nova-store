@@ -4,6 +4,7 @@ from typing import List
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Nova Store API"
+    DESCRIPTION: str = "Backend API for Nova Store E-Commerce"
     VERSION: str = "1.0.0"
     DEBUG: bool = False
 
