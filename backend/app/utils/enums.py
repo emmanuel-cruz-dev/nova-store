@@ -18,13 +18,12 @@ class OrderStatus(str, Enum):
 
 class ProductCategory(str, Enum):
     ELECTRONICS = "electronics"
-    FASHION = "fashion"
+    GAMING = "gaming"
+    CLOTHING = "clothing"
     BOOKS = "books"
     HOME = "home"
     SPORTS = "sports"
-    TOYS = "toys"
     BEAUTY = "beauty"
-    FOOD = "food"
 
 
 class StockLevel(str, Enum):
