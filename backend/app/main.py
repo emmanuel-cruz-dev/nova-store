@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Backend API for Nova Store E-Commerce",
+    description=settings.DESCRIPTION,
     lifespan=lifespan,
 )
 
@@ -39,16 +39,16 @@ app.add_middleware(
 
 app.include_router(api_router, prefix="/api/v1")
 
-@app.get("/")
+@app.get("/", tags=["Root"])
 def root():
     """Root endpoint"""
     return {
-        "message": "Welcome to Nova Store API",
+        "message": f"Welcome to {settings.PROJECT_NAME}",
         "version": settings.VERSION,
         "docs": "/docs"
     }
 
-@app.get("/health")
+@app.get("/health", tags=["Health Check"])
 def health_check():
     """Health check endpoint"""
     return {"status": "healthy"}
