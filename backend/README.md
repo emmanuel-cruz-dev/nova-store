@@ -18,7 +18,7 @@ Backend RESTful API para Nova Store, construido con FastAPI y SQLAlchemy.
 ## 🔗 Links relacionados
 
 - **Frontend Module**: [Nova Store Frontend](https://github.com/emmanuel-cruz-dev/nova-store/tree/main/frontend)
-- **API Docs**: `http://localhost:8000/docs`
+- **API Docs**: `http://127.0.0.1:8000/docs`
 - **Demo Live**: Próximamente
 
 ---
