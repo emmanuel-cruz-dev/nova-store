@@ -13,7 +13,6 @@ class OrderStatus(str, Enum):
     SHIPPED = "shipped"
     COMPLETED = "completed"
     CANCELLED = "cancelled"
-    REFUNDED = "refunded"
 
 
 class ProductCategory(str, Enum):
@@ -38,3 +37,9 @@ class PaymentMethod(str, Enum):
     DEBIT_CARD = "debit_card"
     PAYPAL = "paypal"
     CASH_ON_DELIVERY = "cash_on_delivery"
+
+class PaymentStatus(str, Enum):
+    PENDING = "pending"
+    PAID = "paid"
+    FAILED = "failed"
+    REFUNDED = "refunded"
