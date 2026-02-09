@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import settings
+from app.core.logging import logger
 from app.api.v1.router import api_router
 from app.db.base import Base
 from app.db.session import engine
@@ -10,17 +11,15 @@ from app.db.session import engine
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan events for startup and shutdown"""
-    print(f"🚀 Starting {settings.PROJECT_NAME} v{settings.VERSION}...")
+    logger.info(f"🚀 Starting {settings.PROJECT_NAME} v{settings.VERSION}...")
 
     if settings.DEBUG:
-        print("📦 Creating/verifying database tables...")
-        Base.metadata.create_all(bind=engine)
-        print("✅ Tables ready")
-        print("💡 Note: Run 'python scripts/seed_db.py' to seed data")
+        logger.debug("📦 Checking database connection...")
+        logger.info("💡 Note: Database schema managed by Alembic")
 
     yield
 
-    print("👋 Shutting down Nova Store API...")
+    logger.info("👋 Shutting down Nova Store API...")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
