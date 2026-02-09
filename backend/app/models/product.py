@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, Boolean, Text, DateTime, Enum as SQLEnum
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 from app.db.base import Base
 from app.utils.enums import ProductCategory, StockLevel
@@ -19,17 +20,24 @@ class Product(Base):
     image = Column(String(500), nullable=True)
     description = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+        )
+
+    order_items = relationship("OrderItem", back_populates="product")
 
     @property
     def stock_level(self) -> StockLevel:
-        """Calculate stock level based on quantity"""
         if self.stock <= 0:
-            return StockLevel.OUT_OF_STOCK
+            return StockLevel.CRITICAL
         elif self.stock <= 10:
-            return StockLevel.LOW_STOCK
+            return StockLevel.LOW
+        elif self.stock <= 50:
+            return StockLevel.OK
         else:
-            return StockLevel.IN_STOCK
+            return StockLevel.HIGH
 
     @property
     def formatted_price(self) -> str:
