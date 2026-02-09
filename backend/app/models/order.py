@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 
 from app.db.base import Base
 from app.utils.enums import OrderStatus, PaymentMethod, PaymentStatus
+from app.schemas.order import ShippingInfo
 
 
 class Order(Base):
@@ -46,6 +47,21 @@ class Order(Base):
     def customer_name(self) -> str:
         """Get customer full name"""
         return f"{self.shipping_first_name} {self.shipping_last_name}"
+
+    @property
+    def shipping_info(self) -> ShippingInfo:
+        """Get shipping info as a ShippingInfo object"""
+        return ShippingInfo(
+            first_name=self.shipping_first_name,
+            last_name=self.shipping_last_name,
+            email=self.shipping_email,
+            phone=self.shipping_phone,
+            address=self.shipping_address,
+            city=self.shipping_city,
+            state=self.shipping_state,
+            zip_code=self.shipping_zip_code,
+            country=self.shipping_country
+        )
 
     @property
     def shipping_address_full(self) -> str:
