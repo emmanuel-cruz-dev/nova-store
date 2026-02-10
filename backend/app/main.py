@@ -5,8 +5,6 @@ from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.core.logging import logger
 from app.api.v1.router import api_router
-from app.db.base import Base
-from app.db.session import engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
