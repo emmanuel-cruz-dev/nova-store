@@ -9,7 +9,7 @@ from app.schemas.order import (
     OrderSummary, GuestOrderCreate
 )
 from app.models.user import User
-from app.utils.enums import OrderStatus, PaymentStatus
+from app.utils.enums import OrderStatus, PaymentStatus, UserRole
 from app.utils.pagination import calculate_skip, create_pagination_response
 
 
@@ -287,9 +287,10 @@ class OrderService:
                 detail=f"Cannot cancel order with status: {order.status.value}"
             )
 
+        original_status = order.status
         cancelled_order = self.order_repo.update_status(order, OrderStatus.CANCELLED)
 
-        if order.status == OrderStatus.PENDING:
+        if original_status == OrderStatus.PENDING:
             self._restore_product_stock(order.items)
 
         return OrderResponse.model_validate(cancelled_order)
@@ -331,3 +332,23 @@ class OrderService:
             "first_order_date": min(order.created_at for order in user_orders).isoformat() if user_orders else None,
             "last_order_date": max(order.created_at for order in user_orders).isoformat() if user_orders else None
         }
+
+    def delete_order(self, order_id: int, current_user: User) -> None:
+        if current_user.role != UserRole.SUPER_ADMIN:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Super admin access required"
+            )
+
+        order = self.order_repo.get_by_id(order_id)
+
+        if not order:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Order not found"
+            )
+
+        if order.status != OrderStatus.CANCELLED:
+            self._restore_product_stock(order.items)
+
+        self.order_repo.hard_delete(order)
