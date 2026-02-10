@@ -163,21 +163,17 @@ def update_order_status_admin(
 
 @router.delete(
     "/admin/{order_id}",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(require_role(UserRole.SUPER_ADMIN))]
 )
 def delete_order_admin(
     order_id: int = Path(..., ge=1, description="Order ID"),
+    current_user: User = Depends(require_role(UserRole.SUPER_ADMIN)),
     db: Session = Depends(get_db)
-) -> Dict[str, Any]:
+) -> None:
     """Delete order permanently (super admin only)"""
     order_service = OrderService(db)
-
-    return {
-        "message": "Order deletion endpoint - implement delete functionality in OrderService",
-        "order_id": order_id,
-        "warning": "Consider soft delete instead of hard delete"
-    }
+    order_service.delete_order(order_id, current_user)
 
 
 @router.get(
