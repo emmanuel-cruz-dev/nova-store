@@ -59,13 +59,13 @@ class ProductRepository:
 
         if stock_level:
             if stock_level == StockLevel.CRITICAL:
-                query = query.filter(Product.stock <= 5)
+                query = query.filter(Product.stock <= 0)
             elif stock_level == StockLevel.LOW:
-                query = query.filter(Product.stock > 5, Product.stock <= 20)
+                query = query.filter(Product.stock > 0, Product.stock <= 10)
             elif stock_level == StockLevel.OK:
-                query = query.filter(Product.stock > 20, Product.stock <= 100)
+                query = query.filter(Product.stock > 10, Product.stock <= 50)
             elif stock_level == StockLevel.HIGH:
-                query = query.filter(Product.stock > 100)
+                query = query.filter(Product.stock > 50)
 
         if sort_by == "price":
             order_column = Product.price
