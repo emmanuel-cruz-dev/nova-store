@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum as SQLEnum
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 from app.db.base import Base
 from app.utils.enums import UserRole
@@ -23,8 +24,10 @@ class User(Base):
     reset_token_expires = Column(DateTime, nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=True)
     last_login = Column(DateTime(timezone=True), nullable=True)
+
+    orders = relationship("Order", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def full_name(self) -> str:
@@ -32,7 +35,7 @@ class User(Base):
 
     @property
     def is_admin(self) -> bool:
-        return self.role in [UserRole.ADMIN, UserRole.SUPER_ADMIN]
+        return self.role in (UserRole.ADMIN, UserRole.SUPER_ADMIN) if self.role else False
 
     @property
     def is_super_admin(self) -> bool:
