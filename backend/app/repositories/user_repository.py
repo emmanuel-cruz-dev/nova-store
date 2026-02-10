@@ -1,6 +1,6 @@
 from typing import List, Optional, Tuple
 from sqlalchemy.orm import Session
-from sqlalchemy import or_, func
+from sqlalchemy import or_, exists
 from datetime import datetime, timedelta, timezone
 
 from app.models.user import User
@@ -35,8 +35,6 @@ class UserRepository:
 
         if is_active is not None:
             query = query.filter(User.is_active == is_active)
-        else:
-            query = query.filter(User.is_active == True)
 
         if role:
             query = query.filter(User.role == role)
@@ -53,29 +51,28 @@ class UserRepository:
 
         if has_orders is not None:
             if has_orders:
-                query = query.join(Order).group_by(User.id).having(func.count(Order.id) > 0)
+                subquery = exists().where(Order.user_id == User.id)
+                query = query.filter(subquery)
             else:
-                query = query.outerjoin(Order).group_by(User.id).having(func.count(Order.id) == 0)
+                subquery = exists().where(Order.user_id == User.id)
+                query = query.filter(~subquery)
 
         if registered_since:
             now = datetime.now(timezone.utc)
-            cutoff = None
 
             if registered_since == "today":
                 cutoff = datetime(now.year, now.month, now.day)
+                query = query.filter(User.created_at >= cutoff)
+
             elif registered_since == "week":
-                cutoff = now - timedelta(days=7)
+                query = query.filter(User.created_at >= now - timedelta(days=7))
             elif registered_since == "month":
-                cutoff = now - timedelta(days=30)
+                query = query.filter(User.created_at >= now - timedelta(days=30))
             elif registered_since == "3months":
-                cutoff = now - timedelta(days=90)
+                query = query.filter(User.created_at >= now - timedelta(days=90))
             elif registered_since == "older":
                 cutoff = now - timedelta(days=90)
                 query = query.filter(User.created_at < cutoff)
-                cutoff = None
-
-            if cutoff:
-                query = query.filter(User.created_at >= cutoff)
 
         total = query.count()
 
