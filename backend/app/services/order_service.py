@@ -10,6 +10,7 @@ from app.schemas.order import (
 )
 from app.models.user import User
 from app.utils.enums import OrderStatus, PaymentStatus
+from app.utils.pagination import calculate_skip, create_pagination_response
 
 
 class OrderService:
@@ -19,11 +20,9 @@ class OrderService:
         self.product_repo = ProductRepository(db)
 
     def create_order(self, order_data: OrderCreate, user: Optional[User] = None) -> OrderResponse:
-        """Create new order (for authenticated users)"""
         return self._process_order_creation(order_data, user)
 
     def create_guest_order(self, order_data: GuestOrderCreate) -> OrderResponse:
-        """Create order for guest (unauthenticated user)"""
         return self._process_order_creation(order_data, None)
 
     def _process_order_creation(
@@ -31,7 +30,6 @@ class OrderService:
         order_data: OrderCreate,
         user: Optional[User] = None
     ) -> OrderResponse:
-        """Common order creation logic"""
         items_data, total_amount = self._validate_and_prepare_items(order_data.items)
 
         shipping_cost = self._calculate_shipping_cost(items_data)
@@ -57,7 +55,6 @@ class OrderService:
         self,
         items: List[Any]
     ) -> tuple[List[Dict[str, Any]], float]:
-        """Validate order items and prepare data for creation"""
         items_to_create = []
         total_amount = 0.0
 
@@ -97,16 +94,13 @@ class OrderService:
         return items_to_create, total_amount
 
     def _calculate_shipping_cost(self, items_data: List[Dict[str, Any]]) -> float:
-        """Calculate shipping cost (simple implementation)"""
         base_cost = 5.99
-
         per_item_cost = 0.99
         total_items = sum(item["quantity"] for item in items_data)
 
         return base_cost + (per_item_cost * total_items)
 
     def _calculate_tax(self, subtotal: float) -> float:
-        """Calculate tax (simple 10% for example)"""
         return subtotal * 0.10
 
     def _prepare_order_data(
@@ -118,7 +112,6 @@ class OrderService:
         tax: float,
         total: float
     ) -> Dict[str, Any]:
-        """Prepare order data dictionary"""
         return {
             "user_id": user.id if user else None,
             "is_guest_order": user is None,
@@ -147,7 +140,6 @@ class OrderService:
         }
 
     def _update_product_stock(self, items_data: List[Dict[str, Any]]) -> None:
-        """Update product stock after order creation"""
         for item in items_data:
             product = self.product_repo.get_by_id(item["product_id"])
             if product:
@@ -162,8 +154,7 @@ class OrderService:
         sort_by: str = "created_at",
         sort_order: str = "desc"
     ) -> Dict[str, Any]:
-        """Get authenticated user's orders"""
-        skip = (page - 1) * limit
+        skip = calculate_skip(page, limit)
 
         orders, total = self.order_repo.get_all(
             skip=skip,
@@ -187,16 +178,14 @@ class OrderService:
             for order in orders
         ]
 
-        return {
-            "orders": order_summaries,
-            "total": total,
-            "page": page,
-            "limit": limit,
-            "pages": (total + limit - 1) // limit if limit > 0 else 0
-        }
+        return create_pagination_response(
+            items=order_summaries,
+            total=total,
+            page=page,
+            limit=limit
+        )
 
     def get_order_by_id(self, order_id: int, user: User) -> OrderResponse:
-        """Get order by ID (user must own the order or be admin)"""
         order = self.order_repo.get_by_id(order_id)
 
         if not order:
@@ -222,8 +211,7 @@ class OrderService:
         sort_by: str = "created_at",
         sort_order: str = "desc"
     ) -> Dict[str, Any]:
-        """Get all orders (admin only)"""
-        skip = (page - 1) * limit
+        skip = calculate_skip(page, limit)
 
         orders, total = self.order_repo.get_all(
             skip=skip,
@@ -247,13 +235,12 @@ class OrderService:
             for order in orders
         ]
 
-        return {
-            "orders": order_summaries,
-            "total": total,
-            "page": page,
-            "limit": limit,
-            "pages": (total + limit - 1) // limit if limit > 0 else 0
-        }
+        return create_pagination_response(
+            items=order_summaries,
+            total=total,
+            page=page,
+            limit=limit
+        )
 
     def update_order_status(
         self,
@@ -261,7 +248,6 @@ class OrderService:
         status_data: OrderUpdateStatus,
         current_user: User
     ) -> OrderResponse:
-        """Update order status (admin only)"""
         if not current_user.is_admin:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -281,7 +267,6 @@ class OrderService:
         return OrderResponse.model_validate(updated_order)
 
     def cancel_order(self, order_id: int, user: User) -> OrderResponse:
-        """Cancel order (user can cancel their own pending orders)"""
         order = self.order_repo.get_by_id(order_id)
 
         if not order:
@@ -310,7 +295,6 @@ class OrderService:
         return OrderResponse.model_validate(cancelled_order)
 
     def _restore_product_stock(self, order_items: List[Any]) -> None:
-        """Restore product stock when order is cancelled"""
         for item in order_items:
             if item.product_id:
                 product = self.product_repo.get_by_id(item.product_id)
@@ -319,7 +303,6 @@ class OrderService:
 
 
     def get_order_stats(self) -> Dict[str, Any]:
-        """Get order statistics (admin only)"""
         total_orders = self.order_repo.count_all()
         total_revenue = self.order_repo.get_total_revenue()
         avg_order_value = self.order_repo.get_average_order_value()
@@ -332,11 +315,10 @@ class OrderService:
             "average_order_value": avg_order_value,
             "status_distribution": status_distribution,
             "pending_orders": status_distribution.get(OrderStatus.PENDING.value, 0),
-            "completed_orders": status_distribution.get(OrderStatus.DELIVERED.value, 0)
+            "completed_orders": status_distribution.get(OrderStatus.COMPLETED.value, 0)
         }
 
     def get_user_order_stats(self, user: User) -> Dict[str, Any]:
-        """Get user's order statistics"""
         user_orders, total = self.order_repo.get_all(user_id=user.id)
 
         total_spent = sum(order.total for order in user_orders)
