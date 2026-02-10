@@ -1,9 +1,10 @@
 from typing import List, Optional, Tuple
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from datetime import datetime, timedelta, timezone
 
 from app.models.product import Product
+from app.models.order import OrderItem
 from app.utils.enums import ProductCategory, StockLevel
 
 
@@ -57,12 +58,14 @@ class ProductRepository:
             query = query.filter(Product.price <= max_price)
 
         if stock_level:
-            if stock_level == StockLevel.OUT_OF_STOCK:
-                query = query.filter(Product.stock <= 0)
-            elif stock_level == StockLevel.LOW_STOCK:
-                query = query.filter(Product.stock > 0, Product.stock <= 10)
-            elif stock_level == StockLevel.IN_STOCK:
-                query = query.filter(Product.stock > 10)
+            if stock_level == StockLevel.CRITICAL:
+                query = query.filter(Product.stock <= 5)
+            elif stock_level == StockLevel.LOW:
+                query = query.filter(Product.stock > 5, Product.stock <= 20)
+            elif stock_level == StockLevel.OK:
+                query = query.filter(Product.stock > 20, Product.stock <= 100)
+            elif stock_level == StockLevel.HIGH:
+                query = query.filter(Product.stock > 100)
 
         if sort_by == "price":
             order_column = Product.price
@@ -85,7 +88,6 @@ class ProductRepository:
         return products, total
 
     def create(self, product_data: dict) -> Product:
-        """Create a new product"""
         product = Product(**product_data)
         self.db.add(product)
         self.db.commit()
@@ -93,7 +95,6 @@ class ProductRepository:
         return product
 
     def update(self, product: Product, update_data: dict) -> Product:
-        """Update product"""
         for key, value in update_data.items():
             if value is not None:
                 setattr(product, key, value)
@@ -102,19 +103,16 @@ class ProductRepository:
         return product
 
     def soft_delete(self, product: Product) -> Product:
-        """Soft delete product (mark as inactive)"""
         product.is_active = False
         self.db.commit()
         self.db.refresh(product)
         return product
 
     def hard_delete(self, product: Product) -> None:
-        """Permanently delete product"""
         self.db.delete(product)
         self.db.commit()
 
     def update_stock(self, product: Product, quantity_change: int) -> Product:
-        """Update product stock (positive or negative)"""
         product.stock += quantity_change
 
         if product.stock < 0:
@@ -126,22 +124,18 @@ class ProductRepository:
 
 
     def count_all(self) -> int:
-        """Count all products"""
         return self.db.query(Product).count()
 
     def count_active(self) -> int:
-        """Count active products"""
         return self.db.query(Product).filter(Product.is_active == True).count()
 
     def count_by_category(self, category: ProductCategory) -> int:
-        """Count products by category"""
         return self.db.query(Product).filter(
             Product.category == category,
             Product.is_active == True
         ).count()
 
     def count_low_stock(self, threshold: int = 10) -> int:
-        """Count products with stock below threshold"""
         return self.db.query(Product).filter(
             Product.stock <= threshold,
             Product.stock > 0,
@@ -155,9 +149,21 @@ class ProductRepository:
             Product.is_active == True
         ).count()
 
+    def get_top_selling(self, limit: int = 10) -> List[Tuple]:
+        results = (
+            self.db.query(
+                Product,
+                func.sum(OrderItem.quantity).label("total_sold")
+            )
+            .join(OrderItem, Product.id == OrderItem.product_id)
+            .group_by(Product.id)
+            .order_by(func.sum(OrderItem.quantity).desc())
+            .limit(limit)
+            .all()
+        )
+        return results
 
     def get_new_arrivals(self, days: int = 30, limit: int = 10) -> List[Product]:
-        """Get recently added products"""
         cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
         return (
             self.db.query(Product)
@@ -176,7 +182,6 @@ class ProductRepository:
         max_price: float,
         limit: int = 50
     ) -> List[Product]:
-        """Get products within price range"""
         return (
             self.db.query(Product)
             .filter(
