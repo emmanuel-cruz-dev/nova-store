@@ -73,7 +73,7 @@ class OrderRepository:
 
     def update_status(self, order: Order, status: OrderStatus) -> Order:
         order.status = status
-        order.updated_at = datetime.utcnow()
+        order.updated_at = datetime.now(timezone.utc)
 
         if status == OrderStatus.COMPLETED:
             order.payment_status = PaymentStatus.PAID
