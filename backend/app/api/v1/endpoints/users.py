@@ -81,6 +81,7 @@ def get_all_users(
     role: Optional[UserRole] = Query(None, description="Filter by role"),
     search: Optional[str] = Query(None, description="Search in name or email"),
     is_active: Optional[bool] = Query(None, description="Filter by active status"),
+    has_orders: Optional[bool] = Query(None, description="Filter by order activity"),
     registered_since: Optional[str] = Query(
         None,
         description="Filter by registration date: today, week, month, 3months, older"
@@ -97,6 +98,7 @@ def get_all_users(
         role=role,
         search=search,
         is_active=is_active,
+        has_orders=has_orders,
         registered_since=registered_since
     )
 
