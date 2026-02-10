@@ -1,9 +1,10 @@
 from typing import List, Optional, Tuple
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from datetime import datetime, timedelta, timezone
 
 from app.models.user import User
+from app.models.order import Order
 from app.utils.enums import UserRole
 
 
@@ -12,11 +13,9 @@ class UserRepository:
         self.db = db
 
     def get_by_id(self, user_id: int) -> Optional[User]:
-        """Get user by ID"""
         return self.db.query(User).filter(User.id == user_id).first()
 
     def get_by_email(self, email: str) -> Optional[User]:
-        """Get user by email"""
         return self.db.query(User).filter(
             User.email == email,
             User.is_active == True
@@ -29,9 +28,9 @@ class UserRepository:
         role: Optional[UserRole] = None,
         search: Optional[str] = None,
         is_active: Optional[bool] = None,
+        has_orders: Optional[bool] = None,
         registered_since: Optional[str] = None
     ) -> Tuple[List[User], int]:
-        """Get all users with filters and pagination"""
         query = self.db.query(User)
 
         if is_active is not None:
@@ -51,6 +50,12 @@ class UserRepository:
                     User.email.ilike(search_pattern)
                 )
             )
+
+        if has_orders is not None:
+            if has_orders:
+                query = query.join(Order).group_by(User.id).having(func.count(Order.id) > 0)
+            else:
+                query = query.outerjoin(Order).group_by(User.id).having(func.count(Order.id) == 0)
 
         if registered_since:
             now = datetime.now(timezone.utc)
@@ -79,7 +84,6 @@ class UserRepository:
         return users, total
 
     def create(self, user_data: dict) -> User:
-        """Create a new user"""
         user = User(**user_data)
         self.db.add(user)
         self.db.commit()
@@ -87,7 +91,6 @@ class UserRepository:
         return user
 
     def update(self, user: User, update_data: dict) -> User:
-        """Update user"""
         for key, value in update_data.items():
             if value is not None:
                 setattr(user, key, value)
@@ -98,7 +101,6 @@ class UserRepository:
         return user
 
     def soft_delete(self, user: User) -> User:
-        """Soft delete user (mark as inactive)"""
         user.is_active = False
         user.updated_at = datetime.now(timezone.utc)
         self.db.commit()
@@ -106,12 +108,10 @@ class UserRepository:
         return user
 
     def hard_delete(self, user: User) -> None:
-        """Permanently delete user (only for admins)"""
         self.db.delete(user)
         self.db.commit()
 
     def restore(self, user: User) -> User:
-        """Restore soft-deleted user"""
         user.is_active = True
         user.updated_at = datetime.now(timezone.utc)
         self.db.commit()
@@ -119,14 +119,12 @@ class UserRepository:
         return user
 
     def count_by_role(self, role: UserRole) -> int:
-        """Count users by role"""
         return self.db.query(User).filter(
             User.role == role,
             User.is_active == True
         ).count()
 
     def get_users_by_role_level(self, max_role: UserRole) -> List[User]:
-        """Get users with role level <= max_role"""
         role_hierarchy = {
             UserRole.CUSTOMER: 1,
             UserRole.ADMIN: 2,
@@ -145,7 +143,6 @@ class UserRepository:
         ).all()
 
     def update_password(self, user: User, new_password_hash: str) -> User:
-        """Update user password"""
         user.password = new_password_hash
         user.updated_at = datetime.now(timezone.utc)
         self.db.commit()
@@ -153,7 +150,6 @@ class UserRepository:
         return user
 
     def verify_email(self, user: User) -> User:
-        """Mark user email as verified"""
         user.email_verified = True
         user.verification_token = None
         user.updated_at = datetime.now(timezone.utc)
@@ -162,7 +158,6 @@ class UserRepository:
         return user
 
     def set_reset_token(self, user: User, token: str, expires_hours: int = 1) -> User:
-        """Set password reset token"""
         user.reset_token = token
         user.reset_token_expires = datetime.now(timezone.utc) + timedelta(hours=expires_hours)
         self.db.commit()
@@ -170,7 +165,6 @@ class UserRepository:
         return user
 
     def clear_reset_token(self, user: User) -> User:
-        """Clear password reset token"""
         user.reset_token = None
         user.reset_token_expires = None
         self.db.commit()
