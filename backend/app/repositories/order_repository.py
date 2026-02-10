@@ -1,10 +1,10 @@
 from typing import List, Optional, Tuple, Dict, Any
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, desc, asc
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from app.models.order import Order, OrderItem
-from app.utils.enums import OrderStatus
+from app.utils.enums import OrderStatus, PaymentStatus
 
 
 class OrderRepository:
@@ -12,7 +12,6 @@ class OrderRepository:
         self.db = db
 
     def get_by_id(self, order_id: int) -> Optional[Order]:
-        """Get order by ID with items"""
         return (
             self.db.query(Order)
             .options(joinedload(Order.items))
@@ -31,7 +30,6 @@ class OrderRepository:
         sort_by: str = "created_at",
         sort_order: str = "desc"
     ) -> Tuple[List[Order], int]:
-        """Get all orders with filters and pagination"""
         query = self.db.query(Order).options(joinedload(Order.items))
 
         if user_id is not None:
@@ -58,7 +56,6 @@ class OrderRepository:
         return orders, total
 
     def create(self, order_data: Dict[str, Any], items_data: List[Dict[str, Any]]) -> Order:
-        """Create a new order with items"""
         order = Order(**order_data)
         self.db.add(order)
         self.db.flush()
@@ -75,58 +72,50 @@ class OrderRepository:
         return order
 
     def update_status(self, order: Order, status: OrderStatus) -> Order:
-        """Update order status"""
         order.status = status
         order.updated_at = datetime.utcnow()
 
-        if status == OrderStatus.DELIVERED:
-            order.payment_status = "paid"
+        if status == OrderStatus.COMPLETED:
+            order.payment_status = PaymentStatus.PAID
 
         self.db.commit()
         self.db.refresh(order)
         return order
 
-    def update_payment_status(self, order: Order, payment_status: str, transaction_id: Optional[str] = None) -> Order:
-        """Update order payment status"""
+    def update_payment_status(self, order: Order, payment_status: PaymentStatus, transaction_id: Optional[str] = None) -> Order:
         order.payment_status = payment_status
         order.payment_transaction_id = transaction_id
 
-        if payment_status == "paid":
-            order.payment_paid_at = datetime.utcnow()
+        if payment_status == PaymentStatus.PAID:
+            order.payment_paid_at = datetime.now(timezone.utc)
 
-        order.updated_at = datetime.utcnow()
+        order.updated_at = datetime.now(timezone.utc)
         self.db.commit()
         self.db.refresh(order)
         return order
 
     def soft_delete(self, order: Order) -> Order:
-        """Soft delete order (mark as cancelled)"""
         order.status = OrderStatus.CANCELLED
-        order.updated_at = datetime.utcnow()
+        order.updated_at = datetime.now(timezone.utc)
         self.db.commit()
         self.db.refresh(order)
         return order
 
     def hard_delete(self, order: Order) -> None:
-        """Permanently delete order"""
         self.db.delete(order)
         self.db.commit()
 
 
     def count_all(self) -> int:
-        """Count all orders"""
         return self.db.query(Order).count()
 
     def count_by_status(self, status: OrderStatus) -> int:
-        """Count orders by status"""
         return self.db.query(Order).filter(Order.status == status).count()
 
     def count_by_user(self, user_id: int) -> int:
-        """Count orders by user"""
         return self.db.query(Order).filter(Order.user_id == user_id).count()
 
     def get_total_revenue(self, include_cancelled: bool = False) -> float:
-        """Get total revenue from all orders"""
         query = self.db.query(func.sum(Order.total))
 
         if not include_cancelled:
@@ -136,7 +125,6 @@ class OrderRepository:
         return result or 0.0
 
     def get_average_order_value(self, include_cancelled: bool = False) -> float:
-        """Get average order value"""
         query = self.db.query(func.avg(Order.total))
 
         if not include_cancelled:
@@ -146,7 +134,6 @@ class OrderRepository:
         return result or 0.0
 
     def get_status_distribution(self) -> Dict[str, int]:
-        """Get order count distribution by status"""
         results = (
             self.db.query(Order.status, func.count(Order.id))
             .group_by(Order.status)
@@ -160,7 +147,6 @@ class OrderRepository:
         start_date: datetime,
         end_date: datetime
     ) -> float:
-        """Get revenue for a specific period"""
         result = (
             self.db.query(func.sum(Order.total))
             .filter(
@@ -173,8 +159,7 @@ class OrderRepository:
         return result or 0.0
 
     def get_daily_orders(self, days: int = 30) -> List[Tuple[datetime.date, int]]:
-        """Get daily order count for the last N days"""
-        end_date = datetime.utcnow().date()
+        end_date = datetime.now(timezone.utc).date()
         start_date = end_date - timedelta(days=days)
 
         results = (
