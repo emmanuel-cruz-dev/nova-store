@@ -2,9 +2,7 @@ from fastapi import APIRouter, Depends, Query, status, Path
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
 
-from app.core.dependencies import (
-    get_db, get_current_admin,
-)
+from app.core.dependencies import get_db, get_current_admin
 from app.services.product_service import ProductService
 from app.schemas.product import ProductResponse, ProductCreate, ProductUpdate
 from app.utils.enums import ProductCategory, StockLevel
@@ -48,7 +46,7 @@ def get_product(
 ) -> ProductResponse:
     """Get product by ID (public) - only active products"""
     product_service = ProductService(db)
-    return product_service.get_product_by_id(product_id)
+    return product_service.get_product_by_id(product_id, only_active=True)
 
 
 @router.get("/categories/all")
@@ -102,7 +100,7 @@ def get_product_admin(
 ) -> ProductResponse:
     """Get product by ID (admin only) - includes inactive products"""
     product_service = ProductService(db)
-    return product_service.get_product_by_id_admin(product_id)
+    return product_service.get_product_by_id(product_id, only_active=False)
 
 
 @router.post(
@@ -140,13 +138,13 @@ def update_product(
     status_code=status.HTTP_200_OK,
     dependencies=[Depends(get_current_admin)]
 )
-def delete_product(
+def deactivate_product(
     product_id: int = Path(..., ge=1),
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
-    """Delete/deactivate product (admin only)"""
+    """Deactivate product (admin only)"""
     product_service = ProductService(db)
-    return product_service.delete_product(product_id)
+    return product_service.deactivate_product(product_id)
 
 
 @router.post(
