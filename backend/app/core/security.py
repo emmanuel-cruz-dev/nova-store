@@ -105,14 +105,6 @@ def verify_refresh_token(token: str) -> bool:
     return payload.get("type") == "refresh"
 
 
-def validate_password_strength(password: str) -> bool:
-    """Validate password meets minimum requirements"""
-    if len(password) < 8:
-        return False
-
-    return True
-
-
 def generate_reset_token() -> str:
     """Generate a secure random token for password reset"""
     import secrets
