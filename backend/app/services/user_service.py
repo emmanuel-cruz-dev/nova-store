@@ -6,7 +6,7 @@ from app.repositories.user_repository import UserRepository
 from app.core.security import verify_password, get_password_hash
 from app.schemas.user import (
     UserResponse, UserUpdate, UserChangePassword,
-    UserUpdateRole
+    UserUpdateRole, UserDeleteAccount, UserCreate
 )
 from app.models.user import User
 from app.utils.permissions import can_manage_user, has_admin_access, is_super_admin
@@ -121,3 +121,52 @@ class UserService:
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Insufficient permissions to manage this user (Hierarchy violation)"
             )
+
+    def create_user(self, user_data: UserCreate, current_user: User) -> UserResponse:
+        if not has_admin_access(current_user):
+            raise HTTPException(status_code=403, detail="Admin access required")
+
+        existing = self.user_repo.get_by_email(user_data.email)
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already registered")
+
+        user_dict = user_data.model_dump()
+        user_dict["password"] = get_password_hash(user_dict["password"])
+
+        new_user = self.user_repo.create(user_dict)
+        return UserResponse.model_validate(new_user)
+
+    def update_user(self, user_id: int, update_data: UserUpdate, current_user: User) -> UserResponse:
+        target_user = self.user_repo.get_by_id(user_id)
+        if not target_user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        self._check_management_permission(current_user, target_user)
+
+        update_dict = update_data.model_dump(exclude_unset=True)
+
+        if 'email' in update_dict and update_dict['email'] != target_user.email:
+            existing = self.user_repo.get_by_email(update_dict['email'])
+            if existing:
+                raise HTTPException(status_code=400, detail="Email already registered")
+
+        updated_user = self.user_repo.update(target_user, update_dict)
+        return UserResponse.model_validate(updated_user)
+
+    def delete_account(self, user: User, delete_data: UserDeleteAccount) -> Dict[str, Any]:
+        if not verify_password(delete_data.password, user.password):
+            raise HTTPException(status_code=400, detail="Password is incorrect")
+
+        self.user_repo.soft_delete(user)
+        return {"message": "Account deleted successfully"}
+
+    def restore_user(self, user_id: int, current_user: User) -> UserResponse:
+        if not has_admin_access(current_user):
+            raise HTTPException(status_code=403, detail="Admin access required")
+
+        target_user = self.user_repo.get_by_id(user_id)
+        if not target_user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        restored_user = self.user_repo.restore(target_user)
+        return UserResponse.model_validate(restored_user)
