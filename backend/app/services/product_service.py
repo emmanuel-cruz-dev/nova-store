@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import Optional, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.repositories.product_repository import ProductRepository
 from app.schemas.product import ProductResponse, ProductCreate, ProductUpdate
 from app.utils.enums import ProductCategory, StockLevel
+from app.utils.pagination import calculate_skip, create_pagination_response, validate_pagination_params
 
 
 class ProductService:
@@ -27,7 +28,8 @@ class ProductService:
         sort_order: str = "desc"
     ) -> Dict[str, Any]:
         """Get all products with filters and pagination"""
-        skip = (page - 1) * limit
+        page, limit = validate_pagination_params(page, limit)
+        skip = calculate_skip(page, limit)
 
         products, total = self.product_repo.get_all(
             skip=skip,
@@ -44,40 +46,25 @@ class ProductService:
 
         products_response = [ProductResponse.model_validate(p) for p in products]
 
-        return {
-            "products": products_response,
-            "total": total,
-            "page": page,
-            "limit": limit,
-            "pages": (total + limit - 1) // limit if limit > 0 else 0
-        }
-
-    def get_product_by_id(self, product_id: int) -> ProductResponse:
-        """Get product by ID (public, returns only active products)"""
-        product = self.product_repo.get_by_id(product_id)
-
-        if not product or not product.is_active:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Product not found"
+        return create_pagination_response(
+            items=products_response,
+            total=total,
+            page=page,
+            limit=limit
             )
 
-        return ProductResponse.model_validate(product)
-
-    def get_product_by_id_admin(self, product_id: int) -> ProductResponse:
-        """Get product by ID (admin, returns all products including inactive)"""
+    def get_product_by_id(self, product_id: int, only_active: bool = True) -> ProductResponse:
         product = self.product_repo.get_by_id(product_id)
 
         if not product:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Product not found"
-            )
+            raise HTTPException(status_code=404, detail="Product not found")
+
+        if only_active and not product.is_active:
+            raise HTTPException(status_code=404, detail="Product is currently unavailable")
 
         return ProductResponse.model_validate(product)
 
     def create_product(self, product_data: ProductCreate) -> ProductResponse:
-        """Create new product (admin only)"""
         product_dict = product_data.model_dump()
 
         product = self.product_repo.create(product_dict)
@@ -85,7 +72,6 @@ class ProductService:
         return ProductResponse.model_validate(product)
 
     def update_product(self, product_id: int, update_data: ProductUpdate) -> ProductResponse:
-        """Update product (admin only)"""
         product = self.product_repo.get_by_id(product_id)
 
         if not product:
@@ -100,8 +86,7 @@ class ProductService:
 
         return ProductResponse.model_validate(updated_product)
 
-    def delete_product(self, product_id: int) -> Dict[str, Any]:
-        """Soft delete product (mark as inactive)"""
+    def deactivate_product(self, product_id: int) -> Dict[str, Any]:
         product = self.product_repo.get_by_id(product_id)
 
         if not product:
@@ -110,16 +95,28 @@ class ProductService:
                 detail="Product not found"
             )
 
-        deleted_product = self.product_repo.soft_delete(product)
+        self.product_repo.soft_delete(product)
 
         return {
             "message": "Product deactivated successfully",
             "product_id": product_id,
-            "deleted_at": datetime.utcnow().isoformat()
+            "deleted_at": datetime.now(timezone.utc).isoformat()
         }
 
+    def delete_product(self, product_id: int) -> dict:
+        product = self.product_repo.get_by_id(product_id)
+
+        if not product:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Product not found"
+            )
+
+        self.product_repo.hard_delete(product)
+
+        return {"message": "Product deleted successfully"}
+
     def restore_product(self, product_id: int) -> ProductResponse:
-        """Restore deactivated product (admin only)"""
         product = self.product_repo.get_by_id(product_id)
 
         if not product:
@@ -141,7 +138,6 @@ class ProductService:
         return ProductResponse.model_validate(product)
 
     def check_stock_availability(self, product_id: int, quantity: int) -> bool:
-        """Check if product has enough stock"""
         product = self.product_repo.get_by_id(product_id)
 
         if not product or not product.is_active:
@@ -150,7 +146,6 @@ class ProductService:
         return product.stock >= quantity
 
     def update_stock(self, product_id: int, quantity_change: int) -> ProductResponse:
-        """Update product stock (admin only)"""
         product = self.product_repo.get_by_id(product_id)
 
         if not product:
@@ -159,13 +154,18 @@ class ProductService:
                 detail="Product not found"
             )
 
+        if product.stock + quantity_change < 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Not enough stock. Current: {product.stock}, requested change: {quantity_change}"
+            )
+
         updated_product = self.product_repo.update_stock(product, quantity_change)
 
         return ProductResponse.model_validate(updated_product)
 
 
     def get_product_stats(self) -> Dict[str, Any]:
-        """Get product statistics (admin only)"""
         total = self.product_repo.count_all()
         active = self.product_repo.count_active()
         low_stock = self.product_repo.count_low_stock()
@@ -181,7 +181,6 @@ class ProductService:
         }
 
     def get_categories_stats(self) -> Dict[str, Any]:
-        """Get product count by category"""
         stats = {}
         for category in ProductCategory:
             count = self.product_repo.count_by_category(category)
