@@ -6,17 +6,10 @@ from app.db.session import SessionLocal
 from app.db.init_db import init_db
 from app.models.user import User
 from app.models.product import Product
-from app.db.base import Base
-from app.core.config import settings
+
 
 def main():
     print("🌱 Seeding database...")
-
-    from sqlalchemy import create_engine
-    engine = create_engine(settings.DATABASE_URL)
-
-    print(f"📦 Creating tables in: {settings.DATABASE_URL}")
-    Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
     try:
