@@ -76,7 +76,6 @@ class OrderResponse(BaseModel):
 
 
 class OrderSummary(BaseModel):
-    """Summary of order without items (for listing)"""
     id: int
     user_id: Optional[int]
     status: OrderStatus
@@ -89,9 +88,8 @@ class OrderSummary(BaseModel):
 
 
 class GuestOrderCreate(OrderCreate):
-    """Para usuarios no registrados"""
     create_account: bool = False
-    password: Optional[str] = Field(None, min_length=6)
+    password: Optional[str] = Field(None, min_length=8)
 
 
 class OrderStats(BaseModel):
