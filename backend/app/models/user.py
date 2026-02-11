@@ -24,10 +24,14 @@ class User(Base):
     reset_token_expires = Column(DateTime, nullable=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), nullable=True)
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+        )
     last_login = Column(DateTime(timezone=True), nullable=True)
 
-    orders = relationship("Order", back_populates="user", cascade="all, delete-orphan")
+    orders = relationship("Order", back_populates="user", cascade="all, delete-orphan", passive_deletes=True)
 
     @property
     def full_name(self) -> str:
