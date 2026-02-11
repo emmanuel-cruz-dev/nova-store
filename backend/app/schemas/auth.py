@@ -12,7 +12,7 @@ class LoginRequest(BaseModel):
 
 class RegisterRequest(BaseModel):
     email: EmailStr
-    password: str = Field(..., min_length=6, max_length=100)
+    password: str = Field(..., min_length=8, max_length=100)
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
 
@@ -23,12 +23,12 @@ class ForgotPasswordRequest(BaseModel):
 
 class ResetPasswordRequest(BaseModel):
     token: str
-    new_password: str = Field(..., min_length=6, max_length=100)
+    new_password: str = Field(..., min_length=8, max_length=100)
 
 
 class ChangePasswordRequest(BaseModel):
-    current_password: str = Field(..., min_length=6)
-    new_password: str = Field(..., min_length=6, max_length=100)
+    current_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=8, max_length=100)
 
 
 class TokenResponse(BaseModel):
