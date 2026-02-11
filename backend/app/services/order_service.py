@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from typing import Optional, Dict, Any, List
+from datetime import datetime, timedelta, timezone
 
 from app.repositories.order_repository import OrderRepository
 from app.repositories.product_repository import ProductRepository
@@ -30,26 +31,35 @@ class OrderService:
         order_data: OrderCreate,
         user: Optional[User] = None
     ) -> OrderResponse:
-        items_data, total_amount = self._validate_and_prepare_items(order_data.items)
+        try:
+            items_data, total_amount = self._validate_and_prepare_items(order_data.items)
+            shipping_cost = self._calculate_shipping_cost(items_data)
+            tax = self._calculate_tax(total_amount)
+            grand_total = total_amount + shipping_cost + tax
 
-        shipping_cost = self._calculate_shipping_cost(items_data)
-        tax = self._calculate_tax(total_amount)
-        grand_total = total_amount + shipping_cost + tax
+            order_dict = self._prepare_order_data(
+                order_data,
+                user,
+                total_amount,
+                shipping_cost,
+                tax,
+                grand_total
+            )
 
-        order_dict = self._prepare_order_data(
-            order_data,
-            user,
-            total_amount,
-            shipping_cost,
-            tax,
-            grand_total
-        )
+            order = self.order_repo.create(order_dict, items_data)
 
-        order = self.order_repo.create(order_dict, items_data)
+            self._update_product_stock(items_data)
 
-        self._update_product_stock(items_data)
+            self.db.commit()
+            return OrderResponse.model_validate(order)
 
-        return OrderResponse.model_validate(order)
+        except HTTPException:
+            self.db.rollback()
+            raise
+
+        except Exception as e:
+            self.db.rollback()
+            raise HTTPException(status_code=500, detail="Error creating order")
 
     def _validate_and_prepare_items(
         self,
@@ -73,10 +83,10 @@ class OrderService:
                     detail=f"Product '{product.name}' is not available"
                 )
 
-            if product.stock < item.quantity:
+            if not self.product_repo.update_stock_atomic(product.id, -item.quantity):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Insufficient stock for '{product.name}'. Available: {product.stock}, Requested: {item.quantity}"
+                    detail=f"Insufficient stock for '{product.name}'"
                 )
 
             subtotal = product.price * item.quantity
@@ -139,12 +149,6 @@ class OrderService:
             "notes": order_data.notes
         }
 
-    def _update_product_stock(self, items_data: List[Dict[str, Any]]) -> None:
-        for item in items_data:
-            product = self.product_repo.get_by_id(item["product_id"])
-            if product:
-                self.product_repo.update_stock(product, -item["quantity"])
-
     def get_user_orders(
         self,
         user: User,
@@ -202,12 +206,26 @@ class OrderService:
 
         return OrderResponse.model_validate(order)
 
+    def get_order_by_id_admin(self, order_id: int) -> OrderResponse:
+        """Get order without authorization check (admin only)"""
+        order = self.order_repo.get_by_id(order_id)
+
+        if not order:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Order not found"
+            )
+
+        return OrderResponse.model_validate(order)
+
     def get_all_orders(
         self,
         page: int = 1,
         limit: int = 10,
         user_id: Optional[int] = None,
         status: Optional[OrderStatus] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
         sort_by: str = "created_at",
         sort_order: str = "desc"
     ) -> Dict[str, Any]:
@@ -218,6 +236,8 @@ class OrderService:
             limit=limit,
             user_id=user_id,
             status=status,
+            start_date=start_date,
+            end_date=end_date,
             sort_by=sort_by,
             sort_order=sort_order
         )
@@ -287,11 +307,9 @@ class OrderService:
                 detail=f"Cannot cancel order with status: {order.status.value}"
             )
 
-        original_status = order.status
-        cancelled_order = self.order_repo.update_status(order, OrderStatus.CANCELLED)
+        self._restore_product_stock(order.items)
 
-        if original_status == OrderStatus.PENDING:
-            self._restore_product_stock(order.items)
+        cancelled_order = self.order_repo.update_status(order, OrderStatus.CANCELLED)
 
         return OrderResponse.model_validate(cancelled_order)
 
@@ -352,3 +370,26 @@ class OrderService:
             self._restore_product_stock(order.items)
 
         self.order_repo.hard_delete(order)
+
+
+    def get_recent_stats_summary(self, days: int) -> Dict[str, Any]:
+        end_date = datetime.now(timezone.utc)
+        start_date = end_date - timedelta(days=days)
+
+        orders, total = self.order_repo.get_all(
+            start_date=start_date,
+            end_date=end_date,
+            limit=1000
+        )
+
+        revenue = sum(order.total for order in orders if order.status != OrderStatus.CANCELLED)
+        avg_order = revenue / len(orders) if orders else 0
+
+        return {
+            "period_days": days,
+            "total_orders": total,
+            "total_revenue": revenue,
+            "average_order_value": avg_order,
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat()
+        }
