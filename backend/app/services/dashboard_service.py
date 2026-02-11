@@ -14,7 +14,6 @@ class DashboardService:
         self.user_repo = UserRepository(db)
 
     def get_statistics(self) -> dict:
-        """Get dashboard statistics"""
         total_orders = self.order_repo.count_all()
         pending_orders = self.order_repo.count_by_status(OrderStatus.PENDING)
         processing_orders = self.order_repo.count_by_status(OrderStatus.PROCESSING)
@@ -61,7 +60,6 @@ class DashboardService:
         }
 
     def get_top_products(self, limit: int = 5) -> list:
-        """Get top selling products"""
         top_products = self.product_repo.get_top_selling(limit)
 
         result = []
