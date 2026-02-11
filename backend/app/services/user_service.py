@@ -49,7 +49,7 @@ class UserService:
         limit: int = 10,
         role: Optional[UserRole] = None,
         search: Optional[str] = None,
-        is_active: Optional[bool] = True,
+        is_active: Optional[bool] = None,
         registered_since: Optional[str] = None
     ) -> Dict[str, Any]:
         if not has_admin_access(current_user):
