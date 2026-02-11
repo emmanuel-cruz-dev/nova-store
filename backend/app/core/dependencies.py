@@ -7,14 +7,13 @@ from app.db.session import SessionLocal
 from app.core.security import get_subject_from_token
 from app.repositories.user_repository import UserRepository
 from app.models.user import User
-from app.utils.permissions import has_admin_access, is_super_admin
+from app.utils.permissions import has_admin_access, is_super_admin, check_permission
 from app.utils.enums import UserRole
 
 security = HTTPBearer(auto_error=False)
 
 
 def get_db() -> Generator[Session, None, None]:
-    """Get database session"""
     db = SessionLocal()
     try:
         yield db
@@ -57,7 +56,6 @@ def get_current_user(
 def get_current_active_user(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    """Get current active user (alias for clarity)"""
     return current_user
 
 
@@ -66,7 +64,6 @@ def get_optional_user(
     db: Session = Depends(get_db),
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
 ) -> Optional[User]:
-    """Get current user if authenticated, None otherwise (for public endpoints)"""
     if credentials is None:
         return None
 
@@ -77,7 +74,6 @@ def get_optional_user(
 
 
 def require_role(*allowed_roles: UserRole) -> Callable:
-    """Dependency factory to require specific roles"""
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in allowed_roles:
             raise HTTPException(
@@ -91,7 +87,6 @@ def require_role(*allowed_roles: UserRole) -> Callable:
 def get_current_admin(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    """Get current user if admin or super_admin"""
     if not has_admin_access(current_user):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -103,27 +98,12 @@ def get_current_admin(
 def get_current_super_admin(
     current_user: User = Depends(get_current_user)
 ) -> User:
-    """Get current user if super_admin only"""
     if not is_super_admin(current_user):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Super Admin access required"
         )
     return current_user
-
-
-def check_permission(user: User, required_role: UserRole) -> bool:
-    """Check if user has required role level"""
-    role_hierarchy = {
-        UserRole.CUSTOMER: 1,
-        UserRole.ADMIN: 2,
-        UserRole.SUPER_ADMIN: 3
-    }
-
-    user_level = role_hierarchy.get(user.role, 0)
-    required_level = role_hierarchy.get(required_role, 0)
-
-    return user_level >= required_level
 
 
 def require_permission(required_role: UserRole) -> Callable:
