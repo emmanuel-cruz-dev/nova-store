@@ -28,8 +28,8 @@ class UserUpdateRole(BaseModel):
 
 
 class UserChangePassword(BaseModel):
-    current_password: str = Field(..., min_length=6)
-    new_password: str = Field(..., min_length=6, max_length=100)
+    current_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=8, max_length=100)
 
 
 class UserDeleteAccount(BaseModel):
