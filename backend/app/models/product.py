@@ -41,7 +41,6 @@ class Product(Base):
 
     @property
     def formatted_price(self) -> str:
-        """Format price for display"""
         return f"${self.price:.2f}"
 
     def __repr__(self):
