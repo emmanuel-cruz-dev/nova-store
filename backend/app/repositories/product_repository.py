@@ -13,11 +13,9 @@ class ProductRepository:
         self.db = db
 
     def get_by_id(self, product_id: int) -> Optional[Product]:
-        """Get product by ID"""
         return self.db.query(Product).filter(Product.id == product_id).first()
 
     def get_by_ids(self, product_ids: List[int]) -> List[Product]:
-        """Get multiple products by IDs"""
         return self.db.query(Product).filter(Product.id.in_(product_ids)).all()
 
     def get_all(
@@ -28,12 +26,11 @@ class ProductRepository:
         search: Optional[str] = None,
         min_price: Optional[float] = None,
         max_price: Optional[float] = None,
-        is_active: Optional[bool] = True,
+        is_active: Optional[bool] = None,
         stock_level: Optional[StockLevel] = None,
         sort_by: str = "created_at",
         sort_order: str = "desc"
     ) -> Tuple[List[Product], int]:
-        """Get all products with filters and pagination"""
         query = self.db.query(Product)
 
         if is_active is not None:
@@ -143,7 +140,6 @@ class ProductRepository:
         ).count()
 
     def count_out_of_stock(self) -> int:
-        """Count out of stock products"""
         return self.db.query(Product).filter(
             Product.stock <= 0,
             Product.is_active == True
@@ -153,11 +149,12 @@ class ProductRepository:
         results = (
             self.db.query(
                 Product,
-                func.sum(OrderItem.quantity).label("total_sold")
+                func.sum(OrderItem.quantity).label("total_sold"),
+                func.sum(OrderItem.quantity * OrderItem.price).label("revenue")
             )
             .join(OrderItem, Product.id == OrderItem.product_id)
             .group_by(Product.id)
-            .order_by(func.sum(OrderItem.quantity).desc())
+            .order_by(func.desc("total_sold"))
             .limit(limit)
             .all()
         )
@@ -193,3 +190,17 @@ class ProductRepository:
             .limit(limit)
             .all()
         )
+
+    def update_stock_atomic(self, product_id: int, quantity_delta: int) -> bool:
+        result = self.db.execute(
+            """
+            UPDATE products
+            SET stock = stock + :delta
+            WHERE id = :product_id
+            AND stock + :delta >= 0
+            RETURNING id
+            """,
+            {"delta": quantity_delta, "product_id": product_id}
+        )
+        self.db.commit()
+        return result.rowcount > 0
