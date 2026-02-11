@@ -171,13 +171,20 @@ class ProductService:
         low_stock = self.product_repo.count_low_stock()
         out_of_stock = self.product_repo.count_out_of_stock()
 
+        if active > 0:
+            in_stock_count = max(0, active - out_of_stock)
+            in_stock_percentage = (in_stock_count / active) * 100
+        else:
+            in_stock_percentage = 0
+
         return {
             "total_products": total,
             "active_products": active,
             "inactive_products": total - active,
             "low_stock_products": low_stock,
             "out_of_stock_products": out_of_stock,
-            "in_stock_percentage": ((active - out_of_stock) / active * 100) if active > 0 else 0
+            "in_stock_products": max(0, active - out_of_stock),
+            "in_stock_percentage": round(in_stock_percentage, 2)
         }
 
     def get_categories_stats(self) -> Dict[str, Any]:
