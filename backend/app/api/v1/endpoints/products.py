@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, status, Path
+from fastapi import APIRouter, Depends, Query, status, Path, Body
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
 
@@ -125,7 +125,7 @@ def create_product(
 )
 def update_product(
     product_id: int = Path(..., ge=1),
-    update_data: ProductUpdate = None,
+    update_data: ProductUpdate = Body(...),
     db: Session = Depends(get_db)
 ) -> ProductResponse:
     """Update product (admin only)"""
