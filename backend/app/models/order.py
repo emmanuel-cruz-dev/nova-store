@@ -11,7 +11,7 @@ class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True)
     status = Column(SQLEnum(OrderStatus), default=OrderStatus.PENDING, nullable=False, index=True)
 
     subtotal = Column(Float, nullable=False, default=0.0)
@@ -38,19 +38,37 @@ class Order(Base):
     is_guest_order = Column(Boolean, default=False, nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now(), index=True)
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now()
+        )
 
     user = relationship("User", back_populates="orders")
     items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
     @property
     def customer_name(self) -> str:
-        """Get customer full name"""
         return f"{self.shipping_first_name} {self.shipping_last_name}"
 
     @property
+    def customer_email(self) -> str:
+        return self.shipping_email
+
+    @property
+    def is_guest(self) -> bool:
+        return self.user_id is None or self.is_guest_order
+
+    @property
+    def user_email(self) -> str | None:
+        return self.user.email if self.user else None
+
+    @property
+    def user_full_name(self) -> str | None:
+        return self.user.full_name if self.user else None
+
+    @property
     def shipping_info(self) -> ShippingInfo:
-        """Get shipping info as a ShippingInfo object"""
         return ShippingInfo(
             first_name=self.shipping_first_name,
             last_name=self.shipping_last_name,
@@ -65,8 +83,25 @@ class Order(Base):
 
     @property
     def shipping_address_full(self) -> str:
-        """Get full shipping address"""
         return f"{self.shipping_address}, {self.shipping_city}, {self.shipping_state} {self.shipping_zip_code}, {self.shipping_country}"
+
+    def get_customer_data(self) -> dict:
+        if self.user:
+            return {
+                "email": self.user.email,
+                "first_name": self.user.first_name,
+                "last_name": self.user.last_name,
+                "full_name": self.user.full_name,
+                "is_guest": False
+            }
+        else:
+            return {
+                "email": self.shipping_email,
+                "first_name": self.shipping_first_name,
+                "last_name": self.shipping_last_name,
+                "full_name": self.customer_name,
+                "is_guest": True
+            }
 
     def __repr__(self):
         return f"<Order(id={self.id}, status={self.status}, total={self.total})>"
