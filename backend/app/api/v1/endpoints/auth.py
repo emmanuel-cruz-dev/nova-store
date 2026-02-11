@@ -53,18 +53,21 @@ def refresh_token(
 
 
 @router.post("/logout")
-def logout() -> Dict[str, Any]:
+def logout(
+    db: Session = Depends(get_db)
+) -> Dict[str, Any]:
     """Logout user"""
-    auth_service = AuthService(None)
+    auth_service = AuthService(db)
     return auth_service.logout()
 
 
 @router.get("/me", response_model=UserResponse)
 def get_current_user_info(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ) -> UserResponse:
     """Get current authenticated user info"""
-    auth_service = AuthService(None)
+    auth_service = AuthService(db)
     return auth_service.verify_token(current_user)
 
 
