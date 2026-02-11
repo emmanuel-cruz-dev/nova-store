@@ -46,7 +46,6 @@ class UserResponse(UserBase):
 
 
 class UserWithOrderCount(UserResponse):
-    """User with additional order count information"""
     order_count: int = 0
 
     model_config = ConfigDict(from_attributes=True)

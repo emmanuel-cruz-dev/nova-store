@@ -53,7 +53,6 @@ class ProductResponse(ProductBase):
 
 
 class ProductWithSales(ProductResponse):
-    """Product with sales information"""
     total_sold: int = 0
     revenue: float = 0.0
 
