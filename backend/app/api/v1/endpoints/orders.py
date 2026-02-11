@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, Query, status, Path, HTTPException
+from fastapi import APIRouter, Depends, Query, status, Path, HTTPException, Body
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from app.core.dependencies import (
     get_db, get_current_user, get_current_admin,
@@ -113,15 +113,34 @@ def get_all_orders_admin(
     db: Session = Depends(get_db)
 ) -> Dict[str, Any]:
     """Get all orders (admin only)"""
-    start_dt = datetime.fromisoformat(start_date) if start_date else None
-    end_dt = datetime.fromisoformat(end_date) if end_date else None
+    start_dt, end_dt = None, None
+
+    try:
+        if start_date:
+            start_dt = datetime.fromisoformat(start_date)
+        if end_date:
+            end_dt = datetime.fromisoformat(end_date)
+
+        if start_dt and end_dt and start_dt > end_dt:
+            raise HTTPException(
+                status_code=400,
+                detail="start_date cannot be greater than end_date"
+            )
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid date format. Use ISO format (YYYY-MM-DD)"
+        )
 
     order_service = OrderService(db)
+
     return order_service.get_all_orders(
         page=page,
         limit=limit,
         user_id=user_id,
         status=status,
+        start_date=start_dt,
+        end_date=end_dt,
         sort_by=sort_by,
         sort_order=sort_order
     )
@@ -138,11 +157,7 @@ def get_order_admin(
 ) -> OrderResponse:
     """Get any order by ID (admin only)"""
     order_service = OrderService(db)
-
-    from app.models.user import User
-    admin_user = User(id=0, role=UserRole.ADMIN)
-
-    return order_service.get_order_by_id(order_id, admin_user)
+    return order_service.get_order_by_id_admin(order_id)
 
 
 @router.patch(
@@ -152,7 +167,7 @@ def get_order_admin(
 )
 def update_order_status_admin(
     order_id: int = Path(..., ge=1, description="Order ID"),
-    status_data: OrderUpdateStatus = None,
+    status_data: OrderUpdateStatus = Body(...),
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ) -> OrderResponse:
@@ -198,26 +213,7 @@ def get_recent_orders_stats(
 ) -> Dict[str, Any]:
     """Get recent orders statistics (admin only)"""
     order_service = OrderService(db)
-
-    end_date = datetime.utcnow()
-    start_date = end_date - timedelta(days=days)
-
-    orders, total = order_service.order_repo.get_all(
-        start_date=start_date,
-        end_date=end_date
-    )
-
-    revenue = sum(order.total for order in orders if order.status != OrderStatus.CANCELLED)
-    avg_order = revenue / len(orders) if orders else 0
-
-    return {
-        "period_days": days,
-        "total_orders": total,
-        "total_revenue": revenue,
-        "average_order_value": avg_order,
-        "start_date": start_date.isoformat(),
-        "end_date": end_date.isoformat()
-    }
+    return order_service.get_recent_stats_summary(days)
 
 
 @router.get("/statuses/all")
