@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import or_, exists
 from datetime import datetime, timedelta, timezone
 
@@ -31,7 +31,7 @@ class UserRepository:
         has_orders: Optional[bool] = None,
         registered_since: Optional[str] = None
     ) -> Tuple[List[User], int]:
-        query = self.db.query(User)
+        query = self.db.query(User).options(joinedload(User.orders))
 
         if is_active is not None:
             query = query.filter(User.is_active == is_active)
@@ -60,16 +60,17 @@ class UserRepository:
         if registered_since:
             now = datetime.now(timezone.utc)
 
-            if registered_since == "today":
-                cutoff = datetime(now.year, now.month, now.day)
-                query = query.filter(User.created_at >= cutoff)
+            deltas = {
+                "week": timedelta(days=7),
+                "month": timedelta(days=30),
+                "3months": timedelta(days=90)
+            }
 
-            elif registered_since == "week":
-                query = query.filter(User.created_at >= now - timedelta(days=7))
-            elif registered_since == "month":
-                query = query.filter(User.created_at >= now - timedelta(days=30))
-            elif registered_since == "3months":
-                query = query.filter(User.created_at >= now - timedelta(days=90))
+            if registered_since == "today":
+                cutoff = now.replace(hour=0, minute=0, second=0, microsecond=0)
+                query = query.filter(User.created_at >= cutoff)
+            elif registered_since in deltas:
+                query = query.filter(User.created_at >= now - deltas[registered_since])
             elif registered_since == "older":
                 cutoff = now - timedelta(days=90)
                 query = query.filter(User.created_at < cutoff)
