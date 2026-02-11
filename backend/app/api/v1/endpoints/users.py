@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, status, Path
+from fastapi import APIRouter, Depends, Query, status, Path, Body
 from sqlalchemy.orm import Session
 from typing import Optional, Dict, Any
 
@@ -44,7 +44,7 @@ def partial_update_my_profile(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ) -> UserResponse:
-    """Partially update current user profile (PATCH method)"""
+    """Partially update current user profile"""
     user_service = UserService(db)
     return user_service.update_profile(current_user, update_data)
 
@@ -141,7 +141,7 @@ def get_user(
 )
 def update_user(
     user_id: int = Path(..., ge=1, description="User ID"),
-    update_data: UserUpdate = None,
+    update_data: UserUpdate = Body(...),
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ) -> UserResponse:
@@ -157,11 +157,11 @@ def update_user(
 )
 def partial_update_user(
     user_id: int = Path(..., ge=1, description="User ID"),
-    update_data: UserUpdate = None,
+    update_data: Optional[UserUpdate] = None,
     current_user: User = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ) -> UserResponse:
-    """Partially update user (admin only) - PATCH method"""
+    """Partially update user (admin only)"""
     user_service = UserService(db)
     return user_service.update_user(user_id, update_data, current_user)
 
@@ -173,7 +173,7 @@ def partial_update_user(
 )
 def update_user_role(
     user_id: int = Path(..., ge=1, description="User ID"),
-    role_data: UserUpdateRole = None,
+    role_data: UserUpdateRole = Body(...),
     current_user: User = Depends(get_current_super_admin),
     db: Session = Depends(get_db)
 ) -> UserResponse:
