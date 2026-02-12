@@ -544,18 +544,18 @@ ALLOWED_ORIGINS=https://tu-dominio.com
 
 ### Buenas prácticas implementadas
 
-✅ Arquitectura en capas separadas (Repository, Service, API)
-✅ Validación con Pydantic schemas
-✅ Gestión de errores consistente
-✅ Paginación en todos los listados
-✅ Filtros avanzados y búsqueda
-✅ Sistema de roles jerárquico
-✅ Tokens JWT con expiración
-✅ Hashing seguro de contraseñas
-✅ CORS configurado
-✅ Logging estructurado
-✅ Seed de datos iniciales
-✅ Migraciones con Alembic
+✅ Arquitectura en capas separadas (Repository, Service, API)  
+✅ Validación con Pydantic schemas  
+✅ Gestión de errores consistente  
+✅ Paginación en todos los listados  
+✅ Filtros avanzados y búsqueda  
+✅ Sistema de roles jerárquico  
+✅ Tokens JWT con expiración  
+✅ Hashing seguro de contraseñas  
+✅ CORS configurado  
+✅ Logging estructurado  
+✅ Seed de datos iniciales  
+✅ Migraciones con Alembic  
 ✅ Deploy automatizado con GitHub
 
 ### Seguridad
