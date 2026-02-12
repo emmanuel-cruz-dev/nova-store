@@ -5,9 +5,10 @@
 <div align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.109-green)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.128-green)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue)
+[![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7)](https://nova-store-backend.onrender.com/docs)
 
 </div>
 
@@ -23,6 +24,16 @@ Backend RESTful API para Nova Store que proporciona:
 - 📊 **Dashboard administrativo** con estadísticas y métricas
 - 🔍 **Filtros y paginación** en todos los endpoints
 - ✅ **Validación robusta** con Pydantic schemas
+
+---
+
+## 🌐 Demo en Vivo
+
+- **API en Producción**: [https://nova-store-backend.onrender.com](https://nova-store-backend.onrender.com)
+- **Documentación Interactiva**: [https://nova-store-backend.onrender.com/docs](https://nova-store-backend.onrender.com/docs)
+- **ReDoc**: [https://nova-store-backend.onrender.com/redoc](https://nova-store-backend.onrender.com/redoc)
+
+> **Nota**: La primera solicitud puede tardar ~30 segundos debido al cold start del plan gratuito de Render.
 
 ---
 
@@ -82,14 +93,14 @@ app/
 ### Requisitos previos
 
 - Python 3.10+
-- PostgreSQL 15+
+- PostgreSQL 15+ (o cuenta en [Neon](https://neon.tech) para development)
 - pip o poetry
 
-### Instalación
+### Instalación Local
 
 ```bash
 # 1. Clonar el repositorio
-git clone <url-del-repositorio>
+git clone https://github.com/emmanuel-cruz-dev/nova-store-backend.git
 cd nova-store-backend
 
 # 2. Crear entorno virtual
@@ -121,7 +132,9 @@ La API estará disponible en `http://localhost:8000`
 
 ## 🗄️ Configuración de la base de datos
 
-### Primera configuración
+### Opción 1: PostgreSQL Local
+
+#### Primera configuración
 
 1. **Crear una base de datos PostgreSQL**
 
@@ -129,39 +142,60 @@ La API estará disponible en `http://localhost:8000`
 createdb novastore_db
 ```
 
-2. **Ejecutar la configuración de la base de datos (migraciones + datos de inicialización)**
+2. **Configurar `.env` con tu base de datos local**
 
-```bash
-python setup_db.py
+```env
+DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/novastore_db
 ```
 
-### Pasos manuales (alternativa)
-
-1. **Ejecutar migraciones**
+3. **Ejecutar migraciones**
 
 ```bash
 alembic upgrade head
 ```
 
-2. **Base de datos de inicialización**
+4. **Seed de datos iniciales (opcional)**
 
 ```bash
 python scripts/seed_db.py
 ```
 
+### Opción 2: Neon PostgreSQL (Recomendado para Development)
+
+1. **Crear cuenta en [Neon](https://neon.tech)**
+
+2. **Crear un proyecto y obtener la Connection String**
+
+3. **Configurar `.env`**
+
+```env
+DATABASE_URL=postgresql+psycopg://user:password@ep-xxx.region.aws.neon.tech/novastore_db?sslmode=require
+```
+
+> **IMPORTANTE**: Neon requiere el dialecto `+psycopg` y el parámetro `?sslmode=require`
+
+4. **Ejecutar migraciones**
+
+```bash
+alembic upgrade head
+```
+
 ### Restablecer la base de datos
 
-1. **Eliminar todas las tablas en pgAdmin o mediante psql**
+**PostgreSQL Local:**
 
 ```sql
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 ```
 
-2. **Reiniciar la configuración**
+**Neon Console:**
+Usa la consola SQL de Neon para ejecutar el mismo comando.
+
+Luego ejecuta:
 
 ```bash
-python setup_db.py
+alembic upgrade head
 ```
 
 ### Crear nueva migración
@@ -177,11 +211,16 @@ alembic upgrade head
 
 ## ⚙️ Variables de entorno
 
+### Desarrollo Local
+
 Crear archivo `.env` en la raíz:
 
 ```env
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/nova_store
+# Database (PostgreSQL Local)
+DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/novastore_db
+
+# Database (Neon - Development)
+# DATABASE_URL=postgresql+psycopg://user:password@ep-xxx.region.aws.neon.tech/novastore_db?sslmode=require
 
 # JWT
 SECRET_KEY=tu-clave-secreta-super-segura-cambiar-en-produccion
@@ -197,14 +236,32 @@ VERSION=1.0.0
 DEBUG=True
 ```
 
+### Producción (Render)
+
+En Render, configura estas variables de entorno:
+
+```env
+DATABASE_URL=postgresql+psycopg://user:password@ep-xxx.region.aws.neon.tech/novastore_db?sslmode=require
+SECRET_KEY=<generar-con-openssl-rand-hex-32>
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+ALLOWED_ORIGINS=https://tu-frontend.vercel.app,http://localhost:5173
+PROJECT_NAME=Nova Store API
+VERSION=1.0.0
+DEBUG=False
+PYTHON_VERSION=3.10.7
+```
+
 ---
 
 ## 📚 API Endpoints
 
 ### Documentación interactiva
 
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+- **Producción - Swagger UI**: [https://nova-store-backend.onrender.com/docs](https://nova-store-backend.onrender.com/docs)
+- **Producción - ReDoc**: [https://nova-store-backend.onrender.com/redoc](https://nova-store-backend.onrender.com/redoc)
+- **Local - Swagger UI**: `http://localhost:8000/docs`
+- **Local - ReDoc**: `http://localhost:8000/redoc`
 
 ### Endpoints principales
 
@@ -372,8 +429,6 @@ Authorization: Bearer <token>
 
 ## 🔄 Migraciones con Alembic
 
-Para la configuración completa de la base de datos, consulta la sección [Configuración de la base de datos](#🗄️-configuración-de-la-base-de-datos).
-
 ```bash
 # Crear nueva migración
 alembic revision --autogenerate -m "descripcion"
@@ -386,13 +441,16 @@ alembic downgrade -1
 
 # Ver historial
 alembic history
+
+# Ver estado actual
+alembic current
 ```
 
 ---
 
 ## 📊 Base de datos inicial
 
-Al iniciar por primera vez, se crean automáticamente:
+Al ejecutar `python scripts/seed_db.py`, se crean automáticamente:
 
 ### Usuarios de prueba
 
@@ -415,27 +473,70 @@ Se crean 10 productos de muestra en diferentes categorías:
 
 ## 🚀 Despliegue
 
+### Stack de Producción
+
+- **Backend**: [Render](https://render.com) - Web Service
+- **Base de Datos**: [Neon](https://neon.tech) - PostgreSQL Serverless
+- **Frontend**: [Vercel](https://vercel.com) (Nova Store Shop)
+
+### Configuración de Deploy en Render
+
+#### Build Command
+
+```bash
+pip install -r requirements.txt && alembic upgrade head
+```
+
+#### Start Command
+
+```bash
+gunicorn app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+```
+
 ### Variables importantes para producción
 
 ```env
+DATABASE_URL=postgresql+psycopg://user:pass@ep-xxx.region.aws.neon.tech/novastore_db?sslmode=require
 DEBUG=False
 SECRET_KEY=<generar-clave-segura>
-DATABASE_URL=postgresql://user:pass@host:5432/db
 ALLOWED_ORIGINS=https://tu-dominio.com
 ```
+
+> **Generar SECRET_KEY segura**: `openssl rand -hex 32`
+
+### Notas importantes del deploy
+
+1. **Dialecto PostgreSQL**: Usar `postgresql+psycopg://` (no `postgresql://`)
+2. **SSL en Neon**: Siempre incluir `?sslmode=require` en la URL
+3. **Migraciones**: Se ejecutan automáticamente en cada deploy via Build Command
+4. **Cold Start**: El plan gratuito de Render duerme después de 15 min de inactividad
 
 ---
 
 ## 🛠️ Tecnologías
 
-- **FastAPI** - Framework web moderno y rápido
+### Core
+
+- **FastAPI 0.128** - Framework web moderno y rápido
 - **SQLAlchemy 2.0** - ORM avanzado
-- **Pydantic** - Validación de datos
-- **Alembic** - Migraciones de base de datos
-- **PostgreSQL** - Base de datos relacional
-- **Python-Jose** - JWT tokens
-- **Passlib** - Hashing de contraseñas
-- **Uvicorn** - ASGI server
+- **Pydantic 2.12** - Validación de datos
+- **Alembic 1.13** - Migraciones de base de datos
+
+### Database
+
+- **PostgreSQL 15+** - Base de datos relacional
+- **Psycopg 3** - Driver PostgreSQL moderno
+- **Neon** - PostgreSQL Serverless (producción)
+
+### Security
+
+- **Python-Jose 3.5** - JWT tokens
+- **Passlib 1.7** - Hashing de contraseñas (bcrypt)
+
+### Server
+
+- **Uvicorn 0.32** - ASGI server (desarrollo)
+- **Gunicorn 21.2** - WSGI server (producción)
 
 ---
 
@@ -443,18 +544,19 @@ ALLOWED_ORIGINS=https://tu-dominio.com
 
 ### Buenas prácticas implementadas
 
-✅ Arquitectura en capas separadas (Repository, Service, API)  
-✅ Validación con Pydantic schemas  
-✅ Gestión de errores consistente  
-✅ Paginación en todos los listados  
-✅ Filtros avanzados y búsqueda  
-✅ Sistema de roles jerárquico  
-✅ Tokens JWT con expiración  
-✅ Hashing seguro de contraseñas  
-✅ CORS configurado  
-✅ Logging estructurado  
-✅ Seed de datos iniciales  
+✅ Arquitectura en capas separadas (Repository, Service, API)
+✅ Validación con Pydantic schemas
+✅ Gestión de errores consistente
+✅ Paginación en todos los listados
+✅ Filtros avanzados y búsqueda
+✅ Sistema de roles jerárquico
+✅ Tokens JWT con expiración
+✅ Hashing seguro de contraseñas
+✅ CORS configurado
+✅ Logging estructurado
+✅ Seed de datos iniciales
 ✅ Migraciones con Alembic
+✅ Deploy automatizado con GitHub
 
 ### Seguridad
 
@@ -464,6 +566,15 @@ ALLOWED_ORIGINS=https://tu-dominio.com
 - CORS configurado correctamente
 - SQL injection prevenido por SQLAlchemy ORM
 - Validación de entrada con Pydantic
+- SSL/TLS en todas las conexiones de producción
+
+### Mejoras recientes
+
+- ✨ Actualizado a FastAPI 0.128
+- ✨ Migrado a Psycopg 3 (driver PostgreSQL moderno)
+- ✨ Deploy automático en Render
+- ✨ Base de datos serverless en Neon
+- ✨ Migraciones automáticas en deploy
 
 ---
 
@@ -492,8 +603,8 @@ Este proyecto es parte de un portafolio educativo.
 
 - **Repositorio Principal**: [Nova Store](https://github.com/emmanuel-cruz-dev/nova-store)
 - **Frontend Repository**: [Nova Store Frontend](https://github.com/emmanuel-cruz-dev/nova-store/tree/main/frontend)
-- **API Docs**: `http://localhost:8000/docs`
-- **Demo Live**: Próximamente
+- **API Docs (Producción)**: [https://nova-store-backend.onrender.com/docs](https://nova-store-backend.onrender.com/docs)
+- **Backend Deploy**: [https://nova-store-backend.onrender.com](https://nova-store-backend.onrender.com)
 
 ---
 
