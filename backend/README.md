@@ -69,11 +69,10 @@ app/
 │       ├── products.py
 │       ├── orders.py
 │       └── dashboard.py
-├── utils/                    # Utilidades
-│   ├── enums.py
-│   ├── pagination.py
-│   └── permissions.py
-└── tests/                    # Tests
+└── utils/                    # Utilidades
+    ├── enums.py
+    ├── pagination.py
+    └── permissions.py
 ```
 
 ---
@@ -459,17 +458,17 @@ ALLOWED_ORIGINS=https://tu-dominio.com
 
 ### Buenas prácticas implementadas
 
-✅ Arquitectura en capas separadas (Repository, Service, API)
-✅ Validación con Pydantic schemas
-✅ Gestión de errores consistente
-✅ Paginación en todos los listados
-✅ Filtros avanzados y búsqueda
-✅ Sistema de roles jerárquico
-✅ Tokens JWT con expiración
-✅ Hashing seguro de contraseñas
-✅ CORS configurado
-✅ Logging estructurado
-✅ Seed de datos iniciales
+✅ Arquitectura en capas separadas (Repository, Service, API)  
+✅ Validación con Pydantic schemas  
+✅ Gestión de errores consistente  
+✅ Paginación en todos los listados  
+✅ Filtros avanzados y búsqueda  
+✅ Sistema de roles jerárquico  
+✅ Tokens JWT con expiración  
+✅ Hashing seguro de contraseñas  
+✅ CORS configurado  
+✅ Logging estructurado  
+✅ Seed de datos iniciales  
 ✅ Migraciones con Alembic
 
 ### Seguridad
@@ -493,7 +492,7 @@ Este es un proyecto individual desarrollado para aplicar conceptos avanzados de 
 
 **Emmanuel Cruz**
 
-- Backend Developer
+- Fullstack Developer
 - Proyecto desarrollado con FastAPI y PostgreSQL
 
 ---
@@ -508,7 +507,6 @@ Este proyecto es parte de un portafolio educativo.
 
 - **Repositorio Principal**: [Nova Store](https://github.com/emmanuel-cruz-dev/nova-store)
 - **Frontend Repository**: [Nova Store Frontend](https://github.com/emmanuel-cruz-dev/nova-store/tree/main/frontend)
-- **Backend Repository**: [Nova Store Backend](https://github.com/emmanuel-cruz-dev/nova-store/tree/main/backend)
 - **API Docs**: `http://localhost:8000/docs`
 - **Demo Live**: Próximamente
 
