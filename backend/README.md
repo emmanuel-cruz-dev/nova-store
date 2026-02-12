@@ -370,21 +370,6 @@ Authorization: Bearer <token>
 
 ---
 
-## 🧪 Testing
-
-```bash
-# Ejecutar todos los tests
-pytest
-
-# Con coverage
-pytest --cov=app
-
-# Test específico
-pytest tests/test_auth.py
-```
-
----
-
 ## 🔄 Migraciones con Alembic
 
 Para la configuración completa de la base de datos, consulta la sección [Configuración de la base de datos](#🗄️-configuración-de-la-base-de-datos).
